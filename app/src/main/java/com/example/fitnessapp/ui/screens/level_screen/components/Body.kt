@@ -1,4 +1,4 @@
-package com.example.fitnessapp.PhysicalActivityLevelAllFiles.main.Pieces
+package com.example.fitnessapp.ui.screens.level_screen.components
 
 
 import android.util.Log
@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.fitnessapp.ui.screens.level_screen.models.LevelList
 import com.example.fitnessapp.R
 
 
@@ -156,7 +157,5 @@ fun CardElement(
                 style = MaterialTheme.typography.bodyMedium
             )
         }
-
-
     }
 }

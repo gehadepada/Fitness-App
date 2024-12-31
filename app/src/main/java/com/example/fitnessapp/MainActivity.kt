@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.fitnessapp.PhysicalActivityLevelAllFiles.main.physicalActivityLevelPage.PhysicalActivityLevel
+import com.example.fitnessapp.ui.screens.level_screen.PhysicalActivityLevel
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 class MainActivity : ComponentActivity() {

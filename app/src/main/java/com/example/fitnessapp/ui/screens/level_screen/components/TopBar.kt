@@ -1,4 +1,4 @@
-package com.example.fitnessapp.PhysicalActivityLevelAllFiles.main.Pieces
+package com.example.fitnessapp.ui.screens.level_screen.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
