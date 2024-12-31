@@ -4,10 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.fitnessapp.ui.screens.level_screen.PhysicalActivityLevel
+import com.example.fitnessapp.ui.navigation.MyAppNavigation
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -16,22 +13,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FitnessAppTheme {
-                PhysicalActivityLevel()
+                MyAppNavigation()
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    FitnessAppTheme {
-
-        Greeting("Android")
     }
 }
