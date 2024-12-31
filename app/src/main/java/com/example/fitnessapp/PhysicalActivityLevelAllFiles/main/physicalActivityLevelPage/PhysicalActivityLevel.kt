@@ -1,4 +1,4 @@
-package com.example.fitnessapp.physicalActivityLevelPage.main
+package com.example.fitnessapp.PhysicalActivityLevelAllFiles.main.physicalActivityLevelPage
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -11,9 +11,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.fitnessapp.Pieces.Content
-import com.example.fitnessapp.Pieces.LevelList
-import com.example.fitnessapp.Pieces.TopBar
+import com.example.fitnessapp.PhysicalActivityLevelAllFiles.main.Pieces.Content
+import com.example.fitnessapp.PhysicalActivityLevelAllFiles.main.Pieces.LevelList
+import com.example.fitnessapp.PhysicalActivityLevelAllFiles.main.Pieces.TopBar
 import com.example.fitnessapp.R
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
