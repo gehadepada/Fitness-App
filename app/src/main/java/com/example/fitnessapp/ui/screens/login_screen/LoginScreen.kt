@@ -1,5 +1,3 @@
-package com.nagy.depi_project
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -13,11 +11,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.fitnessapp.R
+import com.example.fitnessapp.ui.theme.DarkGreySurface
+import com.example.fitnessapp.ui.theme.GreenAccent
+import com.example.fitnessapp.ui.theme.LightGreySurface
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun LoginScreen() {
     Surface(
@@ -76,12 +77,11 @@ fun LoginScreen() {
                     value = "",
                     onValueChange = {},
                     label = { Text(text = "Email", color = Color.White) },
-                    colors = TextFieldDefaults.textFieldColors(
-                        focusedTextColor = Color.White,
-                        unfocusedTextColor = Color.White,
-                        focusedIndicatorColor = Color.Green,
-                        unfocusedIndicatorColor = Color.Gray,
-                        containerColor = Color.DarkGray
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = DarkGreySurface,
+                        unfocusedContainerColor = DarkGreySurface,
+                        focusedBorderColor = GreenAccent,
+                        unfocusedBorderColor = LightGreySurface
                     ),
                     modifier = Modifier
                         .width(380.dp) // Set the width manually to 280dp or any value you prefer
@@ -91,18 +91,17 @@ fun LoginScreen() {
 
 
                 Spacer(modifier = Modifier.height(16.dp))
-                textFieldColors
+                //textFieldColors
                 // Password Field
                 TextField(
                     value = "",
                     onValueChange = {},
                     label = { Text(text = "Password", color = Color.White) },
-                    colors = TextFieldDefaults.textFieldColors(
-                        focusedTextColor = Color.White,
-                        unfocusedTextColor = Color.White,
-                        focusedIndicatorColor = Color.Green,
-                        unfocusedIndicatorColor = Color.Gray,
-                        containerColor = Color.DarkGray
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = DarkGreySurface,
+                        unfocusedContainerColor = DarkGreySurface,
+                        focusedBorderColor = GreenAccent,
+                        unfocusedBorderColor = LightGreySurface
                     ),
                     modifier = Modifier
                         .width(380.dp) // Set the width manually to 280dp or any value you prefer
@@ -144,10 +143,4 @@ fun LoginScreen() {
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewLoginScreen() {
-    LoginScreen()
 }
