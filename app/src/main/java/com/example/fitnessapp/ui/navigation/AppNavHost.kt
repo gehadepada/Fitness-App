@@ -1,6 +1,7 @@
 package com.example.fitnessapp.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -9,7 +10,7 @@ import com.example.fitnessapp.ui.screens.signup_screen.SignUpScreen
 import com.example.fitnessapp.ui.screens.splash_screen.SplashScreen
 
 @Composable
-fun MyAppNavigation() {
+fun MyAppNavigation(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
 
     NavHost(

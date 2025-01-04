@@ -107,7 +107,7 @@ fun Content(levelList: List<LevelList>, it : PaddingValues) {
 }
 
 @Composable
-fun RowElements(levelList: LevelList, modifier: Modifier = Modifier, border:BorderStroke = BorderStroke(3.dp, MaterialTheme.colorScheme.onBackground)) {
+fun RowElements(levelList: LevelList, modifier: Modifier = Modifier, border:BorderStroke = BorderStroke(3.dp, colorScheme.onBackground)) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
 
@@ -121,7 +121,7 @@ fun RowElements(levelList: LevelList, modifier: Modifier = Modifier, border:Bord
                 id = levelList.levelImage
             ),
             contentDescription = null,
-            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
+            colorFilter = ColorFilter.tint(colorScheme.primary),
         )
 
         CardElement(levelList.levelName, modifier, border)
@@ -137,7 +137,7 @@ fun CardElement(
     border: BorderStroke
 ) {
     Card(
-        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surface),
+        colors = CardDefaults.cardColors(colorScheme.surface),
         modifier = Modifier
             .width(227.dp)
             .height(61.dp),
@@ -154,7 +154,7 @@ fun CardElement(
         ) {
             Text(
                 text = stringResource(id = levelList),
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodySmall
             )
         }
     }

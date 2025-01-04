@@ -2,8 +2,6 @@ package com.example.fitnessapp.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.fontResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -42,7 +40,7 @@ val Typography = Typography(
         lineHeight = 20.sp,
         letterSpacing = 0.sp
     ),
-    bodyMedium = TextStyle(
+    bodySmall = TextStyle(
         fontFamily = FontFamily(Font(R.font.poppins)),
         fontWeight = FontWeight.Medium,
         fontSize = 18.sp,
@@ -50,5 +48,14 @@ val Typography = Typography(
         letterSpacing = 0.5.sp,
         color = Color.White
     ),
+
+    bodyMedium = TextStyle(
+        fontFamily = FontFamily(Font(R.font.poppins_medium)),
+        fontWeight = FontWeight.Normal,
+        fontSize = 20.sp,
+        letterSpacing = 0.5.sp,
+        color = Color.White
+    ),
+
 
 )
