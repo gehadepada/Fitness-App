@@ -8,9 +8,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fitnessapp.ui.screens.signup_screen.components.CustomOutlinedTextField
+import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 @Composable
 fun SignUpScreen(onSignUp: (String, String, String) -> Unit) {
@@ -121,5 +123,15 @@ fun SignUpScreen(onSignUp: (String, String, String) -> Unit) {
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun Prev() {
+    FitnessAppTheme {
+        SignUpScreen(
+            onSignUp = { _, _, _ -> }
+        )
     }
 }
