@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.fitnessapp.ui.components.TopBar
 import com.example.fitnessapp.ui.navigation.MyAppNavigation
+import com.example.fitnessapp.ui.screens.food_screen.FoodScreen
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,13 +20,15 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FitnessAppTheme {
-                Scaffold(
-                    topBar = { TopBar(title = "Hello") }
-                ) {
-
-                    MyAppNavigation(Modifier.padding(it))
-                }
+//                Scaffold(
+//                    topBar = { TopBar(title = "Hello") }
+//                ) {
+//
+//                    MyAppNavigation(Modifier.padding(it))
+//                }
+            FoodScreen()
             }
+
         }
     }
 }
