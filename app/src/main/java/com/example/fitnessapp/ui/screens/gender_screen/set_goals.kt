@@ -1,7 +1,5 @@
 package com.example.fitnessapp.ui.screens.gender_screen
 
-
-import androidx.compose.material3.Icon
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,7 +18,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -40,10 +37,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fitnessapp.R
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Gender() {
+fun Main() {
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
             modifier = Modifier.fillMaxWidth(),
@@ -70,11 +66,11 @@ fun Gender() {
             )
         )
         val items = listOf(
-            R.drawable.male,
-            R.drawable.female,
-
+            R.drawable.loseweight,
+            R.drawable.weightscale,
+            R.drawable.machine
         )
-        val goals = listOf("Male", "Female")
+        val goals = listOf("Lose Weight", "Gain Weight", "Maintain Weight")
         val selectedIndex = remember { mutableStateOf(-1) }
 
         Column(Modifier
@@ -98,23 +94,24 @@ fun Gender() {
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(100.dp)
+                            .size(120.dp)
+                            .clip(RoundedCornerShape(16.dp))
                             .border(
                                 width = 2.dp,
-                                color = if (selectedIndex.value == index) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface ,
+                                color = if (selectedIndex.value == index) MaterialTheme.colorScheme.primary else Color.Gray ,
                                 shape = RoundedCornerShape(16.dp)
                             )
                             .clickable {
                                 selectedIndex.value = index
                             }
-                            .padding(bottom = 5.dp)
-                            .background(color = MaterialTheme.colorScheme.onSurface)
+
+                            .background(color = MaterialTheme.colorScheme.surface)
                     ) {
                         Image(
                             painter = painterResource(id = image),
                             contentDescription = "Goal Image",
                             modifier = Modifier
-                                .padding(10.dp)
+                                .padding(15.dp)
                                 .fillMaxSize(),
                             contentScale = ContentScale.Crop
                         )
@@ -127,12 +124,6 @@ fun Gender() {
                 }
             }
         }
-    }
-    Button(onClick = {},
-        modifier = Modifier
-        .fillMaxWidth()
-        .height(56.dp)) {
-        Text(text = "Continue", fontSize = 18.sp)
     }
 
 }
