@@ -19,6 +19,11 @@ import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,10 +34,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.fitnessapp.R
+import com.example.fitnessapp.ui.screens.food_screen.models.FoodModel
+import com.example.fitnessapp.ui.screens.food_screen.preview.food1
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 @Composable
-fun FoodItem(modifier: Modifier = Modifier) {
+fun FoodItem(food: FoodModel,modifier: Modifier = Modifier) {
+
+    var bookMark by remember {
+        mutableIntStateOf(R.drawable.bookmark)
+    }
+
     Box(
         modifier = modifier
             .padding(12.dp),
@@ -43,7 +55,6 @@ fun FoodItem(modifier: Modifier = Modifier) {
                 .padding(start = 23.dp)
                 .clickable {
                     println("Clicking Card...")
-
                 }
                 .border(2.dp, colorScheme.primary, shapes.large)
                 .clip(shapes.large)
@@ -64,7 +75,7 @@ fun FoodItem(modifier: Modifier = Modifier) {
                         .fillMaxHeight()
                 ) {
                     Text(
-                        text = "Recipe name ",
+                        text = food.recipeName,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.bodyMedium,
@@ -72,7 +83,7 @@ fun FoodItem(modifier: Modifier = Modifier) {
                     )
 
                     Text(
-                        text = "description description description description description description description ",
+                        text = food.description,
                         maxLines = 4,
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.labelSmall,
@@ -83,11 +94,19 @@ fun FoodItem(modifier: Modifier = Modifier) {
                 Image(
                     modifier = Modifier
                         .clickable {
-
+                            bookMark = if (!food.isBookMark) {
+                                food.isBookMark = true
+                                R.drawable.bookmark_fill
+                            }
+                            else {
+                                food.isBookMark = false
+                                R.drawable.bookmark
+                            }
+                            println("bookmark = ${food.isBookMark}")
                         }
                         .padding(end = 2.dp)
                         .size(30.dp),
-                    painter = painterResource(id = R.drawable.bookmark),
+                    painter = painterResource(id = bookMark),
                     colorFilter = ColorFilter.tint(colorScheme.primary),
                     contentDescription = "Food Image",
                 )
@@ -99,9 +118,8 @@ fun FoodItem(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .size(110.dp)
                 .shadow(3.dp, shape = CircleShape, spotColor = colorScheme.onSurface)
-                .clip(CircleShape)
-            ,
-            painter = painterResource(id = R.drawable.food_ta3mya),
+                .clip(CircleShape),
+            painter = painterResource(id = food.recipeImage),
             contentDescription = "Food Image",
         )
     }
@@ -112,6 +130,6 @@ fun FoodItem(modifier: Modifier = Modifier) {
 @Composable
 private fun Prev() {
     FitnessAppTheme {
-        FoodItem()
+        FoodItem(food1)
     }
 }

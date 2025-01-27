@@ -1,7 +1,6 @@
 package com.example.fitnessapp.ui.screens.level_screen.components
 
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -19,6 +18,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -30,19 +31,23 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.fitnessapp.ui.screens.level_screen.models.LevelList
 import com.example.fitnessapp.R
-
+import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 
 @Composable
-fun Content(levelList: List<LevelList>, it : PaddingValues) {
+fun Content(onPersonLevel: (String) -> Unit, levelList: MutableList<LevelList>, it: PaddingValues = PaddingValues(10.dp)) {
 
-    var personLevel = remember { -1 }
+    var personLevel = ""
+    val isLevelSelected = remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -64,50 +69,72 @@ fun Content(levelList: List<LevelList>, it : PaddingValues) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            var oldSelected : MutableState<Boolean> ?= null
+            var oldSelected: MutableState<Boolean>? = null
 
             items(levelList.size) { i ->
                 val isSelected = remember { mutableStateOf(levelList[i].isSelected) }
 
-                val border = if (isSelected.value)
+                // changing the border color if it's false be
+                val border = if (isSelected.value) {
                     BorderStroke(3.dp, colorScheme.primary)
-                 else BorderStroke(3.dp, colorScheme.onBackground)
+                } else BorderStroke(3.dp, colorScheme.onBackground)
 
                 RowElements(
                     levelList[i],
                     modifier = Modifier.clickable {
-                        if (!isSelected.value) {
-                            if (oldSelected?.value != null)
-                                oldSelected?.value = false
-                            oldSelected = isSelected
-                            isSelected.value = true
+                        if (oldSelected?.value != null)
+                            oldSelected?.value = false
+                        oldSelected = isSelected
+                        isSelected.value = true
 
-                            personLevel =  i
-                        }
+                        personLevel = levelList[i].levelName
                     },
                     border = border
                 )
             }
-
         }
 
         Spacer(modifier = Modifier.fillMaxHeight(0.5f))
 
-        CardElement(
-            border = BorderStroke(2.dp, colorScheme.primary),
-            levelList = (R.string.continue_),
-            modifier = Modifier.clickable {
 
-                Log.i("NameLevel","$personLevel")
+        Column {
 
+            Button(
+                modifier = Modifier
+                    .width(227.dp)
+                    .height(61.dp),
+                border = BorderStroke(2.dp, colorScheme.primary),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorScheme.surface
+                ),
+                onClick = {
+                    if (personLevel.isEmpty()) {
+                        isLevelSelected.value = true
+                    } else {
+                        onPersonLevel(personLevel)
+                    }
+                }
+            ) {
+                Text(
+                    text = stringResource(id = R.string.continue_),
+                    style = MaterialTheme.typography.bodySmall
+                )
             }
-        )
+
+            if (isLevelSelected.value)
+                IfNoLevelSelected()
+        }
+
 
     }
 }
 
 @Composable
-fun RowElements(levelList: LevelList, modifier: Modifier = Modifier, border:BorderStroke = BorderStroke(3.dp, colorScheme.onBackground)) {
+fun RowElements(
+    levelList: LevelList,
+    modifier: Modifier = Modifier,
+    border: BorderStroke = BorderStroke(3.dp, colorScheme.onBackground)
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
 
@@ -126,13 +153,11 @@ fun RowElements(levelList: LevelList, modifier: Modifier = Modifier, border:Bord
 
         CardElement(levelList.levelName, modifier, border)
     }
-
-
 }
 
 @Composable
 fun CardElement(
-    levelList: Int,
+    levelList: String,
     modifier: Modifier = Modifier,
     border: BorderStroke
 ) {
@@ -153,9 +178,43 @@ fun CardElement(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = stringResource(id = levelList),
+                text = levelList,
                 style = MaterialTheme.typography.bodySmall
             )
         }
+    }
+}
+
+@Composable
+fun IfNoLevelSelected(modifier: Modifier = Modifier) {
+    Text(
+        text = "Please select your level",
+        color = Color.Red,
+        fontSize = 12.sp,
+        modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+    )
+}
+
+@Preview
+@Composable
+private fun Prev() {
+    FitnessAppTheme {
+        Content(
+            onPersonLevel ={ _ -> },
+            levelList = mutableListOf(
+                LevelList(
+                    levelName = "Beginner",
+                    levelImage = R.drawable.ex_stretching,
+                ),
+                LevelList(
+                    levelName = "Intermediate",
+                    levelImage = R.drawable.ex_running,
+                ),
+                LevelList(
+                    levelName = "Advanced",
+                    levelImage = R.drawable.ex_exercise,
+                )
+            )
+        )
     }
 }
