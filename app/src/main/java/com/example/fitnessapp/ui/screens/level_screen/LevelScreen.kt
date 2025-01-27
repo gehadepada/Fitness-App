@@ -1,5 +1,6 @@
 package com.example.fitnessapp.ui.screens.level_screen
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,28 +14,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.fitnessapp.ui.screens.level_screen.components.Content
 import com.example.fitnessapp.ui.screens.level_screen.models.LevelList
-import com.example.fitnessapp.ui.screens.level_screen.components.TopBar
 import com.example.fitnessapp.R
+import com.example.fitnessapp.ui.components.TopBarWithLogo
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 
 
+@SuppressLint("MutableCollectionMutableState")
 @Composable
-fun PhysicalActivityLevel() {
+fun PhysicalActivityLevel(onPersonLevel : (String) -> Unit) {
 
     val levelList by remember {
         mutableStateOf(
-            listOf(
+            mutableListOf(
                 LevelList(
-                    levelName = R.string.beginner,
+                    levelName = "Beginner",
                     levelImage = R.drawable.ex_stretching,
                 ),
                 LevelList(
-                    levelName = R.string.intermediate,
+                    levelName = "Intermediate",
                     levelImage = R.drawable.ex_running,
                 ),
                 LevelList(
-                    levelName = R.string.advanced,
+                    levelName = "Advanced",
                     levelImage = R.drawable.ex_exercise,
                 )
             )
@@ -47,11 +49,11 @@ fun PhysicalActivityLevel() {
             .background(colorScheme.background)
             .fillMaxSize(),
         topBar = {
-            TopBar()
+            TopBarWithLogo()
         },
 
         content = {
-            Content(levelList,it)
+            Content(onPersonLevel,levelList,it)
         }
 
     )
@@ -67,6 +69,6 @@ fun PhysicalActivityLevel() {
 @Composable
 fun Prev() {
     FitnessAppTheme {
-        PhysicalActivityLevel()
+        PhysicalActivityLevel(onPersonLevel ={ _ -> })
     }
 }

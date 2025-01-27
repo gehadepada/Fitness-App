@@ -1,4 +1,4 @@
-package com.example.fitnessapp.ui.screens.level_screen.components
+package com.example.fitnessapp.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
@@ -14,12 +14,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.fitnessapp.R
 
+
+@Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar() {
+fun TopBarWithLogo() {
     TopAppBar(
         title = {
             Row(
@@ -28,7 +31,7 @@ fun TopBar() {
 
                 Image(
                     painter = painterResource(id = R.drawable.app_logo),
-                    contentDescription = null,
+                    contentDescription = "App logo",
                     modifier = Modifier.size(35.dp)
                 )
                 Spacer(modifier = Modifier.size(10.dp))
