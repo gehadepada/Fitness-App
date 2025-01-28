@@ -20,15 +20,12 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FitnessAppTheme {
-//                Scaffold(
+                Scaffold(
 //                    topBar = { TopBar(title = "Hello") }
-//                ) {
-//
-//                    MyAppNavigation(Modifier.padding(it))
-//                }
-            FoodScreen()
+                ) {
+                    MyAppNavigation(Modifier.padding(it))
+                }
             }
-
         }
     }
 }

@@ -21,6 +21,7 @@ private val DarkColorScheme = darkColorScheme(
     // for bar color
     surface = DarkGreySurface,
     onSurface = Color.White,
+    onSecondary = LightGreySurface,
 )
 
 private val LightColorScheme = lightColorScheme(

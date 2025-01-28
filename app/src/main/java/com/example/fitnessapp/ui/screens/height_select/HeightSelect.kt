@@ -2,6 +2,7 @@ package com.example.fitnessapp.ui.screens.height_select
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,6 +11,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -27,9 +29,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fitnessapp.R
+import com.example.fitnessapp.ui.components.TopBarWithLogo
+import com.example.fitnessapp.ui.theme.FitnessAppTheme
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
@@ -139,15 +144,19 @@ fun Modifier.fadingEdge(brush: Brush) = this
 private fun pixelsToDp(pixels: Int) = with(LocalDensity.current) { pixels.toDp() }
 
 @Composable
-fun NumberPickerDemo() {
+fun NumberPickerDemo(onHeight:() -> Unit = {}) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(bottom = 16.dp)
     ) {
 
+        // top bar
+        TopBarWithLogo()
+        
         val values = remember { (140..210).map { it.toString() } }
         val valuesPickerState = rememberPickerState()
 
@@ -155,9 +164,8 @@ fun NumberPickerDemo() {
         Text(
             text = "What is your Height?",
             textAlign = TextAlign.Center,
-            fontWeight = FontWeight(700),
-            fontSize = 35.sp,
-            color = Color(0xFFFFFFFF),
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onBackground,
         )
 
         // Selected Height Text
@@ -190,6 +198,7 @@ fun NumberPickerDemo() {
 
         Button(
             onClick = {
+                onHeight()
                 println("Selected Height: ${valuesPickerState.selectedItem} Cm")
             },
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2B2D30)),
@@ -200,10 +209,18 @@ fun NumberPickerDemo() {
                 text = "Continue",
                 color = Color.White,
                 fontSize = 16.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
         }
 
 
+    }
+}
+
+@Preview
+@Composable
+private fun Prev() {
+    FitnessAppTheme {
+        NumberPickerDemo()
     }
 }

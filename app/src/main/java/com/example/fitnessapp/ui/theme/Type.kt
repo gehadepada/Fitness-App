@@ -26,19 +26,25 @@ val Typography = Typography(
         lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),
-    labelSmall = TextStyle(
-        fontFamily = FontFamily(Font(R.font.poppins_light)),
-        fontWeight = FontWeight.Normal,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
-    ),
     titleMedium = TextStyle(
         fontFamily = FontFamily(Font(R.font.montserrat)),
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp,
         lineHeight = 20.sp,
         letterSpacing = 0.sp
+    ),
+    titleSmall = TextStyle(
+        fontFamily = FontFamily(Font(R.font.poppins_light)),
+        fontWeight = FontWeight.Medium,
+        fontSize = 15.sp
+    ),
+    labelSmall = TextStyle(
+        fontFamily = FontFamily(Font(R.font.poppins)),
+        fontWeight = FontWeight.Medium,
+        fontSize = 14.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.5.sp,
+        color = LightGreySurface
     ),
     bodySmall = TextStyle(
         fontFamily = FontFamily(Font(R.font.poppins)),
@@ -48,7 +54,6 @@ val Typography = Typography(
         letterSpacing = 0.5.sp,
         color = Color.White
     ),
-
     bodyMedium = TextStyle(
         fontFamily = FontFamily(Font(R.font.poppins_medium)),
         fontWeight = FontWeight.Normal,
@@ -56,6 +61,4 @@ val Typography = Typography(
         letterSpacing = 0.5.sp,
         color = Color.White
     ),
-
-
 )
