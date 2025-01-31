@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.dp
 import com.example.fitnessapp.R
 
 
-@Preview
 @OptIn(ExperimentalMaterial3Api::class)
+@Preview
 @Composable
 fun TopBarWithLogo() {
     TopAppBar(
@@ -37,7 +37,7 @@ fun TopBarWithLogo() {
                 Spacer(modifier = Modifier.size(10.dp))
                 Text(
                     text = stringResource(id = R.string.app_name),
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.headlineSmall
                 )
             }
         },
@@ -47,3 +47,4 @@ fun TopBarWithLogo() {
         )
     )
 }
+

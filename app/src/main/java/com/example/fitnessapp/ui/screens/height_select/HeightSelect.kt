@@ -2,14 +2,15 @@ package com.example.fitnessapp.ui.screens.height_select
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -27,9 +28,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fitnessapp.R
+import com.example.fitnessapp.ui.components.DefaultButton
+import com.example.fitnessapp.ui.components.TopBarWithLogo
+import com.example.fitnessapp.ui.theme.FitnessAppTheme
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
@@ -56,6 +61,7 @@ fun Picker(
     val listScrollMiddle = listScrollCount / 2
     val listStartIndex =
         listScrollMiddle - listScrollMiddle % items.size - visibleItemsMiddle + startIndex
+
     fun getItem(index: Int) = items[index % items.size]
     val listState = rememberLazyListState(initialFirstVisibleItemIndex = listStartIndex)
     val flingBehavior = rememberSnapFlingBehavior(lazyListState = listState)
@@ -102,6 +108,7 @@ fun Picker(
                         } else {
                             textStyle
                         },
+                        color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier
                             .onSizeChanged { size -> itemHeightPixels.value = size.height }
                             .then(textModifier)
@@ -139,14 +146,18 @@ fun Modifier.fadingEdge(brush: Brush) = this
 private fun pixelsToDp(pixels: Int) = with(LocalDensity.current) { pixels.toDp() }
 
 @Composable
-fun NumberPickerDemo() {
+fun NumberPickerDemo(onHeight: () -> Unit = {}) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(bottom = 16.dp)
     ) {
+
+        // top bar
+        TopBarWithLogo()
 
         val values = remember { (140..210).map { it.toString() } }
         val valuesPickerState = rememberPickerState()
@@ -155,23 +166,32 @@ fun NumberPickerDemo() {
         Text(
             text = "What is your Height?",
             textAlign = TextAlign.Center,
-            fontWeight = FontWeight(700),
-            fontSize = 35.sp,
-            color = Color(0xFFFFFFFF),
+            style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.onBackground,
         )
 
-        // Selected Height Text
-        Text(
-            text = "${valuesPickerState.selectedItem} Cm",
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight(700),
-            fontSize = 35.sp,
-            color = Color(0xFFFFFFFF),
+        Row(
             modifier = Modifier
                 .padding(vertical = 16.dp)
-                .fillMaxWidth(0.5f)
-                .padding(vertical = 10.dp, horizontal = 16.dp)
-        )
+                .padding(vertical = 10.dp, horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            // Selected Height Text
+            Text(
+                text = valuesPickerState.selectedItem,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.displayLarge,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.padding(end = 10.dp)
+            )
+            // Selected Height Text
+            Text(
+                text = "Cm",
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onBackground,
+            )
+        }
 
         // Number Picker
         Picker(
@@ -188,22 +208,37 @@ fun NumberPickerDemo() {
 
         // Continue Button
 
-        Button(
-            onClick = {
-                println("Selected Height: ${valuesPickerState.selectedItem} Cm")
-            },
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2B2D30)),
-            modifier = Modifier
-                .fillMaxWidth(0.5f),
-        ) {
-            Text(
-                text = "Continue",
-                color = Color.White,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold
+//        Button(
+//            onClick = {
+//                onHeight()
+//                println("Selected Height: ${valuesPickerState.selectedItem} Cm")
+//            },
+//            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2B2D30)),
+//            modifier = Modifier
+//                .fillMaxWidth(0.5f),
+//        ) {
+//            Text(
+//                text = "Continue",
+//                style = MaterialTheme.typography.displaySmall,
+//                color = MaterialTheme.colorScheme.onBackground,
+//                fontWeight = FontWeight.Bold,
+//            )
+//        }
+
+        DefaultButton(onClick = {
+            onHeight()
+            println("Selected Height: ${valuesPickerState.selectedItem} Cm")
+        },
+        color = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.surface)
             )
-        }
 
+    }
+}
 
+@Preview
+@Composable
+private fun Prev() {
+    FitnessAppTheme {
+        NumberPickerDemo()
     }
 }

@@ -6,7 +6,6 @@ import com.example.fitnessapp.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -22,96 +21,79 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.input.pointer.pointerInteropFilter
-import androidx.compose.ui.unit.sp
-
-
-
-
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.fitnessapp.ui.components.DefaultButton
+import com.example.fitnessapp.ui.components.TopBarWithLogo
+import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun GenderScreen()
-{
-    var borderColor by remember{mutableStateOf(Color.Gray)}
+fun GenderScreen(onGender: (String) -> Unit) {
 
-    Column (
+    var borderColor by remember { mutableStateOf(Color.Gray) }
+
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .padding( bottom = 100.dp),
+            .padding(bottom = 100.dp)
+            .background(MaterialTheme.colorScheme.background),
+
         horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
 
-        )
-    {
-        TopAppBar(
-            title = {
-                Row {
-                    ->
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.heart_pulse_solid),
-                        contentDescription = "app icon",
-                        tint =MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(35.dp)
-                            .padding(end = 10.dp, bottom = 5.dp)
-                    )
-                    Text(
-                        text = "Fitness App",
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                    )
-                }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background,
-                titleContentColor =MaterialTheme.colorScheme.onBackground)
-        )
+        TopBarWithLogo()
 
-        Text(text = "What's your gender?",
-            color=MaterialTheme.colorScheme.onBackground,
+        Text(
+            text = "What's your gender?",
+            color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.headlineLarge,
-            modifier = Modifier.padding(bottom = 16.dp,top = 20.dp)
+            style = MaterialTheme.typography.headlineMedium,
+            modifier = Modifier
+                .padding(bottom = 16.dp, top = 20.dp)
                 .weight(1f)
         )
 
-        Column (modifier = Modifier.weight(4f)) {
+        Column(modifier = Modifier.weight(4f)) {
             Icon(
                 imageVector = ImageVector.vectorResource(id = R.drawable.mars_solid),
                 contentDescription = "Male",
                 tint = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.size(200.dp)
+                modifier = Modifier
+                    .size(200.dp)
                     .clip(RoundedCornerShape(20.dp))
                     .clickable {}
-                    .pointerInteropFilter{motionEvent->
-                        when(motionEvent.action){
-                            android.view.MotionEvent.ACTION_HOVER_ENTER->{
-                                borderColor=Color.Green
+                    .pointerInteropFilter { motionEvent ->
+                        when (motionEvent.action) {
+                            android.view.MotionEvent.ACTION_HOVER_ENTER -> {
+                                borderColor = Color.Green
                                 true
                             }
-                            android.view.MotionEvent.ACTION_HOVER_EXIT->{
-                                borderColor= Color.Gray
+
+                            android.view.MotionEvent.ACTION_HOVER_EXIT -> {
+                                borderColor = Color.Gray
                                 true
                             }
+
                             else -> false
                         }
                     }
 
 
-                    .border(BorderStroke(2.dp,borderColor),RoundedCornerShape(20.dp))
+                    .border(BorderStroke(2.dp, borderColor), RoundedCornerShape(20.dp))
                     .background(MaterialTheme.colorScheme.background)
-                    .padding( 20.dp)
+                    .padding(20.dp)
 
 
             )
@@ -120,42 +102,60 @@ fun GenderScreen()
                 imageVector = ImageVector.vectorResource(id = R.drawable.venus_solid),
                 contentDescription = "Female",
                 tint = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.size(200.dp)
+                modifier = Modifier
+                    .size(200.dp)
                     .clip(RoundedCornerShape(20.dp))
                     .clickable {}
-                    .pointerInteropFilter{motionEvent->
-                        when(motionEvent.action){
-                            android.view.MotionEvent.ACTION_HOVER_ENTER->{
-                                borderColor=Color.Green
+                    .pointerInteropFilter { motionEvent ->
+                        when (motionEvent.action) {
+                            android.view.MotionEvent.ACTION_HOVER_ENTER -> {
+                                borderColor = Color.Green
                                 true
                             }
-                            android.view.MotionEvent.ACTION_HOVER_EXIT->{
-                                borderColor=Color.Gray
+
+                            android.view.MotionEvent.ACTION_HOVER_EXIT -> {
+                                borderColor = Color.Gray
                                 true
                             }
+
                             else -> false
                         }
                     }
-                    .border(BorderStroke(2.dp,borderColor),RoundedCornerShape(20.dp))
+                    .border(BorderStroke(2.dp, borderColor), RoundedCornerShape(20.dp))
                     .background(MaterialTheme.colorScheme.surface)
-                    .padding( 20.dp)
+                    .padding(20.dp)
             )
         }
         Spacer(modifier = Modifier.height(32.dp))
 
-        OutlinedButton( modifier = Modifier
-            .clickable{}
-            .border(BorderStroke(2.dp,MaterialTheme.colorScheme.primary),RoundedCornerShape(20.dp)) ,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.background,
-                contentColor=MaterialTheme.colorScheme.onSurface
-            ),
-            onClick = {}
-        )
+//        OutlinedButton(modifier = Modifier
+//            .clickable {}
+//            .border(
+//                BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
+//                RoundedCornerShape(20.dp)
+//            ),
+//            colors = ButtonDefaults.buttonColors(
+//                containerColor = MaterialTheme.colorScheme.background,
+//                contentColor = MaterialTheme.colorScheme.onSurface
+//            ),
+//            onClick = {
+//                onGender("")
+//            }
+//        ) {
+//            Text(
+//                text = "Continue", color = MaterialTheme.colorScheme.onBackground,
+//                style = MaterialTheme.typography.displaySmall
+//            )
+//        }
 
-        {
-            Text(text = "Continue",color= MaterialTheme.colorScheme.onBackground,
-                style = MaterialTheme.typography.bodyLarge )
-        }
+        DefaultButton(onClick = { onGender("") })
+    }
+}
+
+@Preview
+@Composable
+private fun Prev() {
+    FitnessAppTheme {
+        GenderScreen({})
     }
 }

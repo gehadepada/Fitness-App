@@ -47,7 +47,9 @@ fun TopBar(title: String, modifier: Modifier = Modifier) {
         navigationIcon = {
             Image(
                 modifier = Modifier.size(27.dp)
-                    .clickable {},
+                    .clickable {
+
+                    },
                 painter = painterResource(id = R.drawable.back_arrow),
                 contentDescription = "back",
                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),

@@ -11,13 +11,37 @@ import com.example.fitnessapp.R
 
 // Set of Material typography styles to start with
 val Typography = Typography(
-    bodyLarge = TextStyle(
-        fontFamily = FontFamily(Font(R.font.montserrat)),
+    displayLarge = TextStyle(
+        fontFamily = FontFamily(Font(R.font.montserrat_semi_bold)),
+        fontSize = 64.sp,
+        lineHeight = 20.sp,
+    ),
+    displayMedium = TextStyle(
+        fontFamily = FontFamily(Font(R.font.montserrat_bold)),
+        fontSize = 36.sp,
+        lineHeight = 20.sp,
+    ),
+    displaySmall = TextStyle(
+        fontFamily = FontFamily(Font(R.font.poppins_medium)),
+        fontWeight = FontWeight.Medium,
+        fontSize = 28.sp
+    ),
+    headlineLarge = TextStyle(
+        fontFamily = FontFamily(Font(R.font.montserrat_bold)),
+        fontWeight = FontWeight.Bold,
+        fontSize = 36.sp,
+        lineHeight = 20.sp
+    ),
+    headlineMedium = TextStyle(
+        fontFamily = FontFamily(Font(R.font.montserrat_bold)),
         fontWeight = FontWeight.Bold,
         fontSize = 24.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp,
-        color = Color.White
+        lineHeight = 20.sp
+    ),
+    headlineSmall = TextStyle(
+        fontFamily = FontFamily(Font(R.font.montserrat_bold)),
+        fontWeight = FontWeight.Bold,
+        fontSize = 16.sp
     ),
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,
@@ -26,36 +50,50 @@ val Typography = Typography(
         lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),
-    labelSmall = TextStyle(
-        fontFamily = FontFamily(Font(R.font.poppins_light)),
-        fontWeight = FontWeight.Normal,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
-    ),
     titleMedium = TextStyle(
-        fontFamily = FontFamily(Font(R.font.montserrat)),
+        fontFamily = FontFamily(Font(R.font.montserrat_black)),
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp,
         lineHeight = 20.sp,
         letterSpacing = 0.sp
     ),
-    bodySmall = TextStyle(
-        fontFamily = FontFamily(Font(R.font.poppins)),
+    titleSmall = TextStyle(
+        fontFamily = FontFamily(Font(R.font.poppins_light)),
         fontWeight = FontWeight.Medium,
-        fontSize = 18.sp,
-        lineHeight = 20.sp,
+        fontSize = 15.sp
+    ),
+    bodyLarge = TextStyle(
+        fontFamily = FontFamily(Font(R.font.montserrat_black)),
+        fontWeight = FontWeight.Bold,
+        fontSize = 24.sp,
+        lineHeight = 24.sp,
         letterSpacing = 0.5.sp,
         color = Color.White
     ),
-
     bodyMedium = TextStyle(
         fontFamily = FontFamily(Font(R.font.poppins_medium)),
         fontWeight = FontWeight.Normal,
         fontSize = 20.sp,
         letterSpacing = 0.5.sp,
-        color = Color.White
     ),
-
-
+    bodySmall = TextStyle(
+        fontFamily = FontFamily(Font(R.font.poppins_bold)),
+        fontWeight = FontWeight.Bold,
+        fontSize = 18.sp,
+    ),
+    labelLarge = TextStyle(
+        fontFamily = FontFamily(Font(R.font.poppins_medium)),
+        fontWeight = FontWeight.Medium,
+        fontSize = 18.sp
+    ),
+    labelMedium = TextStyle(
+        fontFamily = FontFamily(Font(R.font.poppins_medium)),
+        fontWeight = FontWeight.Medium,
+        fontSize = 16.sp
+    ),
+    labelSmall = TextStyle(
+        fontFamily = FontFamily(Font(R.font.poppins_regular)),
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
+    ),
 )

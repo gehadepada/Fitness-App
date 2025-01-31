@@ -21,9 +21,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             FitnessAppTheme {
                 Scaffold(
-                    topBar = { TopBar(title = "Hello") }
+//                    topBar = { TopBar(title = "Hello") }
                 ) {
-
                     MyAppNavigation(Modifier.padding(it))
                 }
             }

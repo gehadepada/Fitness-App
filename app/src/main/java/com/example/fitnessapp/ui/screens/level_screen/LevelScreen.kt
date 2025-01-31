@@ -14,10 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.fitnessapp.ui.screens.level_screen.components.Content
 import com.example.fitnessapp.ui.screens.level_screen.models.LevelList
-import com.example.fitnessapp.R
 import com.example.fitnessapp.ui.components.TopBarWithLogo
+import com.example.fitnessapp.R
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
-
 
 
 @SuppressLint("MutableCollectionMutableState")
