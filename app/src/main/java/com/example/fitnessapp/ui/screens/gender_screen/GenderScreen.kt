@@ -27,12 +27,12 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.fitnessapp.ui.components.DefaultButton
 import com.example.fitnessapp.ui.components.TopBarWithLogo
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
@@ -59,7 +59,7 @@ fun GenderScreen(onGender: (String) -> Unit) {
             text = "What's your gender?",
             color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.headlineLarge,
+            style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier
                 .padding(bottom = 16.dp, top = 20.dp)
                 .weight(1f)
@@ -128,27 +128,27 @@ fun GenderScreen(onGender: (String) -> Unit) {
         }
         Spacer(modifier = Modifier.height(32.dp))
 
-        OutlinedButton(modifier = Modifier
-            .clickable {}
-            .border(
-                BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
-                RoundedCornerShape(20.dp)
-            ),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.background,
-                contentColor = MaterialTheme.colorScheme.onSurface
-            ),
-            onClick = {
-                onGender("")
-            }
-        )
+//        OutlinedButton(modifier = Modifier
+//            .clickable {}
+//            .border(
+//                BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
+//                RoundedCornerShape(20.dp)
+//            ),
+//            colors = ButtonDefaults.buttonColors(
+//                containerColor = MaterialTheme.colorScheme.background,
+//                contentColor = MaterialTheme.colorScheme.onSurface
+//            ),
+//            onClick = {
+//                onGender("")
+//            }
+//        ) {
+//            Text(
+//                text = "Continue", color = MaterialTheme.colorScheme.onBackground,
+//                style = MaterialTheme.typography.displaySmall
+//            )
+//        }
 
-        {
-            Text(
-                text = "Continue", color = MaterialTheme.colorScheme.onBackground,
-                style = MaterialTheme.typography.bodyLarge
-            )
-        }
+        DefaultButton(onClick = { onGender("") })
     }
 }
 

@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fitnessapp.ui.screens.level_screen.models.LevelList
 import com.example.fitnessapp.R
+import com.example.fitnessapp.ui.components.DefaultButton
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 
@@ -56,7 +57,8 @@ fun Content(onPersonLevel: (String) -> Unit, levelList: MutableList<LevelList>, 
     ) {
         Text(
             text = stringResource(id = R.string.physical_activity_level),
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.padding(bottom = 10.dp)
         )
 
@@ -99,27 +101,13 @@ fun Content(onPersonLevel: (String) -> Unit, levelList: MutableList<LevelList>, 
 
         Column {
 
-            Button(
-                modifier = Modifier
-                    .width(227.dp)
-                    .height(61.dp),
-                border = BorderStroke(2.dp, colorScheme.primary),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = colorScheme.surface
-                ),
-                onClick = {
-                    if (personLevel.isEmpty()) {
-                        isLevelSelected.value = true
-                    } else {
-                        onPersonLevel(personLevel)
-                    }
+            DefaultButton(onClick = {
+                if (personLevel.isEmpty()) {
+                    isLevelSelected.value = true
+                } else {
+                    onPersonLevel(personLevel)
                 }
-            ) {
-                Text(
-                    text = stringResource(id = R.string.continue_),
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
+            })
 
             if (isLevelSelected.value)
                 IfNoLevelSelected()
@@ -179,7 +167,7 @@ fun CardElement(
         ) {
             Text(
                 text = levelList,
-                style = MaterialTheme.typography.bodySmall
+                style = MaterialTheme.typography.labelLarge
             )
         }
     }
@@ -195,7 +183,7 @@ fun IfNoLevelSelected(modifier: Modifier = Modifier) {
     )
 }
 
-@Preview
+@Preview()
 @Composable
 private fun Prev() {
     FitnessAppTheme {

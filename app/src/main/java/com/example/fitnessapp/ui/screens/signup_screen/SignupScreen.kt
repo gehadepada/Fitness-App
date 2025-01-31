@@ -6,11 +6,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.fitnessapp.ui.components.DefaultButton
 import com.example.fitnessapp.ui.components.TopBarWithLogo
 import com.example.fitnessapp.ui.screens.signup_screen.components.CustomOutlinedTextField
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
@@ -47,7 +47,7 @@ fun SignUpScreen(
 
             Text(
                 text = "Sign Up",
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.headlineLarge,
                 color = MaterialTheme.colorScheme.onBackground
             )
 
@@ -93,29 +93,52 @@ fun SignUpScreen(
 
             Spacer(modifier = Modifier.height(25.dp))
 
-            Button(
-                onClick = {
-                    // Validation
-                    usernameError = if (username.isBlank()) "Username cannot be empty" else ""
-                    emailError =
-                        if (!email.contains("@") || !email.contains(".")) "Invalid email format" else ""
-                    passwordError =
-                        if (password.length < 6) "Password must be at least 6 characters" else ""
+//            Button(
+//                onClick = {
+//                    // Validation
+//                    usernameError = if (username.isBlank()) "Username cannot be empty" else ""
+//                    emailError =
+//                        if (!email.contains("@") || !email.contains(".")) "Invalid email format" else ""
+//                    passwordError =
+//                        if (password.length < 6) "Password must be at least 6 characters" else ""
+//
+//                    // If no errors, proceed with signup
+//                    if (usernameError.isEmpty() && emailError.isEmpty() && passwordError.isEmpty()) {
+//                        onSignUp(username, email, password)
+//                    }
+//                },
+//                modifier = Modifier
+//                    .align(Alignment.CenterHorizontally)
+//                    .width(250.dp),
+//                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
+//            ) {
+//                Text(
+//                    text = "Get Started",
+//                    style = MaterialTheme.typography.displaySmall,
+//                    color = MaterialTheme.colorScheme.onSurface
+//                )
+//            }
 
-                    // If no errors, proceed with signup
-                    if (usernameError.isEmpty() && emailError.isEmpty() && passwordError.isEmpty()) {
-                        onSignUp(username, email, password)
-                    }
-                },
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .width(200.dp),
-                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
-            ) {
-                Text(
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ){
+                DefaultButton(
                     text = "Get Started",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+                    onClick = {
+                        // Validation
+                        usernameError = if (username.isBlank()) "Username cannot be empty" else ""
+                        emailError =
+                            if (!email.contains("@") || !email.contains(".")) "Invalid email format" else ""
+                        passwordError =
+                            if (password.length < 6) "Password must be at least 6 characters" else ""
+
+                        // If no errors, proceed with signup
+                        if (usernameError.isEmpty() && emailError.isEmpty() && passwordError.isEmpty()) {
+                            onSignUp(username, email, password)
+                        }
+                    }
                 )
             }
 
@@ -128,8 +151,8 @@ fun SignUpScreen(
             ) {
                 Text(
                     text = "Already have an account?",
-                    style = MaterialTheme.typography.titleSmall,
-                    color = Color.White,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
                 TextButton(onClick = {
                     // go to login page
@@ -137,7 +160,7 @@ fun SignUpScreen(
                 }) {
                     Text(
                         text = "Login",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.primary,
                     )
                 }

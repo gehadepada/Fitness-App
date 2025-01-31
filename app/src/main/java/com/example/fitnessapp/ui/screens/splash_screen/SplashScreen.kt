@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,12 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fitnessapp.R
+import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 @Composable
-fun SplashScreen(onNavigate: () -> Unit) {
+fun SplashScreen(onNavigate: () -> Unit = {}) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -37,15 +40,14 @@ fun SplashScreen(onNavigate: () -> Unit) {
             )
             Text(
                 text = "Fitness App",
-                fontSize = 30.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White
+                style = MaterialTheme.typography.displayMedium,
+                color = MaterialTheme.colorScheme.onBackground
             )
             Spacer(modifier = Modifier.size(10.dp))
             Text(
                 text = "Welcome to Fitness App",
-                fontSize = 12.sp,
-                color = Color.White
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
     }
@@ -53,5 +55,13 @@ fun SplashScreen(onNavigate: () -> Unit) {
     LaunchedEffect(Unit) {
         kotlinx.coroutines.delay(2000)
         onNavigate()
+    }
+}
+
+@Preview
+@Composable
+private fun Prev() {
+    FitnessAppTheme {
+        SplashScreen()
     }
 }

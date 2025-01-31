@@ -34,7 +34,7 @@ fun CustomOutlinedTextField(
     isError: Boolean = false,
     errorMessage: String? = null,
     shape: Shape = CircleShape,
-    textStyle: TextStyle = TextStyle(color = Color.White, fontSize = 16.sp),
+    textStyle: TextStyle = MaterialTheme.typography.labelLarge.copy(color = MaterialTheme.colorScheme.onBackground),
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(
         focusedContainerColor = DarkGreySurface,
         unfocusedContainerColor = DarkGreySurface,
@@ -44,7 +44,7 @@ fun CustomOutlinedTextField(
     singleLine: Boolean = true
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
-        Text(text = label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSecondary)
+        Text(text = label, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSecondary)
         Spacer(modifier = Modifier.height(4.dp))
         OutlinedTextField(
             value = value,
