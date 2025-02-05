@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.fitnessapp.ui.screens.food_screen.FoodScreen
-import com.example.fitnessapp.ui.screens.gender_screen.GenderScreen
+//import com.example.fitnessapp.ui.screens.gender_screen.GenderScreen
 import com.example.fitnessapp.ui.screens.level_screen.PhysicalActivityLevel
 import com.example.fitnessapp.ui.screens.signup_screen.SignUpScreen
 import com.example.fitnessapp.ui.screens.splash_screen.SplashScreen
