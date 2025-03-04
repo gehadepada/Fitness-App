@@ -10,7 +10,7 @@ import com.example.fitnessapp.ui.screens.food_screen.components.FoodBody
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 @Composable
-fun FoodScreen(modifier: Modifier = Modifier) {
+fun FoodScreen() {
     Scaffold(
         topBar = { TopBar(title = "Food") }
     ) {

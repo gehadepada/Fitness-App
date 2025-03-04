@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -33,7 +34,7 @@ fun CustomOutlinedTextField(
     isError: Boolean = false,
     errorMessage: String? = null,
     shape: Shape = CircleShape,
-    textStyle: TextStyle = TextStyle(color = Color.White, fontSize = 16.sp),
+    textStyle: TextStyle = MaterialTheme.typography.labelLarge.copy(color = MaterialTheme.colorScheme.onBackground),
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(
         focusedContainerColor = DarkGreySurface,
         unfocusedContainerColor = DarkGreySurface,
@@ -43,7 +44,7 @@ fun CustomOutlinedTextField(
     singleLine: Boolean = true
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
-        Text(text = label, fontSize = 14.sp, color = LightGreySurface)
+        Text(text = label, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSecondary)
         Spacer(modifier = Modifier.height(4.dp))
         OutlinedTextField(
             value = value,

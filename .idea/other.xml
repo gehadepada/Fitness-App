@@ -367,6 +367,7 @@
           <option name="screenY" value="1600" />
         </PersistentDeviceSelectionData>
         <PersistentDeviceSelectionData>
+<<<<<<< HEAD
           <option name="api" value="34" />
           <option name="brand" value="samsung" />
           <option name="codename" value="o1q" />
@@ -378,6 +379,8 @@
           <option name="screenY" value="2400" />
         </PersistentDeviceSelectionData>
         <PersistentDeviceSelectionData>
+=======
+>>>>>>> cc38a0b74d3d62590d421b3909a495ae4f9f6142
           <option name="api" value="31" />
           <option name="brand" value="google" />
           <option name="codename" value="oriole" />
