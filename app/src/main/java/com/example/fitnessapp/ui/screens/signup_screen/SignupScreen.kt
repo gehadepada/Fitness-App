@@ -93,31 +93,6 @@ fun SignUpScreen(
 
             Spacer(modifier = Modifier.height(25.dp))
 
-//            Button(
-//                onClick = {
-//                    // Validation
-//                    usernameError = if (username.isBlank()) "Username cannot be empty" else ""
-//                    emailError =
-//                        if (!email.contains("@") || !email.contains(".")) "Invalid email format" else ""
-//                    passwordError =
-//                        if (password.length < 6) "Password must be at least 6 characters" else ""
-//
-//                    // If no errors, proceed with signup
-//                    if (usernameError.isEmpty() && emailError.isEmpty() && passwordError.isEmpty()) {
-//                        onSignUp(username, email, password)
-//                    }
-//                },
-//                modifier = Modifier
-//                    .align(Alignment.CenterHorizontally)
-//                    .width(250.dp),
-//                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
-//            ) {
-//                Text(
-//                    text = "Get Started",
-//                    style = MaterialTheme.typography.displaySmall,
-//                    color = MaterialTheme.colorScheme.onSurface
-//                )
-//            }
 
             Row(
                 modifier = Modifier.fillMaxWidth(),

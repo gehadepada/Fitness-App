@@ -15,11 +15,9 @@ fun FoodBody(modifier: Modifier = Modifier) {
             .fillMaxSize()
 
     ) {
-
         items (foods.size) {
             FoodItem(foods[it])
         }
-
     }
 }
 

@@ -7,12 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.fitnessapp.ui.screens.food_screen.FoodScreen
-<<<<<<< HEAD
-//import com.example.fitnessapp.ui.screens.gender_screen.GenderScreen
-=======
 import com.example.fitnessapp.ui.screens.gender_screen.GenderScreen
 import com.example.fitnessapp.ui.screens.height_select.NumberPickerDemo
->>>>>>> cc38a0b74d3d62590d421b3909a495ae4f9f6142
 import com.example.fitnessapp.ui.screens.level_screen.PhysicalActivityLevel
 import com.example.fitnessapp.ui.screens.signup_screen.SignUpScreen
 import com.example.fitnessapp.ui.screens.splash_screen.SplashScreen
@@ -23,36 +19,36 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
 
     NavHost(
         navController = navController,
-        startDestination = "splash"
+        startDestination = Screens.SplashScreen.route
     ) {
-        composable("splash") {
+        composable(Screens.SplashScreen.route) {
             SplashScreen {
-                navController.navigate("signup") {
-                    popUpTo("splash") { inclusive = true }
+                navController.navigate(Screens.SignUpScreen.route) {
+                    popUpTo(Screens.SplashScreen.route) { inclusive = true }
                 }
             }
         }
 
-        composable("signup") {
+        composable(Screens.SignUpScreen.route) {
             SignUpScreen(
                 onSignUp = { username, email, password ->
-                    navController.navigate("gender") {
-                        popUpTo("signup") { inclusive = true }
+                    navController.navigate(Screens.GenderScreen.route) {
+                        popUpTo(Screens.SignUpScreen.route) { inclusive = true }
                     }
                 },
                 goToLogin = {
-                    navController.navigate("login") {
-                        popUpTo("signup")
+                    navController.navigate(Screens.LogInScreen.route) {
+                        popUpTo(Screens.SignUpScreen.route)
                     }
                 }
             )
         }
 
-        composable("level") {
+        composable(Screens.LevelScreen.route) {
             PhysicalActivityLevel(
                 onPersonLevel = { personLevel ->
-                    navController.navigate("food") {
-                        popUpTo("level") {
+                    navController.navigate(Screens.FoodScreen.route) {
+                        popUpTo(Screens.LevelScreen.route) {
                             inclusive = true
                         }
                     }
@@ -60,33 +56,33 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
             )
         }
 
-        composable("gender") {
+        composable(Screens.GenderScreen.route) {
             GenderScreen {gender ->
-                navController.navigate("height")
+                navController.navigate(Screens.HeightScreen.route)
             }
         }
 
-        composable("food") {
+        composable(Screens.FoodScreen.route) {
             FoodScreen()
         }
 
-        composable("login") {
+        composable(Screens.LogInScreen.route) {
             LoginScreen(
                 onLogin = {
-                    navController.navigate("food") {
+                    navController.navigate(Screens.FoodScreen.route) {
                         popUpTo(0)
                     }
                 },
                 goToSignUp = {
-                    navController.navigate("signup")
+                    navController.navigate(Screens.SignUpScreen.route)
                 }
             )
         }
 
-        composable("height") {
+        composable(Screens.HeightScreen.route) {
             NumberPickerDemo(
                 onHeight = {
-                    navController.navigate("level")
+                    navController.navigate(Screens.LevelScreen.route)
                 }
             )
         }
