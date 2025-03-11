@@ -1,6 +1,5 @@
 package com.example.fitnessapp.ui.navigation
 
-import LoginScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
