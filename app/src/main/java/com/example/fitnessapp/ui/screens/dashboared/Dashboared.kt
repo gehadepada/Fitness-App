@@ -286,8 +286,10 @@ fun ProfileScreen() {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 CircularProgressIndicator(
-                    progress = 1000f / 3000f,
-                    remainingText = "1,680",
+                    //
+                    progress = 2000f / 3000f,
+                    //dynamic
+                    remainingText = "300",
                     modifier = Modifier.size(120.dp)
                 )
                 Spacer(modifier = Modifier.width(50.dp))

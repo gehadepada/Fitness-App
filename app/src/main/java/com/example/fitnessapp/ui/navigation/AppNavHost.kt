@@ -2,6 +2,7 @@ package com.example.fitnessapp.ui.navigation
 
 import LoginScreen
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -10,16 +11,28 @@ import com.example.fitnessapp.ui.screens.food_screen.FoodScreen
 import com.example.fitnessapp.ui.screens.gender_screen.GenderScreen
 import com.example.fitnessapp.ui.screens.height_select.NumberPickerDemo
 import com.example.fitnessapp.ui.screens.level_screen.PhysicalActivityLevel
+import com.example.fitnessapp.ui.screens.login_screen.LoginScreen
 import com.example.fitnessapp.ui.screens.signup_screen.SignUpScreen
 import com.example.fitnessapp.ui.screens.splash_screen.SplashScreen
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun MyAppNavigation(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
+    val currentUser = FirebaseAuth.getInstance().currentUser
+
+    LaunchedEffect(currentUser) {
+        if (currentUser != null) {
+            navController.navigate(Screens.FoodScreen.route) {
+                popUpTo(Screens.SplashScreen.route) { inclusive = true }
+            }
+        }
+    }
 
     NavHost(
         navController = navController,
-        startDestination = Screens.SplashScreen.route
+        startDestination = if (currentUser != null) Screens.FoodScreen.route else Screens.SplashScreen.route,
+        modifier = modifier
     ) {
         composable(Screens.SplashScreen.route) {
             SplashScreen {
@@ -57,7 +70,7 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
         }
 
         composable(Screens.GenderScreen.route) {
-            GenderScreen {gender ->
+            GenderScreen { gender ->
                 navController.navigate(Screens.HeightScreen.route)
             }
         }
@@ -86,9 +99,5 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
                 }
             )
         }
-
-
     }
 }
-
-

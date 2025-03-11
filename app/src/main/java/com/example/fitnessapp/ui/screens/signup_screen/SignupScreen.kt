@@ -1,5 +1,7 @@
 package com.example.fitnessapp.ui.screens.signup_screen
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -8,12 +10,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.fitnessapp.ui.components.DefaultButton
 import com.example.fitnessapp.ui.components.TopBarWithLogo
 import com.example.fitnessapp.ui.screens.signup_screen.components.CustomOutlinedTextField
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
+import com.google.firebase.auth.FirebaseAuth
+
+val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
 @Composable
 fun SignUpScreen(
@@ -30,9 +36,9 @@ fun SignUpScreen(
     var emailError by remember { mutableStateOf("") }
     var passwordError by remember { mutableStateOf("") }
 
+    val context = LocalContext.current
 
     Column {
-
         TopBarWithLogo()
 
         Column(
@@ -43,8 +49,6 @@ fun SignUpScreen(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Center
         ) {
-
-
             Text(
                 text = "Sign Up",
                 style = MaterialTheme.typography.headlineLarge,
@@ -93,11 +97,10 @@ fun SignUpScreen(
 
             Spacer(modifier = Modifier.height(25.dp))
 
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
-            ){
+            ) {
                 DefaultButton(
                     text = "Get Started",
                     color = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
@@ -111,6 +114,7 @@ fun SignUpScreen(
 
                         // If no errors, proceed with signup
                         if (usernameError.isEmpty() && emailError.isEmpty() && passwordError.isEmpty()) {
+                            createUser(email, password, context)
                             onSignUp(username, email, password)
                         }
                     }
@@ -142,6 +146,20 @@ fun SignUpScreen(
             }
         }
     }
+}
+
+fun createUser(email: String, password: String, context: android.content.Context) {
+    auth.createUserWithEmailAndPassword(email, password)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d("TAG", "createUserWithEmail:success")
+                val user = auth.currentUser
+
+            } else {
+                Log.w("TAG", "createUserWithEmail:failure", task.exception)
+                Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
+            }
+        }
 }
 
 @Preview

@@ -1,6 +1,9 @@
 [versions]
 agp = "8.8.1"
 kotlin = "1.9.0"
+hilt = "2.51.1"
+ksp = "1.9.0-1.0.13"
+google-services = "4.4.2"
 coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
