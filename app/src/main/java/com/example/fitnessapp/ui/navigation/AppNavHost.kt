@@ -14,7 +14,7 @@ import com.example.fitnessapp.ui.screens.login_screen.LoginScreen
 import com.example.fitnessapp.ui.screens.signup_screen.SignUpScreen
 import com.example.fitnessapp.ui.screens.splash_screen.SplashScreen
 import com.google.firebase.auth.FirebaseAuth
-
+import com.example.fitnessapp.ui.screens.set_goals.GoalsScreen
 @Composable
 fun MyAppNavigation(modifier: Modifier = Modifier) {
     val navController = rememberNavController()

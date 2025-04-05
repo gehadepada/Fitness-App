@@ -1,6 +1,5 @@
-package com.example.fitnessapp.ui.screens.gender_screen
+package com.example.fitnessapp.ui.screens.set_goals
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -16,7 +15,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -39,7 +37,7 @@ import com.example.fitnessapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Main() {
+fun GoalsScreen() {
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
             modifier = Modifier.fillMaxWidth(),

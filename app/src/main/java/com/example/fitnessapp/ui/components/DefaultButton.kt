@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 fun DefaultButton(
     onClick: () -> Unit = {},
     text: String = "Continue",
+    enabled: Boolean = true,
     color: ButtonColors = ButtonDefaults.buttonColors(containerColor = colorScheme.surface),
     modifier: Modifier = Modifier,
 ) {
@@ -31,6 +32,7 @@ fun DefaultButton(
         onClick = {
             onClick()
         }
+              , enabled = enabled,
     ) {
         Text(
             text = text,
