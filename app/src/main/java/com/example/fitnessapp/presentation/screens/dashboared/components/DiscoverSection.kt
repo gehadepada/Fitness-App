@@ -57,7 +57,9 @@ fun DiscoverSection(navController: NavController) {
             DiscoverButton(
                 icon = painterResource(id = R.drawable.baseline_fitness_center_24),
                 label = "Workouts",
-                onClick = { /* Handle click */ }
+                onClick = {
+                    navController.navigate(Screens.ExerciseScreen.route)
+                }
             )
         }
         Spacer(modifier = Modifier.height(16.dp))

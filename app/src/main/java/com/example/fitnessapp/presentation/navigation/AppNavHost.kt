@@ -19,6 +19,8 @@ import com.example.fitnessapp.presentation.screens.userdata.level_screen.Physica
 import com.example.fitnessapp.presentation.screens.auth.login_screen.LoginScreen
 import com.example.fitnessapp.presentation.screens.auth.signup_screen.SignUpScreen
 import com.example.fitnessapp.presentation.screens.dashboared.components.ProfileTopBar
+import com.example.fitnessapp.presentation.screens.muscle_screen.ExerciseDetailScreen
+import com.example.fitnessapp.presentation.screens.muscle_screen.ExercisesScreen
 import com.example.fitnessapp.presentation.screens.userdata.set_goals_screen.SetGoalsScreen
 import com.example.fitnessapp.presentation.screens.splash_screen.SplashScreen
 import com.example.fitnessapp.presentation.screens.userdata.weight.WeightScreen
@@ -54,6 +56,9 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
                     TopBar("Food")
                 }
 
+                "exercises" -> {
+                    TopBar("Exercises")
+                }
                 else -> Unit
             }
         }
@@ -170,6 +175,18 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
                         navController.navigate(Screens.LevelScreen.route)
                     }
                 )
+            }
+
+            composable(Screens.ExerciseScreen.route) {
+                topBar.value = "exercises"
+                ExercisesScreen(navController = navController)
+            }
+
+            composable("exerciseDetails/{muscle}") { backStackEntry ->
+                topBar.value = ""
+
+                val muscle = backStackEntry.arguments?.getString("muscle") ?: ""
+                ExerciseDetailScreen(muscle = muscle)
             }
         }
     }

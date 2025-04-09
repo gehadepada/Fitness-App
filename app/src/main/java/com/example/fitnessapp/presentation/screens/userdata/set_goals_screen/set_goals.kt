@@ -32,7 +32,6 @@ import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.components.DefaultButton
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SetGoalsScreen(
     onSetGoals: () -> Unit = {}
