@@ -1,7 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
+    //firebase
+    id("com.google.gms.google-services")
     alias(libs.plugins.jetbrains.kotlin.android)
-
     id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
     id("com.google.devtools.ksp")
@@ -55,7 +56,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -77,7 +77,6 @@ dependencies {
     implementation("io.coil-kt:coil:2.5.0")
     implementation("io.coil-kt:coil-compose:2.5.0")
 
-
     // lottie
     implementation("com.airbnb.android:lottie:6.6.2")
     implementation("com.airbnb.android:lottie-compose:6.6.2")
@@ -96,7 +95,6 @@ dependencies {
     implementation("com.google.code.gson:gson:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
 
-
     // dataStore
     implementation("androidx.datastore:datastore-preferences:1.1.2")
 
@@ -108,6 +106,13 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.51.1")
     ksp("com.google.dagger:hilt-android-compiler:2.51.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
+
+    //firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.0.0"))
+    implementation ("com.google.firebase:firebase-auth-ktx")
+    implementation ("com.google.firebase:firebase-firestore-ktx")
+    implementation ("com.google.firebase:firebase-analytics-ktx")
 
 
 }

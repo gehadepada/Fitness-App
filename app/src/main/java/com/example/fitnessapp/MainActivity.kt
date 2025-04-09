@@ -20,6 +20,7 @@ import com.example.fitnessapp.ui.screens.set_goals.GoalsScreen
 import com.example.fitnessapp.ui.screens.splash_screen.SplashScreen
 import com.example.fitnessapp.ui.screens.waterScreen.ReminderScheduler
 import com.example.fitnessapp.ui.screens.waterScreen.WaterTrackerScreen
+import com.example.fitnessapp.presentation.navigation.MyAppNavigation
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -28,6 +29,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FitnessAppTheme {
+                MyAppNavigation()
+            }
+        }
                 Scaffold(
 //                    topBar = { TopBar(title = "Hello") }
                 ) {
