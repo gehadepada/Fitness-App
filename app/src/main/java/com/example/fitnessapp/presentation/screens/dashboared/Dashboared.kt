@@ -22,16 +22,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.fitnessapp.R
+import com.example.fitnessapp.presentation.screens.dashboared.components.AddHabitSection
 import com.example.fitnessapp.presentation.screens.dashboared.components.CircularProgressIndicator
 import com.example.fitnessapp.presentation.screens.dashboared.components.DiscoverSection
 
@@ -53,10 +52,8 @@ fun ProfileScreen(navController: NavController) {
         ) {
             Text(
                 text = "Today",
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold,
-                fontSize = 40.sp,
-                color = Color.White
+                style = MaterialTheme.typography.headlineLarge,
+                color = MaterialTheme.colorScheme.onBackground
 
             )
             Box(
@@ -83,7 +80,6 @@ fun ProfileScreen(navController: NavController) {
                 text = "Calories",
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.headlineMedium,
-                fontSize = 30.sp,
                 fontWeight = FontWeight.Bold,
             )
             Text(
@@ -132,37 +128,12 @@ fun ProfileScreen(navController: NavController) {
             Arrow()
         }
 
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .padding(all = 15.dp)
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(21.dp))
-                .padding(16.dp)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.baseline_add_circle_24),
-                contentDescription = "Header Image",
-                modifier = Modifier
-                    .height(70.dp)
-                    .width(70.dp)
-
-            )
-            Text(
-                text = "Add Hapit",
-                style = MaterialTheme.typography.headlineMedium,
-                fontSize = 30.sp,
-                color = MaterialTheme.colorScheme.onSurface,
-                fontWeight = FontWeight.Bold,
-
-                )
-
-        }
+        AddHabitSection(navController)
 
         DiscoverSection(navController)
     }
 }
+
 @Composable
 fun BaseFoodExercise(
     painter: Int,

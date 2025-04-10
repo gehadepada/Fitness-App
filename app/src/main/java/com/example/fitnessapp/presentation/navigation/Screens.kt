@@ -23,4 +23,6 @@ sealed class Screens(val route: String) {
     data object SetGoalsScreen: Screens("set_goals")
 
     data object ExerciseScreen: Screens("exercises")
+
+    data object WaterScreen: Screens("water")
 }

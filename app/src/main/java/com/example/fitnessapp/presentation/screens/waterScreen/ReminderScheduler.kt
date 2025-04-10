@@ -1,4 +1,4 @@
-package com.example.fitnessapp.ui.screens.waterScreen
+package com.example.fitnessapp.presentation.screens.waterScreen
 
 import android.content.Context
 import androidx.work.*

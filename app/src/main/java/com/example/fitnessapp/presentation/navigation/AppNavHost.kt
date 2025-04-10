@@ -1,6 +1,7 @@
 package com.example.fitnessapp.presentation.navigation
 
 import GenderScreen
+import android.content.Context
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -24,6 +25,7 @@ import com.example.fitnessapp.presentation.screens.muscle_screen.ExercisesScreen
 import com.example.fitnessapp.presentation.screens.userdata.set_goals_screen.SetGoalsScreen
 import com.example.fitnessapp.presentation.screens.splash_screen.SplashScreen
 import com.example.fitnessapp.presentation.screens.userdata.weight.WeightScreen
+import com.example.fitnessapp.presentation.screens.waterScreen.WaterTrackerScreen
 import com.google.firebase.auth.FirebaseAuth
 
 /**
@@ -33,7 +35,7 @@ import com.google.firebase.auth.FirebaseAuth
  */
 
 @Composable
-fun MyAppNavigation(modifier: Modifier = Modifier) {
+fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
     val navController = rememberNavController()
 
@@ -58,6 +60,10 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
 
                 "exercises" -> {
                     TopBar("Exercises")
+                }
+
+                "water" -> {
+                    TopBar("Add Water")
                 }
                 else -> Unit
             }
@@ -175,6 +181,11 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
                         navController.navigate(Screens.LevelScreen.route)
                     }
                 )
+            }
+
+            composable(Screens.WaterScreen.route) {
+                topBar.value = "water"
+                WaterTrackerScreen(context = context)
             }
 
             composable(Screens.ExerciseScreen.route) {

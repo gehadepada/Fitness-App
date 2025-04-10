@@ -115,4 +115,8 @@ dependencies {
     implementation ("com.google.firebase:firebase-analytics-ktx")
 
 
+    // work
+    implementation("androidx.work:work-runtime-ktx:2.10.0")
+
+
 }

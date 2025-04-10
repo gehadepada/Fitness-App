@@ -1,4 +1,4 @@
-package com.example.fitnessapp.ui.screens.waterScreen
+package com.example.fitnessapp.presentation.screens.waterScreen
 
 import android.content.Context
 import androidx.compose.foundation.Image
@@ -27,8 +27,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardType
-import com.example.fitnessapp.ui.components.TopBarWithLogo
-@OptIn(ExperimentalMaterial3Api::class)
+import com.example.fitnessapp.presentation.components.TopBarWithLogo
+
 @Composable
 fun WaterTrackerScreen(context: Context) {
 
@@ -41,11 +41,11 @@ fun WaterTrackerScreen(context: Context) {
     val context = LocalContext.current
     val sharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
 
-    var startHour by remember { mutableStateOf(sharedPreferences.getInt("start_hour", 8)) }
-    var startMinute by remember { mutableStateOf(sharedPreferences.getInt("start_minute", 0)) }
-    var drinkTimes by remember { mutableStateOf(sharedPreferences.getInt("drink_times", 1)) }
-    var interval by remember { mutableStateOf(sharedPreferences.getInt("interval_hours", 1)) }
-    var totalVolume by remember { mutableStateOf(sharedPreferences.getInt("total_volume", 0)) }
+    var startHour by remember { mutableIntStateOf(sharedPreferences.getInt("start_hour", 8)) }
+    var startMinute by remember { mutableIntStateOf(sharedPreferences.getInt("start_minute", 0)) }
+    var drinkTimes by remember { mutableIntStateOf(sharedPreferences.getInt("drink_times", 1)) }
+    var interval by remember { mutableIntStateOf(sharedPreferences.getInt("interval_hours", 1)) }
+    var totalVolume by remember { mutableIntStateOf(sharedPreferences.getInt("total_volume", 0)) }
 
 
     val waterOptions = listOf(
@@ -57,17 +57,13 @@ fun WaterTrackerScreen(context: Context) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black)
-            .padding(16.dp)
-        .clickable { focusManager.clearFocus() },
+            .background(Color.Black),
        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TopBarWithLogo()
         Text(
             text = "Set Daily Water Habit.",
-            color = MaterialTheme.colorScheme.onBackground,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Medium
+            style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.onBackground
         )
         Spacer(modifier = Modifier.height(10.dp))
         Button(onClick = { showTimePicker = true }) {
