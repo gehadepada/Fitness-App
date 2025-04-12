@@ -20,6 +20,8 @@ import com.example.fitnessapp.presentation.screens.userdata.level_screen.Physica
 import com.example.fitnessapp.presentation.screens.auth.login_screen.LoginScreen
 import com.example.fitnessapp.presentation.screens.auth.signup_screen.SignUpScreen
 import com.example.fitnessapp.presentation.screens.dashboared.components.ProfileTopBar
+import com.example.fitnessapp.presentation.screens.food_calories.Navigation
+import com.example.fitnessapp.presentation.screens.food_calories.SearchView
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExerciseDetailScreen
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExercisesScreen
 import com.example.fitnessapp.presentation.screens.userdata.set_goals_screen.SetGoalsScreen
@@ -65,6 +67,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 "water" -> {
                     TopBar("Add Water")
                 }
+
                 else -> Unit
             }
         }
@@ -199,6 +202,13 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 val muscle = backStackEntry.arguments?.getString("muscle") ?: ""
                 ExerciseDetailScreen(muscle = muscle)
             }
+
+            // 1
+            composable("SearchBtn") { SearchView(navController) }
+            // 2
+            composable("foodSearch") { Navigation(navController) }
+
+
         }
     }
 }
