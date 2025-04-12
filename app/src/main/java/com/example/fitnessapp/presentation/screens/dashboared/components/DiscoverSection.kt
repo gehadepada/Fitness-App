@@ -69,9 +69,9 @@ fun DiscoverSection(navController: NavController) {
             modifier = Modifier.fillMaxWidth()
         ) {
             DiscoverButton(
-                icon = painterResource(id = R.drawable.moon_svgrepo_com),
-                label = "Sync up",
-                onClick = { /* Handle click */ }
+                icon = painterResource(id = android.R.drawable.ic_menu_search),
+                label = "Search",
+                onClick = { navController.navigate(Screens.SearchBtnScreen.route) }
             )
             DiscoverButton(
                 icon = painterResource(id = R.drawable.moon_svgrepo_com),

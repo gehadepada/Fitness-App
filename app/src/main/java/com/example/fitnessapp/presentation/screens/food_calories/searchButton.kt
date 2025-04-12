@@ -20,7 +20,7 @@ import androidx.compose.ui.Alignment
 
 
 @Composable
-fun SearchView(navController: NavController) {
+fun SearchView(onAddFood: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -29,7 +29,7 @@ fun SearchView(navController: NavController) {
     ) {
         Button(
             onClick = {
-                navController.navigate("foodSearch")
+                onAddFood()
             },
             modifier = Modifier
                 .wrapContentWidth()  

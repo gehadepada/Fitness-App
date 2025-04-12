@@ -203,10 +203,13 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 ExerciseDetailScreen(muscle = muscle)
             }
 
-            // 1
-            composable("SearchBtn") { SearchView(navController) }
-            // 2
-            composable("foodSearch") { Navigation(navController) }
+            composable(Screens.SearchBtnScreen.route) {
+                SearchView(onAddFood = {
+                    navController.navigate(Screens.FoodSearchScreen.route)
+                })
+            }
+
+            composable(Screens.FoodSearchScreen.route) { Navigation(navController) }
 
 
         }
