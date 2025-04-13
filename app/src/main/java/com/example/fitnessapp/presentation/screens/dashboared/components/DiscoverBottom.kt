@@ -38,8 +38,8 @@ fun DiscoverButton(
         verticalArrangement = Arrangement.Center,
         modifier = modifier
             .size(110.dp)
-            .clickable(onClick = onClick)
             .padding(8.dp)
+            .clickable(onClick = onClick)
             .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(8.dp))
     ) {
         Image(

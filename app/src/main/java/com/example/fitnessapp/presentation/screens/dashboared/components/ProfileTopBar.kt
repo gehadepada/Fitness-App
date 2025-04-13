@@ -47,12 +47,10 @@ fun ProfileTopBar() {
                 )
 
                 Text(
-                    text = "myfitnesspal",
+                    text = "My Fitness",
                     style = MaterialTheme.typography.headlineMedium,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-
-                    )
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
 
                 Image(
                     painter = painterResource(id = R.drawable.baseline_notifications_24),
