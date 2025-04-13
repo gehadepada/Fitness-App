@@ -20,16 +20,18 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.fitnessapp.R
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 
 @Composable
-fun TopBar(title: String, modifier: Modifier = Modifier) {
+fun TopBar(title: String, navController: NavHostController) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.background),
-        modifier = Modifier.padding(10.dp),
+        modifier = Modifier.padding(horizontal = 16.dp),
 
         title = {
             Row(
@@ -48,7 +50,7 @@ fun TopBar(title: String, modifier: Modifier = Modifier) {
             Image(
                 modifier = Modifier.size(27.dp)
                     .clickable {
-
+                        navController.popBackStack()
                     },
                 painter = painterResource(id = R.drawable.back_arrow),
                 contentDescription = "back",
@@ -70,13 +72,5 @@ fun TopBar(title: String, modifier: Modifier = Modifier) {
         }
 
     )
-}
-
-@Preview
-@Composable
-fun Prev() {
-    FitnessAppTheme {
-        TopBar("Food")
-    }
 }
 

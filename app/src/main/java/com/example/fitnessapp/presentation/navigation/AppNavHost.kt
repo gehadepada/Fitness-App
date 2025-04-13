@@ -57,17 +57,19 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 }
 
                 "food" -> {
-                    TopBar("Food")
+                    TopBar("Food", navController = navController)
                 }
 
                 "exercises" -> {
-                    TopBar("Exercises")
+                    TopBar("Exercises", navController = navController)
                 }
 
                 "water" -> {
-                    TopBar("Add Water")
+                    TopBar("Add Water", navController = navController)
                 }
-
+                "addFood" -> {
+                    TopBar("Add Food", navController = navController)
+                }
                 else -> Unit
             }
         }
@@ -204,6 +206,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
             }
 
             composable(Screens.SearchBtnScreen.route) {
+                topBar.value = "addFood"
                 SearchView(onAddFood = {
                     navController.navigate(Screens.FoodSearchScreen.route)
                 })
