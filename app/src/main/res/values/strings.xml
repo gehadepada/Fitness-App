@@ -1,4 +1,5 @@
 <resources>
+<<<<<<< HEAD
     <string name="app_name">Fitness App</string>
     <string name="continue_">Continue</string>
 
@@ -9,4 +10,7 @@
     <string name="intermediate">Intermediate</string>
     <string name="advanced">Advanced</string>
 
+=======
+    <string name="app_name">Health Connect Api</string>
+>>>>>>> ecea3ad46b7c2088a94d9a8201f36e06eafd3c70
 </resources>
