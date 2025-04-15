@@ -29,4 +29,7 @@ sealed class Screens(val route: String) {
     data object SearchBtnScreen: Screens("search")
 
     data object FoodSearchScreen: Screens("food_Search")
+
+
+    data object HealthScreen: Screens("health")
 }

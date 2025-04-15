@@ -22,6 +22,7 @@ import com.example.fitnessapp.presentation.screens.auth.signup_screen.SignUpScre
 import com.example.fitnessapp.presentation.screens.dashboared.components.ProfileTopBar
 import com.example.fitnessapp.presentation.screens.food_calories.Navigation
 import com.example.fitnessapp.presentation.screens.food_calories.SearchView
+import com.example.fitnessapp.presentation.screens.healthconnectapi.screens.HealthConnectScreen
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExerciseDetailScreen
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExercisesScreen
 import com.example.fitnessapp.presentation.screens.userdata.set_goals_screen.SetGoalsScreen
@@ -214,6 +215,11 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
             composable(Screens.FoodSearchScreen.route) { Navigation(navController) }
 
+
+            composable(Screens.HealthScreen.route) {
+                topBar.value = "Health"
+                HealthConnectScreen()
+            }
 
         }
     }

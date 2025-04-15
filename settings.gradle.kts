@@ -19,11 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-<<<<<<< HEAD
 rootProject.name = "Fitness App"
 include(":app")
- 
-=======
-rootProject.name = "Health Connect Api"
-include(":app")
->>>>>>> ecea3ad46b7c2088a94d9a8201f36e06eafd3c70
+

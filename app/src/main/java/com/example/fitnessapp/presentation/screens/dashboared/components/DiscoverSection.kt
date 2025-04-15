@@ -27,9 +27,11 @@ fun DiscoverSection(navController: NavController) {
 
     val auth = FirebaseAuth.getInstance()
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(16.dp)) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
         Text(
             text = "Discover",
             style = MaterialTheme.typography.headlineMedium,
@@ -74,13 +76,13 @@ fun DiscoverSection(navController: NavController) {
                 onClick = { navController.navigate(Screens.SearchBtnScreen.route) }
             )
             DiscoverButton(
-                icon = painterResource(id = R.drawable.moon_svgrepo_com),
-                label = "Friends",
-                onClick = { /* Handle click */ }
+                icon = painterResource(id = R.drawable.heart_pulse_solid),
+                label = "Health",
+                onClick = { navController.navigate(Screens.HealthScreen.route) }
             )
             DiscoverButton(
                 icon = painterResource(id = R.drawable.moon_svgrepo_com),
-                label = "Community",
+                label = "Log out",
                 onClick = {
                     auth.signOut()
                     navController.navigate(Screens.LogInScreen.route) {
