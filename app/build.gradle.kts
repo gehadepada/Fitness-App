@@ -112,9 +112,9 @@ dependencies {
 
     //firebase
     implementation(platform("com.google.firebase:firebase-bom:32.0.0"))
-    implementation ("com.google.firebase:firebase-auth-ktx")
-    implementation ("com.google.firebase:firebase-firestore-ktx")
-    implementation ("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-analytics-ktx")
 
 
     // work
@@ -123,5 +123,10 @@ dependencies {
     // Health Connect dependency
     implementation("androidx.health.connect:connect-client:1.1.0-alpha07")
     implementation("com.google.code.gson:gson:2.8.8")
+
+
+    // Optional icons (for NavigationBar icons like Security, Sync, etc.)
+    implementation("androidx.compose.material:material-icons-core")
+    implementation("androidx.compose.material:material-icons-extended")
 
 }
