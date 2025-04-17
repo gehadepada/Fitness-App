@@ -17,6 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -24,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -54,7 +54,7 @@ fun SetGoalsScreen(
             R.drawable.machine
         )
         val goals = listOf("Lose Weight", "Gain Weight", "Maintain Weight")
-        val selectedIndex = remember { mutableStateOf(-1) }
+        val selectedIndex = remember { mutableIntStateOf(-1) }
 
 
         Text(
@@ -84,12 +84,12 @@ fun SetGoalsScreen(
                             .clip(RoundedCornerShape(16.dp))
                             .border(
                                 width = 2.dp,
-                                color = if (selectedIndex.value == index) colorScheme.primary else Color.Gray,
+                                color = if (selectedIndex.intValue == index) colorScheme.primary else Color.Gray,
                                 shape = RoundedCornerShape(16.dp)
                             )
                             .clickable {
-                                selectedIndex.value = index
-                                personGoals.value = goals[selectedIndex.value]
+                                selectedIndex.intValue = index
+                                personGoals.value = goals[selectedIndex.intValue]
                             }
 
                             .background(color = colorScheme.surface)
