@@ -1,4 +1,4 @@
-package com.example.mealimagecalorieschecker
+package com.example.fitnessapp.presentation.screens.mealimagecalorieschecker
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

@@ -23,8 +23,10 @@ import com.example.fitnessapp.presentation.screens.dashboared.components.Profile
 import com.example.fitnessapp.presentation.screens.food_calories.Navigation
 import com.example.fitnessapp.presentation.screens.food_calories.SearchView
 import com.example.fitnessapp.presentation.screens.healthconnectapi.screens.HealthConnectScreen
+import com.example.fitnessapp.presentation.screens.mealimagecalorieschecker.ScanFood
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExerciseDetailScreen
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExercisesScreen
+import com.example.fitnessapp.presentation.screens.profile_screen.UserProfile
 import com.example.fitnessapp.presentation.screens.userdata.set_goals_screen.SetGoalsScreen
 import com.example.fitnessapp.presentation.screens.splash_screen.SplashScreen
 import com.example.fitnessapp.presentation.screens.userdata.weight.WeightScreen
@@ -210,6 +212,8 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 topBar.value = "addFood"
                 SearchView(onAddFood = {
                     navController.navigate(Screens.FoodSearchScreen.route)
+                }, onScanFood = {
+                    navController.navigate(Screens.ScanFoodScreen.route)
                 })
             }
 
@@ -221,6 +225,15 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 HealthConnectScreen()
             }
 
+            composable(Screens.ProfileScreen.route) {
+                topBar.value = "profile"
+                UserProfile()
+            }
+
+            composable(Screens.ScanFoodScreen.route) {
+                topBar.value = "addFood"
+                ScanFood()
+            }
         }
     }
 }

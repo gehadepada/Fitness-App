@@ -46,8 +46,8 @@ fun DiscoverSection(navController: NavController) {
         ) {
             DiscoverButton(
                 icon = painterResource(id = R.drawable.moon_svgrepo_com),
-                label = "Sleep",
-                onClick = { /* Handle click */ }
+                label = "Profile",
+                onClick = { navController.navigate(Screens.ProfileScreen.route) }
             )
             DiscoverButton(
                 icon = painterResource(id = R.drawable.dinner_icon),

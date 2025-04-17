@@ -16,13 +16,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun ProfileScreen() {
+fun UserProfile() {
     val items = listOf(
         ProfileItem("App settings", Icons.Default.Settings),
-//        ProfileItem("Third-party data", Icons.Default.Sync),
-//        ProfileItem("Device permissions", Icons.Default.Security),
+        ProfileItem("Third-party data", Icons.Default.Sync),
+        ProfileItem("Device permissions", Icons.Default.Security),
         ProfileItem("App permissions", Icons.Default.Lock),
-//        ProfileItem("Feedback", Icons.Default.Feedback),
+        ProfileItem("Feedback", Icons.Default.Feedback),
         ProfileItem("Version 3.37.2i", Icons.Default.Info),
         ProfileItem("About this app", Icons.Default.Info)
     )
@@ -76,7 +76,7 @@ fun ProfileScreen() {
                         .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-//                    Icon(Icons.Default.EmojiEvents, contentDescription = null, tint = Color(0xFFFF9800))
+                    Icon(Icons.Default.EmojiEvents, contentDescription = null, tint = Color(0xFFFF9800))
                     Spacer(modifier = Modifier.width(16.dp))
                     Column(modifier = Modifier.weight(1f)) {
                         Text("Competition", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)

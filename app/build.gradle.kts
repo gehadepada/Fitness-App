@@ -6,6 +6,8 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
     id("com.google.devtools.ksp")
+    // Serialization
+    kotlin("plugin.serialization") version "1.6.0"
 }
 
 android {
@@ -126,7 +128,11 @@ dependencies {
 
 
     // Optional icons (for NavigationBar icons like Security, Sync, etc.)
-//    implementation("androidx.compose.material:material-icons-core")
-//    implementation("androidx.compose.material:material-icons-extended")
+    implementation("androidx.compose.material:material:1.7.8")
+    implementation("androidx.compose.material:material-icons-extended:1.7.8")
+
+
+    // Serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
 }

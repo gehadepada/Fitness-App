@@ -1,4 +1,4 @@
-package com.example.mealimagecalorieschecker
+package com.example.fitnessapp.presentation.screens.mealimagecalorieschecker
 
 import android.graphics.Bitmap
 import android.util.Base64

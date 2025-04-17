@@ -15,25 +15,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import androidx.compose.ui.Alignment
 
 
 @Composable
-fun SearchView(onAddFood: () -> Unit) {
-    Box(
+fun SearchView(onAddFood: () -> Unit, onScanFood: () -> Unit) {
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(16.dp)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(
             onClick = {
                 onAddFood()
             },
             modifier = Modifier
-                .wrapContentWidth()  
-                .align(Alignment.Center)  
+                .wrapContentWidth()
                 .shadow(8.dp, clip = false),  
             content = {
                 Icon(
@@ -50,5 +50,28 @@ fun SearchView(onAddFood: () -> Unit) {
             },
             colors = ButtonDefaults.buttonColors(Color(0xFF3F51B5)) 
         )
+        Button(
+            onClick = {
+                onScanFood()
+            },
+            modifier = Modifier
+                .wrapContentWidth()
+                .shadow(8.dp, clip = false),
+            content = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "Search Icon",
+                    tint = Color.White
+                )
+                Text(
+                    text = "Scan Food",
+                    style = TextStyle(fontSize = 18.sp, color = Color.White),
+                    modifier = Modifier
+                        .padding(end = 8.dp)
+                )
+            },
+            colors = ButtonDefaults.buttonColors(Color(0xFF3F51B5))
+        )
+
     }
 }
