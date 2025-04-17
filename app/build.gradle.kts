@@ -126,7 +126,7 @@ dependencies {
 
 
     // Optional icons (for NavigationBar icons like Security, Sync, etc.)
-    implementation("androidx.compose.material:material-icons-core")
-    implementation("androidx.compose.material:material-icons-extended")
+//    implementation("androidx.compose.material:material-icons-core")
+//    implementation("androidx.compose.material:material-icons-extended")
 
 }

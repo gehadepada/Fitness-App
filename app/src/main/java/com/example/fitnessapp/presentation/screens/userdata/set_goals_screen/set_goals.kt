@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
@@ -25,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,8 +36,13 @@ import com.example.fitnessapp.ui.theme.FitnessAppTheme
 fun SetGoalsScreen(
     onSetGoals: () -> Unit = {}
 ) {
+
+    val  personGoals = remember { mutableStateOf("") }
+    val isGoalSelected = remember { mutableStateOf("") }
+
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .background(colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -84,6 +89,7 @@ fun SetGoalsScreen(
                             )
                             .clickable {
                                 selectedIndex.value = index
+                                personGoals.value = goals[selectedIndex.value]
                             }
 
                             .background(color = colorScheme.surface)
@@ -106,10 +112,18 @@ fun SetGoalsScreen(
                 }
             }
         }
-        
-        DefaultButton(onClick = onSetGoals)
-    }
 
+        DefaultButton(
+            onClick = {
+                if (personGoals.value.isEmpty()) {
+                    isGoalSelected.value = "Please select your goals"
+                } else {
+                    onSetGoals()
+                }
+            },
+            message = isGoalSelected.value
+        )
+    }
 }
 
 @Preview

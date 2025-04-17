@@ -19,10 +19,10 @@ import androidx.compose.ui.unit.sp
 fun ProfileScreen() {
     val items = listOf(
         ProfileItem("App settings", Icons.Default.Settings),
-        ProfileItem("Third-party data", Icons.Default.Sync),
-        ProfileItem("Device permissions", Icons.Default.Security),
+//        ProfileItem("Third-party data", Icons.Default.Sync),
+//        ProfileItem("Device permissions", Icons.Default.Security),
         ProfileItem("App permissions", Icons.Default.Lock),
-        ProfileItem("Feedback", Icons.Default.Feedback),
+//        ProfileItem("Feedback", Icons.Default.Feedback),
         ProfileItem("Version 3.37.2i", Icons.Default.Info),
         ProfileItem("About this app", Icons.Default.Info)
     )
@@ -76,7 +76,7 @@ fun ProfileScreen() {
                         .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(Icons.Default.EmojiEvents, contentDescription = null, tint = Color(0xFFFF9800))
+//                    Icon(Icons.Default.EmojiEvents, contentDescription = null, tint = Color(0xFFFF9800))
                     Spacer(modifier = Modifier.width(16.dp))
                     Column(modifier = Modifier.weight(1f)) {
                         Text("Competition", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
@@ -113,7 +113,7 @@ fun ProfileListItem(title: String, icon: ImageVector) {
         Text(title, color = Color.White, fontSize = 16.sp)
         Spacer(modifier = Modifier.weight(1f))
         Icon(
-            Icons.Default.ArrowForwardIos,
+            Icons.Default.Favorite,
             contentDescription = null,
             tint = Color.Gray,
             modifier = Modifier.size(16.dp)
@@ -133,13 +133,13 @@ fun BottomNavigationBar() {
             onClick = {}
         )
         NavigationBarItem(
-            icon = { Icon(Icons.Default.DirectionsRun, contentDescription = null) },
+            icon = { Icon(Icons.Default.Favorite, contentDescription = null) },
             label = { Text("Workout") },
             selected = false,
             onClick = {}
         )
         NavigationBarItem(
-            icon = { Icon(Icons.Default.SettingsRemote, contentDescription = null) },
+            icon = { Icon(Icons.Default.Favorite, contentDescription = null) },
             label = { Text("Device") },
             selected = false,
             onClick = {}

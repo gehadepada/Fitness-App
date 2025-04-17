@@ -209,7 +209,7 @@ fun DataItem(
     ) {
         Column(
             modifier = Modifier
-                .background(Color.White)
+//                .background(Color.White)
                 .padding(vertical = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp)

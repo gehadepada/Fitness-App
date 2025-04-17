@@ -44,7 +44,7 @@ fun LevelContent(
     levelList: MutableList<LevelList>,
 ) {
 
-    var personLevel = ""
+    val personLevel = remember { mutableStateOf("") }
     val isLevelSelected = remember { mutableStateOf("") }
 
     Column(
@@ -86,7 +86,7 @@ fun LevelContent(
                         oldSelected = isSelected
                         isSelected.value = true
 
-                        personLevel = levelList[i].levelName
+                        personLevel.value = levelList[i].levelName
                     },
                     border = border
                 )
@@ -96,10 +96,10 @@ fun LevelContent(
         Column {
             DefaultButton(
                 onClick = {
-                    if (personLevel.isEmpty()) {
+                    if (personLevel.value.isEmpty()) {
                         isLevelSelected.value = "Please select your level"
                     } else {
-                        onPersonLevel(personLevel)
+                        onPersonLevel(personLevel.value)
                     }
                 },
                 message = isLevelSelected.value
