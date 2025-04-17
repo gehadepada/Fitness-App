@@ -4,6 +4,7 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
+<<<<<<< HEAD
         <DialogSelection>
           <targets>
             <Target type="DEFAULT_BOOT">
@@ -18,6 +19,8 @@
             </Target>
           </targets>
         </DialogSelection>
+=======
+>>>>>>> 2f6564294043313fc5220ef733307768d39010b3
       </SelectionState>
     </selectionStates>
   </component>
