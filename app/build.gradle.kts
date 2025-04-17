@@ -7,7 +7,7 @@ plugins {
     id("kotlin-kapt")
     id("com.google.devtools.ksp")
     // Serialization
-    kotlin("plugin.serialization") version "1.6.0"
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {

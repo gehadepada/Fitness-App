@@ -1,5 +1,6 @@
 package com.example.fitnessapp.presentation.screens.food_calories
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +14,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -21,6 +23,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
@@ -69,11 +73,21 @@ fun MainScreen(navController: NavController) {
 fun SearchView(state: MutableState<TextFieldValue>) {
     TextField(
         value = state.value,
-        placeholder = { Text("Search Food", style = TextStyle(color = Color.Gray)) },
+        placeholder = { Text("Search Food", style = TextStyle(color = MaterialTheme.colorScheme.onBackground), fontSize = 17.sp) },
         onValueChange = { value -> state.value = value },
         modifier = Modifier
-            .fillMaxWidth(),
-        textStyle = TextStyle(color = Color.Black, fontSize = 18.sp),
+            .fillMaxWidth()
+            .padding(16.dp)
+            .drawBehind {
+                val strokeWidth = 1.dp.toPx()
+                drawLine(
+                    color = Color.Gray,
+                    start = Offset(0f, size.height),
+                    end = Offset(size.width, size.height),
+                    strokeWidth = strokeWidth
+                )
+            },
+        textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground, fontSize = 18.sp),
         leadingIcon = { Icon(Icons.Default.Search, contentDescription = "") },
         trailingIcon = {
             if (state.value.text.isNotEmpty()) {
@@ -84,9 +98,9 @@ fun SearchView(state: MutableState<TextFieldValue>) {
         },
         singleLine = true,
         colors = TextFieldDefaults.colors(
-            focusedContainerColor = Color(0xADF6F6F6),
-            unfocusedContainerColor = Color(0xADF6F6F6),
-            disabledContainerColor = Color(0xADF6F6F6),
+            focusedContainerColor = Color(0xFF000000),
+            unfocusedContainerColor = Color(0xFF000000),
+            disabledContainerColor = Color(0xFF000000),
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent
@@ -124,7 +138,7 @@ fun FoodList(navController: NavController, state: MutableState<TextFieldValue>) 
                         .fillMaxSize()
                 ) {
                     Column {
-                        Text(text = foodName, fontSize = 18.sp, color = Color.Black)
+                        Text(text = foodName, fontSize = 18.sp, color = Color.White)
                         Text(text = "Calories: $calories kcal", fontSize = 14.sp, color = Color.Gray)
                     }
                 }

@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
                 val isReminderEnabled = sharedPreferences.getBoolean("reminder_enabled", false)
 
                 if (isReminderEnabled) {
-                    ReminderScheduler.scheduleWaterReminder(this) // تشغيل التذكير تلقائيًا
+                    ReminderScheduler.scheduleWaterReminder(this)
                 }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
