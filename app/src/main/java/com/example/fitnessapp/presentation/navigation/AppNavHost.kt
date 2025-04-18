@@ -217,7 +217,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 })
             }
 
-            composable(Screens.FoodSearchScreen.route) { Navigation(navController) }
+            composable(Screens.FoodSearchScreen.route) { Navigation() }
 
 
             composable(Screens.HealthScreen.route) {
