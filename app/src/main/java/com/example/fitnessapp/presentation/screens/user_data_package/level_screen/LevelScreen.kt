@@ -1,4 +1,4 @@
-package com.example.fitnessapp.presentation.screens.userdata.level_screen
+package com.example.fitnessapp.presentation.screens.user_data_package.level_screen
 
 import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
@@ -6,8 +6,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.fitnessapp.presentation.screens.userdata.level_screen.components.LevelContent
-import com.example.fitnessapp.presentation.screens.userdata.level_screen.models.LevelList
+import com.example.fitnessapp.presentation.screens.user_data_package.level_screen.components.LevelContent
+import com.example.fitnessapp.presentation.screens.user_data_package.level_screen.models.LevelList
 import com.example.fitnessapp.R
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 

@@ -45,7 +45,7 @@ fun AddHabitSection(navController: NavController) {
 
         )
         Text(
-            text = "Add Habit",
+            text = "Add Water",
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onSurface
         )

@@ -1,4 +1,4 @@
-package com.example.fitnessapp.presentation.screens.userdata.set_goals_screen
+package com.example.fitnessapp.presentation.screens.user_data_package.set_goals_screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

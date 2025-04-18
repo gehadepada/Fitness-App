@@ -1,4 +1,4 @@
-package com.example.fitnessapp.presentation.screens.userdata.height_select
+package com.example.fitnessapp.presentation.screens.user_data_package.height_select
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

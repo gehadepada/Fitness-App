@@ -1,8 +1,8 @@
-package com.example.fitnessapp.presentation.screens.mealimagecalorieschecker
+package com.example.fitnessapp.presentation.screens.scan_meal_screen
 
+import com.example.fitnessapp.presentation.screens.scan_meal_screen.model.FoodResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient

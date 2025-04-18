@@ -15,21 +15,21 @@ import com.example.fitnessapp.presentation.components.TopBar
 import com.example.fitnessapp.presentation.components.TopBarWithLogo
 import com.example.fitnessapp.presentation.screens.dashboared.ProfileScreen
 import com.example.fitnessapp.presentation.screens.food_screen.FoodScreen
-import com.example.fitnessapp.presentation.screens.userdata.height_select.NumberPickerDemo
-import com.example.fitnessapp.presentation.screens.userdata.level_screen.PhysicalActivityLevel
+import com.example.fitnessapp.presentation.screens.user_data_package.height_select.NumberPickerDemo
+import com.example.fitnessapp.presentation.screens.user_data_package.level_screen.PhysicalActivityLevel
 import com.example.fitnessapp.presentation.screens.auth.login_screen.LoginScreen
 import com.example.fitnessapp.presentation.screens.auth.signup_screen.SignUpScreen
 import com.example.fitnessapp.presentation.screens.dashboared.components.ProfileTopBar
 import com.example.fitnessapp.presentation.screens.food_calories.Navigation
 import com.example.fitnessapp.presentation.screens.food_calories.SearchView
-import com.example.fitnessapp.presentation.screens.healthconnectapi.screens.HealthConnectScreen
-import com.example.fitnessapp.presentation.screens.mealimagecalorieschecker.ScanFood
+import com.example.fitnessapp.presentation.screens.health_connect_screen.HealthConnectScreen
+import com.example.fitnessapp.presentation.screens.scan_meal_screen.ScanFood
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExerciseDetailScreen
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExercisesScreen
 import com.example.fitnessapp.presentation.screens.profile_screen.UserProfile
-import com.example.fitnessapp.presentation.screens.userdata.set_goals_screen.SetGoalsScreen
+import com.example.fitnessapp.presentation.screens.user_data_package.set_goals_screen.SetGoalsScreen
 import com.example.fitnessapp.presentation.screens.splash_screen.SplashScreen
-import com.example.fitnessapp.presentation.screens.userdata.weight.WeightScreen
+import com.example.fitnessapp.presentation.screens.user_data_package.weight.WeightScreen
 import com.example.fitnessapp.presentation.screens.waterScreen.WaterTrackerScreen
 import com.google.firebase.auth.FirebaseAuth
 

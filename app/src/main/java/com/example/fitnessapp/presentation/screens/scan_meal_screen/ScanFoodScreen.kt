@@ -1,14 +1,11 @@
-package com.example.fitnessapp.presentation.screens.mealimagecalorieschecker
+package com.example.fitnessapp.presentation.screens.scan_meal_screen
 
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
-import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

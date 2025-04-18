@@ -1,4 +1,4 @@
-package com.example.fitnessapp.presentation.screens.userdata.weight
+package com.example.fitnessapp.presentation.screens.user_data_package.weight
 
 import android.graphics.Paint
 import androidx.compose.foundation.Canvas
