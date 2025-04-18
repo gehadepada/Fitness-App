@@ -1,4 +1,4 @@
-# 🏋️‍♂️**GitHub Trend Explorer project**  
+# 🏋️‍♂️**Fitness App**  
 
 ## **Project Description**
 
