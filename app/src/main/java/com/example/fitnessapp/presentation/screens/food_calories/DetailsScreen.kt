@@ -2,10 +2,26 @@ package com.example.fitnessapp.presentation.screens.food_calories
 
 import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -14,12 +30,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 
 
 @Composable
@@ -27,44 +37,42 @@ fun DetailsScreen(foodName: String, calories: String) {
     var quantity by remember { mutableIntStateOf(1) }
     val totalCalories = calories.toInt() * quantity
     val context = LocalContext.current
-
-    Surface(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFFF5F5F5))
-    ) {
         Column(
             modifier = Modifier
-                .padding(24.dp)
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxWidth()
+                .background(Color.Black),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
             Card(
-                modifier = Modifier.fillMaxWidth(),
-                //elevation = 6.dp,  // Correct elevation value (Dp type)
-                shape = RoundedCornerShape(16.dp)
+                modifier = Modifier
+                    .fillMaxWidth(),
+
+                colors = CardDefaults.cardColors(
+                 containerColor = Color.Black
+                )
             ) {
 
                 Column(
                     modifier = Modifier
-                        .padding(24.dp)
-                        .background(Color.White),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
                 ) {
                     Text(
                         text = foodName,
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFF333333),
+                        color = MaterialTheme.colorScheme.onBackground,
+                        style = MaterialTheme.typography.bodyLarge,
                         textAlign = TextAlign.Center
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
-                        text = "Calories per unit: $calories kcal",
-                        fontSize = 16.sp,
-                        color = Color.Gray
+                        text = "Calories per unit: $calories cal",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Normal,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
 
                     Spacer(modifier = Modifier.height(20.dp))
@@ -75,7 +83,6 @@ fun DetailsScreen(foodName: String, calories: String) {
                         Button(
                             onClick = { if (quantity > 1) quantity-- },
                             shape = RoundedCornerShape(8.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE57373))
                         ) {
                             Text("-", fontSize = 20.sp)
                         }
@@ -84,8 +91,8 @@ fun DetailsScreen(foodName: String, calories: String) {
 
                         Text(
                             text = "$quantity",
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Medium
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Normal,
                         )
 
                         Spacer(modifier = Modifier.width(16.dp))
@@ -93,19 +100,17 @@ fun DetailsScreen(foodName: String, calories: String) {
                         Button(
                             onClick = { quantity++ },
                             shape = RoundedCornerShape(8.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF64B5F6))
                         ) {
-                            Text("+", fontSize = 20.sp)
+                            Text("+")
                         }
                     }
 
                     Spacer(modifier = Modifier.height(24.dp))
 
                     Text(
-                        text = "Total Calories: $totalCalories kcal",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        color = Color(0xFFD32F2F)
+                        text = "Total Calories: $totalCalories cal",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
 
                     Spacer(modifier = Modifier.height(24.dp))
@@ -114,18 +119,17 @@ fun DetailsScreen(foodName: String, calories: String) {
                         onClick = {
                             Toast.makeText(
                                 context,
-                                "$totalCalories kcal have been added.",
+                                "$totalCalories cal have been added.",
                                 Toast.LENGTH_SHORT
                             ).show()
                         },
                         shape = RoundedCornerShape(12.dp),
                         modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF81C784))
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                     ) {
-                        Text("Add to My Diary", fontSize = 16.sp)
+                        Text("Add to My Diary")
                     }
                 }
             }
         }
     }
-}

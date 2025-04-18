@@ -1,77 +1,94 @@
 package com.example.fitnessapp.presentation.screens.food_calories
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.Fastfood
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun SearchView(onAddFood: () -> Unit, onScanFood: () -> Unit) {
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
-            .padding(16.dp),
+            .background(Color.Black)
+            .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // Add Food Button
         Button(
-            onClick = {
-                onAddFood()
-            },
+            onClick = onAddFood,
             modifier = Modifier
-                .wrapContentWidth()
-                .shadow(8.dp, clip = false),  
-            content = {
+                .width(220.dp)
+                .height(120.dp)
+                .padding(vertical = 10.dp),
+            shape = RoundedCornerShape(20.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = "Search Icon",
-                    tint = Color.White 
+                    imageVector = Icons.Default.Fastfood,
+                    contentDescription = "Add Food",
+                    tint = Color.White,
+                    modifier = Modifier.size(40.dp)
                 )
+                Spacer(modifier = Modifier.height(6.dp))
                 Text(
                     text = "Add Food",
-                    style = TextStyle(fontSize = 18.sp, color = Color.White),
-                    modifier = Modifier
-                        .padding(end = 8.dp) 
+                    color = Color.White,
+                    style = MaterialTheme.typography.bodySmall,
                 )
-            },
-            colors = ButtonDefaults.buttonColors(Color(0xFF3F51B5)) 
-        )
+            }
+        }
+
+        // Scan Food Button
         Button(
-            onClick = {
-                onScanFood()
-            },
+            onClick = onScanFood,
             modifier = Modifier
-                .wrapContentWidth()
-                .shadow(8.dp, clip = false),
-            content = {
+                .width(220.dp)
+                .height(120.dp)
+                .padding(vertical = 10.dp),
+            shape = RoundedCornerShape(20.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = "Search Icon",
-                    tint = Color.White
+                    imageVector = Icons.Default.CameraAlt,
+                    contentDescription = "Scan Food",
+                    tint = Color.White,
+                    modifier = Modifier.size(40.dp)
                 )
+                Spacer(modifier = Modifier.height(6.dp))
                 Text(
                     text = "Scan Food",
-                    style = TextStyle(fontSize = 18.sp, color = Color.White),
-                    modifier = Modifier
-                        .padding(end = 8.dp)
+                    color = Color.White,
+                    style = MaterialTheme.typography.bodySmall,
                 )
-            },
-            colors = ButtonDefaults.buttonColors(Color(0xFF3F51B5))
-        )
-
+            }
+        }
     }
 }
