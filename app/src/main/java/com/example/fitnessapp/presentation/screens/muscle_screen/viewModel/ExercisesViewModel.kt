@@ -2,55 +2,45 @@ package com.example.fitnessapp.presentation.screens.muscle_screen.viewModel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.example.fitnessapp.presentation.screens.muscle_screen.Muscles
-import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
-import com.google.firebase.ktx.Firebase
+import androidx.lifecycle.viewModelScope
+import com.example.fitnessapp.domain.repo.MusclesRepository
+import com.example.fitnessapp.utils.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import java.lang.reflect.InvocationTargetException
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ExercisesViewModel: ViewModel() {
-    private val _muscles = MutableStateFlow<List<Muscles>>(emptyList())
-    val muscles = _muscles.asStateFlow()
+@HiltViewModel
+class ExercisesViewModel @Inject constructor(private val muscleRepo: MusclesRepository) :
+    ViewModel() {
 
-    private val database = Firebase.database("https://fitness-d7ae0-default-rtdb.firebaseio.com/")
+    private val _muscleState = MutableStateFlow<MuscleState>(MuscleState.Entered)
+    val muscleState = _muscleState.asStateFlow()
 
-    init {
-        getMuscles()
-    }
+    fun fetchMuscles() {
 
-    private fun getMuscles() {
-        val tempMuscles = mutableListOf<Muscles>()
-        database.getReference("Muscles")
-            .get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    try {
-                        task.result.getValue<List<Muscles>>()?.let {
-                            Log.d("Firebase", it.toString())
-                            tempMuscles.addAll(it)
+        viewModelScope.launch {
+            muscleRepo.getAllMuscleExercises()
+                .collect { resource ->
+                    when (resource) {
+                        is Resource.Loading -> {
+                            _muscleState.value = MuscleState.Loading
                         }
-                    } catch (e: Exception) {
-                        // Handle parsing error
-                        Log.e("Firebase", "Error parsing data: ${e.message}")
-                        e.printStackTrace()
-                    }
-                } else {
-                    // Handle task failure
-                    val exception = task.exception ?: return@addOnCompleteListener
-                    Log.e("Firebase", "Error getting data: ${exception.message}")
 
-                    // Check if it's an InvocationTargetException
-                    if (exception is InvocationTargetException) {
-                        val rootCause = exception.cause
-                        Log.e("Firebase", "Root cause: ${rootCause?.message}")
-                        rootCause?.printStackTrace()
-                    } else {
-                        exception.printStackTrace()
+                        is Resource.Success -> {
+                            _muscleState.value = MuscleState.Success(resource.data)
+                        }
+
+                        is Resource.Error -> {
+                            _muscleState.value = MuscleState.Error(resource.message)
+                            Log.e(
+                                "MusclesViewModel Al-qiran",
+                                "Error fetching muscles: ${resource.message}"
+                            )
+                        }
                     }
                 }
-                _muscles.value = tempMuscles
-            }
+        }
     }
 }

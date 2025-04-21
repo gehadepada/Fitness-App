@@ -1,6 +1,5 @@
 package com.example.fitnessapp.presentation.screens.muscle_screen
 
-import android.net.Uri
 import android.util.Log
 import com.example.fitnessapp.R
 import androidx.compose.foundation.background
@@ -19,62 +18,63 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.fitnessapp.data.datasources.remote.model.Exercises
+import com.example.fitnessapp.data.datasources.remote.model.Muscles
 import com.example.fitnessapp.presentation.screens.muscle_screen.viewModel.ExercisesViewModel
-import com.google.gson.Gson
+import com.example.fitnessapp.presentation.screens.muscle_screen.viewModel.MuscleState
 
-var musclesData = emptyList<Muscles>()
 
 @Composable
-fun ExercisesScreen(navController: NavHostController) {
+fun ExercisesScreen(onExercise:(id: Int) -> Unit) {
 
-    val muscleViewModel = viewModel<ExercisesViewModel>()
-    val muscles by muscleViewModel.muscles.collectAsStateWithLifecycle()
+    val muscleViewModel = hiltViewModel<ExercisesViewModel>()
+    val musclesState by muscleViewModel.muscleState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(muscles) {
-        if (muscles.isNotEmpty()) {
-            musclesData = muscles
-            Log.d("Exercise", "${musclesData[1]}")
+
+    LaunchedEffect(Unit) {
+        muscleViewModel.fetchMuscles()
+    }
+
+
+    when(musclesState) {
+        is MuscleState.Error -> {
+            Log.e("Al-qiran", "Error ${(musclesState as MuscleState.Error).message}")
+        }
+        is MuscleState.Loading -> {
+            Log.d("Al-qiran", "Loading Loading Loading")
+        }
+        is MuscleState.Success -> {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(modifier = Modifier.weight(1f)) // Pushes content down
+
+                GridItems((musclesState as MuscleState.Success).muscles, onExercise =  onExercise)
+
+                Spacer(modifier = Modifier.weight(1f)) // Adds spacing below content
+            }
+        }
+        else -> {
+            Log.d("Al-qiran", "Entered")
 
         }
     }
 
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Spacer(modifier = Modifier.weight(1f)) // Pushes content down
-
-        val exercises = listOf(
-            "Chest", "Shoulders", "Biceps",
-            "Triceps", "Back",
-            "Forearm", "Legs", "Abdominal"
-        )
-
-        val imageIds = listOf(
-            R.drawable.chest, R.drawable.shoulders, R.drawable.biceps,
-            R.drawable.triceps, R.drawable.upper_back, R.drawable.forearm,
-            R.drawable.hamstrings, R.drawable.abdominal
-        )
-
-        GridItems(muscles, navController)
-
-        Spacer(modifier = Modifier.weight(1f)) // Adds spacing below content
-    }
 }
 
 @Composable
 fun GridItems(
     muscles: List<Muscles>,
-    navController: NavHostController
+    onExercise:(id: Int) -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.SpaceEvenly,
@@ -94,7 +94,7 @@ fun GridItems(
                         name = muscleName,
                         imageUrl = exerciseImage,
                         exercises = exercises,
-                        navController = navController
+                        onExercise = onExercise
                     )
                 }
             }
@@ -108,7 +108,7 @@ fun ExerciseItem(
     name: String,
     imageUrl: String,
     exercises: List<Exercises>,
-    navController: NavHostController
+    onExercise: (id: Int) -> Unit
 ) {
 
     Column(
@@ -116,7 +116,7 @@ fun ExerciseItem(
         modifier = Modifier
             .padding(8.dp)
             .clickable {
-                navController.navigate("exerciseDetails/$id")
+                onExercise(id)
             }
     ) {
         AsyncImage(
@@ -141,19 +141,3 @@ fun ExerciseItem(
         )
     }
 }
-
-data class Muscles(
-    val id: Int = 0,
-    val muscle: String = "",
-    val exerciseImage: String = "",
-    val exercises: List<Exercises> = emptyList()
-)
-
-data class Exercises(
-    val name: String = "",
-    val description: String = "",
-    val reps: String = "",
-    val sets: String = "",
-    val image1: String = "",
-    val image2: String = "",
-)

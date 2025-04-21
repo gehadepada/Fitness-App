@@ -8,11 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.example.fitnessapp.presentation.components.TopBar
 import com.example.fitnessapp.presentation.components.TopBarWithLogo
 import com.example.fitnessapp.presentation.screens.dashboared.ProfileScreen
@@ -27,7 +25,6 @@ import com.example.fitnessapp.presentation.screens.food_calories.SearchView
 import com.example.fitnessapp.presentation.screens.health_connect_screen.HealthConnectScreen
 import com.example.fitnessapp.presentation.screens.scan_meal_screen.ScanFood
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExerciseDetailScreen
-import com.example.fitnessapp.presentation.screens.muscle_screen.Exercises
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExercisesScreen
 import com.example.fitnessapp.presentation.screens.profile_screen.UserProfile
 import com.example.fitnessapp.presentation.screens.user_data_package.set_goals_screen.SetGoalsScreen
@@ -35,7 +32,6 @@ import com.example.fitnessapp.presentation.screens.splash_screen.SplashScreen
 import com.example.fitnessapp.presentation.screens.user_data_package.weight.WeightScreen
 import com.example.fitnessapp.presentation.screens.waterScreen.WaterTrackerScreen
 import com.google.firebase.auth.FirebaseAuth
-import com.google.gson.Gson
 
 /**
  * the Navigation Graph
@@ -204,15 +200,15 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
             composable(Screens.ExerciseScreen.route) {
                 topBar.value = "exercises"
-                ExercisesScreen(navController = navController)
+                ExercisesScreen(onExercise = { id ->
+                    navController.navigate(Screens.ExercisesDetails.passId(id))
+                })
             }
 
-            composable(
-                "exerciseDetails/{id}",
-            ) { backStackEntry ->
+            composable(Screens.ExercisesDetails.route) { backStackEntry ->
                 topBar.value = ""
-                val id = backStackEntry.arguments?.getInt("id")
-                ExerciseDetailScreen(id = id ?: 0)
+                val id = backStackEntry.arguments?.getString("id")?.toIntOrNull() ?: 5
+                ExerciseDetailScreen(id = id)
             }
 
             composable(Screens.SearchBtnScreen.route) {

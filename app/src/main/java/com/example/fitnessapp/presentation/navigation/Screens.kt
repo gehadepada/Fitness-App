@@ -1,5 +1,7 @@
 package com.example.fitnessapp.presentation.navigation
 
+import android.util.Log
+
 sealed class Screens(val route: String) {
 
     data object SplashScreen: Screens("splash")
@@ -23,6 +25,12 @@ sealed class Screens(val route: String) {
     data object SetGoalsScreen: Screens("set_goals")
 
     data object ExerciseScreen: Screens("exercises")
+
+    data object ExercisesDetails: Screens("exercises_details/{id}") {
+        fun passId(id: Int): String {
+            return "exercises_details/$id"
+        }
+    }
 
     data object WaterScreen: Screens("water")
 
