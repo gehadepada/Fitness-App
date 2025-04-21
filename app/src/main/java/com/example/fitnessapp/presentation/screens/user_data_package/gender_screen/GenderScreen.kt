@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,8 +24,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.fitnessapp.R
+import com.example.fitnessapp.presentation.components.BackBottom
 import com.example.fitnessapp.presentation.components.DefaultButton
+
 
 
 @Composable
@@ -104,15 +108,29 @@ fun GenderScreen(onGender: (String) -> Unit) {
                 isGenderSelected.value = "Please select a gender"
             }
         }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
 
-        DefaultButton(
-            onClick = {
-                if (selectedIndex.value == -1) {
-                    showError = true
-                } else {
-                    onGender(gender[selectedIndex.value])
-                }
-            }, message = isGenderSelected.value
-        )
+            DefaultButton(
+                onClick = {
+                    if (selectedIndex.value == -1) {
+                        showError = true
+                    } else {
+                        onGender(gender[selectedIndex.value])
+                    }
+                }, message = isGenderSelected.value
+            )
+            BackBottom(
+                text = "Back"
+            )
+        }
     }
+}
+@Composable
+@Preview
+fun GenderScreenPreview() {
+    GenderScreen(onGender = {})
 }

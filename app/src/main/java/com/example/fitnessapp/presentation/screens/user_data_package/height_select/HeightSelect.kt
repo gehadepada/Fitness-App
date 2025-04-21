@@ -1,5 +1,5 @@
 package com.example.fitnessapp.presentation.screens.user_data_package.height_select
-
+import com.example.fitnessapp.presentation.components.BackBottom
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
@@ -187,7 +187,6 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}) {
             )
         }
 
-        // Number Picker
         Picker(
             state = valuesPickerState,
             items = values,
@@ -198,13 +197,24 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}) {
             textStyle = TextStyle(fontSize = 32.sp, color = Color(0xFFFFFFFF)),
         )
 
-        DefaultButton(
-            onClick = {
-                onHeight()
-                println("Selected Height: ${valuesPickerState.selectedItem} Cm")
-            },
-            color = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.surface)
-        )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            DefaultButton(
+                onClick = {
+                    onHeight()
+                    println("Selected Height: ${valuesPickerState.selectedItem} Cm")
+                },
+                color = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.surface)
+            )
+
+            BackBottom(text = "Back")
+        }
+
+
+
 
     }
 }
