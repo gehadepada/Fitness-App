@@ -25,10 +25,35 @@ import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.screens.dashboared.components.AddHabitSection
 import com.example.fitnessapp.presentation.screens.dashboared.components.CircularProgressIndicator
 import com.example.fitnessapp.presentation.screens.dashboared.components.DiscoverSection
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 @Composable
 fun ProfileScreen(navController: NavController) {
     var selectedIndex by remember { mutableStateOf(0) }
+    val database = FirebaseDatabase.getInstance()
+    val userId = FirebaseAuth.getInstance().currentUser?.uid
+
+    var goalCalories by remember { mutableStateOf(3000) }
+    var consumedCalories by remember { mutableStateOf(2000) }
+    var exerciseCalories by remember { mutableStateOf(500) }
+
+    // Fetch user data from Firebase
+    LaunchedEffect(Unit) {
+        userId?.let {
+            database.reference.child("Users").child(it)
+                .get()
+                .addOnSuccessListener { dataSnapshot ->
+                    if (dataSnapshot.exists()) {
+                        goalCalories = dataSnapshot.child("goalCalories").value?.toString()?.toLongOrNull()?.toInt() ?: 3000
+                        consumedCalories = dataSnapshot.child("consumedCalories").value?.toString()?.toLongOrNull()?.toInt() ?: 2000
+                        exerciseCalories = dataSnapshot.child("exerciseCalories").value?.toString()?.toLongOrNull()?.toInt() ?: 500
+
+                    }
+                }
+                .addOnFailureListener { e -> println("Error fetching user data: $e") }
+        }
+    }
 
     Scaffold(
         bottomBar = {
@@ -76,6 +101,8 @@ fun ProfileScreen(navController: NavController) {
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
+                val remainingCalories = goalCalories - consumedCalories + exerciseCalories
+
                 Text(
                     text = "Calories",
                     color = MaterialTheme.colorScheme.onSurface,
@@ -83,7 +110,7 @@ fun ProfileScreen(navController: NavController) {
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
-                    text = "Remaining = Goal - Food + Exercise",
+                    text = "Remaining = $goalCalories - $consumedCalories + $exerciseCalories = $remainingCalories",
                     color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.labelLarge,
                 )
@@ -94,8 +121,8 @@ fun ProfileScreen(navController: NavController) {
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     CircularProgressIndicator(
-                        progress = 2000f / 3000f,
-                        remainingText = "300",
+                        progress = consumedCalories.toFloat() / goalCalories,
+                        remainingText = remainingCalories.toString(),
                         modifier = Modifier.size(120.dp)
                     )
                     Spacer(modifier = Modifier.width(50.dp))
