@@ -31,11 +31,15 @@ import androidx.compose.ui.unit.dp
 import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.components.DefaultButton
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 @Composable
 fun SetGoalsScreen(
     onSetGoals: () -> Unit = {}
 ) {
+    val database = FirebaseDatabase.getInstance()
+    val userId = FirebaseAuth.getInstance().currentUser?.uid
 
     val  personGoals = remember { mutableStateOf("") }
     val isGoalSelected = remember { mutableStateOf("") }
@@ -118,6 +122,12 @@ fun SetGoalsScreen(
                 if (personGoals.value.isEmpty()) {
                     isGoalSelected.value = "Please select your goals"
                 } else {
+                    userId?.let {
+                        database.reference.child("Users").child(it)
+                            .child("goal").setValue(personGoals.value)
+                            .addOnSuccessListener { println("Goal saved successfully!") }
+                            .addOnFailureListener { e -> println("Error saving goal: $e") }
+                    }
                     onSetGoals()
                 }
             },

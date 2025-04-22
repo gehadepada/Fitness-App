@@ -28,11 +28,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.components.BackBottom
 import com.example.fitnessapp.presentation.components.DefaultButton
-
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 
 @Composable
 fun GenderScreen(onGender: (String) -> Unit) {
+    val database = FirebaseDatabase.getInstance()
+    val userId = FirebaseAuth.getInstance().currentUser?.uid
 
     val isGenderSelected = remember { mutableStateOf("") }
 
@@ -119,7 +122,14 @@ fun GenderScreen(onGender: (String) -> Unit) {
                     if (selectedIndex.value == -1) {
                         showError = true
                     } else {
+                        userId?.let {
+                            database.reference.child("Users").child(it)
+                                .child("gender").setValue(gender[selectedIndex.value])
+                                .addOnSuccessListener { println("Gender saved successfully!") }
+                                .addOnFailureListener { e -> println("Error: $e") }
+                        }
                         onGender(gender[selectedIndex.value])
+
                     }
                 }, message = isGenderSelected.value
             )
