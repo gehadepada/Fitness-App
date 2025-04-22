@@ -141,7 +141,8 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 PhysicalActivityLevel(
                     onPersonLevel = { personLevel ->
                         navController.navigate(Screens.WeightScreen.route)
-                    }
+                    },
+                    onBack = { navController.popBackStack() }
                 )
             }
 
@@ -159,7 +160,8 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 WeightScreen(
                     onWeight = {
                         navController.navigate(Screens.SetGoalsScreen.route)
-                    }
+                    },
+                    onBack = { navController.popBackStack() }
                 )
             }
 
@@ -173,7 +175,8 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                                 inclusive = true
                             }
                         }
-                    }
+                    },
+                    onBack = { navController.popBackStack() }
                 )
             }
 

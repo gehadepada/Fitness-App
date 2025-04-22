@@ -1,6 +1,6 @@
 package com.example.fitnessapp.presentation.screens.user_data_package.height_select
 
-import com.example.fitnessapp.presentation.components.BackBottom
+import com.example.fitnessapp.presentation.components.BackButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
@@ -218,10 +218,9 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}, onBack: () -> Unit = {}) {
                     onHeight()
 
                 },
-                color = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.surface)
             )
 
-            BackBottom(
+            BackButton(
                 text = "Back",
                 onclick = onBack
             )

@@ -15,32 +15,24 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.rememberNavController
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 @Composable
-fun BackBottom(
+fun BackButton(
     onclick: () -> Unit = {},
     text: String = "Back",
     enabled: Boolean = true,
     color: ButtonColors = ButtonDefaults.buttonColors(containerColor = colorScheme.surface),
     message: String = "",
-    modifier: Modifier = Modifier.padding(bottom = 32.dp),
+    modifier: Modifier = Modifier.padding(bottom = 24.dp),
 ) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Text(
-            text = message,
-            color = Color.Red,
-            fontSize = 12.sp,
-        )
         Button(
             modifier = Modifier
                 .width(250.dp)
@@ -49,7 +41,8 @@ fun BackBottom(
             border = BorderStroke(2.dp, colorScheme.primary),
             colors = color,
             onClick = {
-                onclick()
+                if (enabled)
+                    onclick()
             },
             enabled = enabled,
         ) {
@@ -68,6 +61,6 @@ fun BackBottom(
 @Composable
 private fun Hello() {
     FitnessAppTheme {
-       BackBottom()
+       BackButton()
     }
 }

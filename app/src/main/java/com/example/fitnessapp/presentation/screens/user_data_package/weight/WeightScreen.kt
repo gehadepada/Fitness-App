@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.fitnessapp.presentation.components.BackButton
 import com.example.fitnessapp.presentation.components.DefaultButton
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 import com.google.firebase.auth.FirebaseAuth
@@ -29,8 +30,8 @@ import kotlin.math.sin
 
 @Composable
 fun WeightScreen(
-    onWeight: () -> Unit = {}
-
+    onWeight: () -> Unit = {},
+    onBack: () -> Unit = {}
 ) {
     val database = FirebaseDatabase.getInstance()
     val userId = FirebaseAuth.getInstance().currentUser?.uid
@@ -104,6 +105,9 @@ fun WeightScreen(
                 }
                 onWeight()
             }
+        )
+        BackButton(
+            onclick = onBack
         )
     }
 
