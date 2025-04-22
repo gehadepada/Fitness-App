@@ -123,9 +123,6 @@ fun GenderScreen(onGender: (String) -> Unit) {
                     }
                 }, message = isGenderSelected.value
             )
-            BackBottom(
-                text = "Back"
-            )
         }
     }
 }

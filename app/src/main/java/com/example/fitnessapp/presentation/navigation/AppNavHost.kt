@@ -189,6 +189,9 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 NumberPickerDemo(
                     onHeight = {
                         navController.navigate(Screens.LevelScreen.route)
+                    },
+                    onBack = {
+                        navController.popBackStack()
                     }
                 )
             }

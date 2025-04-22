@@ -1,4 +1,5 @@
 package com.example.fitnessapp.presentation.screens.user_data_package.height_select
+
 import com.example.fitnessapp.presentation.components.BackBottom
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -143,7 +144,7 @@ fun Modifier.fadingEdge(brush: Brush) = this
 private fun pixelsToDp(pixels: Int) = with(LocalDensity.current) { pixels.toDp() }
 
 @Composable
-fun NumberPickerDemo(onHeight: () -> Unit = {}) {
+fun NumberPickerDemo(onHeight: () -> Unit = {}, onBack: () -> Unit = {}) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -191,7 +192,8 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}) {
             state = valuesPickerState,
             items = values,
             visibleItemsCount = 5,
-            modifier = Modifier.fillMaxWidth(0.5f)
+            modifier = Modifier
+                .fillMaxWidth(0.5f)
                 .weight(1f),
             textModifier = Modifier.padding(10.dp),
             textStyle = TextStyle(fontSize = 32.sp, color = Color(0xFFFFFFFF)),
@@ -210,10 +212,11 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}) {
                 color = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.surface)
             )
 
-            BackBottom(text = "Back")
+            BackBottom(
+                text = "Back",
+                onclick = onBack
+            )
         }
-
-
 
 
     }

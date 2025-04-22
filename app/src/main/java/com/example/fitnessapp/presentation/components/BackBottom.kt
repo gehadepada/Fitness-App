@@ -24,15 +24,13 @@ import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 @Composable
 fun BackBottom(
-
-
+    onclick: () -> Unit = {},
     text: String = "Back",
     enabled: Boolean = true,
     color: ButtonColors = ButtonDefaults.buttonColors(containerColor = colorScheme.surface),
     message: String = "",
     modifier: Modifier = Modifier.padding(bottom = 32.dp),
 ) {
-    val navController=rememberNavController()
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -51,7 +49,7 @@ fun BackBottom(
             border = BorderStroke(2.dp, colorScheme.primary),
             colors = color,
             onClick = {
-                navController.popBackStack()
+                onclick()
             },
             enabled = enabled,
         ) {

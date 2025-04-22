@@ -4,7 +4,6 @@ import com.example.fitnessapp.data.datasources.remote.FirebaseMusclesRemoteDataS
 import com.example.fitnessapp.data.datasources.remote.model.Muscles
 import com.example.fitnessapp.domain.repo.MusclesRepository
 import com.example.fitnessapp.utils.Resource
-import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
