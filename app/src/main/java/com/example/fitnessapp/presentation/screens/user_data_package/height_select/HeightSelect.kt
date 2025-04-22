@@ -34,12 +34,15 @@ import androidx.compose.ui.unit.sp
 import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.components.DefaultButton
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
 @Composable
 fun rememberPickerState() = remember { PickerState() }
-
+val database = FirebaseDatabase.getInstance()
+val userId = FirebaseAuth.getInstance().currentUser?.uid
 class PickerState {
     var selectedItem by mutableStateOf("")
 }
@@ -206,8 +209,14 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}, onBack: () -> Unit = {}) {
         ) {
             DefaultButton(
                 onClick = {
+                    userId?.let {
+                        database.reference.child("Users").child(it)
+                            .child("height").setValue(valuesPickerState.selectedItem)
+                            .addOnSuccessListener { println("Height saved successfully!") }
+                            .addOnFailureListener { e -> println("Error saving height: $e") }
+                    }
                     onHeight()
-                    println("Selected Height: ${valuesPickerState.selectedItem} Cm")
+
                 },
                 color = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.surface)
             )
