@@ -110,7 +110,6 @@ fun LoginScreen(
                 // Login button
                 DefaultButton(
                     text = "Login",
-                    color = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     onClick = {
                         loginViewModel.logInUser()
                     }

@@ -1,7 +1,6 @@
 package com.example.fitnessapp.presentation.screens.muscle_screen
 
 import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -23,21 +22,52 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import kotlinx.coroutines.delay
 import androidx.compose.foundation.layout.size
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.fitnessapp.R
+import com.example.fitnessapp.data.datasources.remote.model.Muscles
 import com.example.fitnessapp.presentation.screens.muscle_screen.viewModel.ExercisesViewModel
+import com.example.fitnessapp.presentation.screens.muscle_screen.viewModel.MuscleState
 
 
 @Composable
 fun ExerciseDetailScreen(id: Int) {
 
+    val muscleViewModel = hiltViewModel<ExercisesViewModel>()
+    val musclesState by muscleViewModel.muscleState.collectAsStateWithLifecycle()
 
 
+    LaunchedEffect(Unit) {
+        muscleViewModel.fetchMuscles()
+    }
+
+    when (musclesState) {
+        is MuscleState.Error -> {
+            Log.e("Al-qiran", "Error ${(musclesState as MuscleState.Error).message}")
+        }
+
+        is MuscleState.Loading -> {
+            Log.d("Al-qiran", "Loading Loading Loading")
+        }
+
+        is MuscleState.Success -> {
+            val musclesData = (musclesState as MuscleState.Success).muscles[id]
+            ExerciseDetails(musclesData)
+        }
+
+        else -> Unit
+    }
+}
+
+@Composable
+fun ExerciseDetails(
+    musclesData: Muscles
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -52,7 +82,7 @@ fun ExerciseDetailScreen(id: Int) {
             modifier = Modifier.padding(bottom = 10.dp)
         )
         LazyColumn(modifier = Modifier.fillMaxSize()) {
-            itemsIndexed(musclesData[id].exercises) { index, exercise ->
+            itemsIndexed(musclesData.exercises) { index, exercise ->
                 ExerciseDetailItem(
                     name = exercise.name,
                     description = exercise.description,
@@ -93,7 +123,10 @@ fun ExerciseDetailItem(
                 .padding(end = 16.dp)
         ) {
             Text(
-                text = name, color = Color.White, fontSize = 19.sp, fontWeight = FontWeight.Bold,
+                text = name,
+                color = Color.White,
+                fontSize = 19.sp,
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .padding(vertical = 7.dp)
             )
@@ -146,7 +179,7 @@ fun AnimatedImage(image1: String, image2: String, imageSize: Dp) {
 
         AsyncImage(
             model = ImageRequest.Builder(context = LocalContext.current)
-                .data(currentImage)
+                .data(image1)
                 .crossfade(true)
                 .build(),
             contentDescription = null,
@@ -154,10 +187,27 @@ fun AnimatedImage(image1: String, image2: String, imageSize: Dp) {
             modifier = Modifier
                 .size(160.dp)
                 .clip(RoundedCornerShape(10.dp))
-                .clickable { isPlaying = !isPlaying },
+                .clickable { isPlaying = !isPlaying }
+                .alpha(if (currentImage == image1) 1f else 0f),
             placeholder = painterResource(id = R.drawable.ex_exercise),
             error = painterResource(id = R.drawable.baseline_notifications_24)
         )
+
+        AsyncImage(
+            model = ImageRequest.Builder(context = LocalContext.current)
+                .data(image2)
+                .crossfade(true)
+                .build(),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .size(160.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .alpha(if (currentImage == image2) 1f else 0f),
+            placeholder = painterResource(id = R.drawable.ex_exercise),
+            error = painterResource(id = R.drawable.baseline_notifications_24)
+        )
+
 
         Icon(
             painter = painterResource(if (isPlaying) R.drawable.ic_pause else R.drawable.ic_play),

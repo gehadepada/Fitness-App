@@ -131,5 +131,9 @@ fun DetailsScreen(foodName: String, calories: String) {
                 }
             }
         }
+<<<<<<< HEAD
     }
 }
+=======
+    }
+>>>>>>> b6540aedf7b72d9cda126d1b6af0388bae15b1d5

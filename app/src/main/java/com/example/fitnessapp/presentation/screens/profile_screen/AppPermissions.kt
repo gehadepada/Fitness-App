@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -109,8 +110,8 @@ fun PermissionItem(icon: ImageVector, title: String, description: String) {
             tint = MaterialTheme.colorScheme.primary
         )
         Column {
-            Text(text = title, style = MaterialTheme.typography.titleSmall)
-            Text(text = description, style = MaterialTheme.typography.bodySmall)
+            Text(text = title, style = MaterialTheme.typography.labelLarge)
+            Text(text = description, style = MaterialTheme.typography.labelSmall)
         }
     }
 }
@@ -118,7 +119,7 @@ fun PermissionItem(icon: ImageVector, title: String, description: String) {
 @Preview(showBackground = true)
 @Composable
 fun AppPermissionsScreenPreview() {
-    MaterialTheme {
+    FitnessAppTheme {
         AppPermissionsScreen(onNavigateBack = {})
     }
 }

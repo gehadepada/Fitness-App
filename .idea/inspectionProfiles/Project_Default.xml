@@ -41,13 +41,6 @@
       <option name="composableFile" value="true" />
       <option name="previewFile" value="true" />
     </inspection_tool>
-<<<<<<< HEAD
-    <inspection_tool class="PreviewDimensionRespectsLimit" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="composableFile" value="true" />
-      <option name="previewFile" value="true" />
-    </inspection_tool>
-=======
->>>>>>> ecea3ad46b7c2088a94d9a8201f36e06eafd3c70
     <inspection_tool class="PreviewFontScaleMustBeGreaterThanZero" enabled="true" level="ERROR" enabled_by_default="true">
       <option name="composableFile" value="true" />
       <option name="previewFile" value="true" />
@@ -56,21 +49,6 @@
       <option name="composableFile" value="true" />
       <option name="previewFile" value="true" />
     </inspection_tool>
-<<<<<<< HEAD
-    <inspection_tool class="PreviewMustBeTopLevelFunction" enabled="true" level="ERROR" enabled_by_default="true">
-      <option name="composableFile" value="true" />
-      <option name="previewFile" value="true" />
-    </inspection_tool>
-    <inspection_tool class="PreviewNeedsComposableAnnotation" enabled="true" level="ERROR" enabled_by_default="true">
-      <option name="composableFile" value="true" />
-      <option name="previewFile" value="true" />
-    </inspection_tool>
-    <inspection_tool class="PreviewNotSupportedInUnitTestFiles" enabled="true" level="ERROR" enabled_by_default="true">
-      <option name="composableFile" value="true" />
-      <option name="previewFile" value="true" />
-    </inspection_tool>
-=======
->>>>>>> ecea3ad46b7c2088a94d9a8201f36e06eafd3c70
     <inspection_tool class="PreviewParameterProviderOnFirstParameter" enabled="true" level="ERROR" enabled_by_default="true">
       <option name="composableFile" value="true" />
       <option name="previewFile" value="true" />

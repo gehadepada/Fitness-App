@@ -33,6 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.fitnessapp.R
+import com.example.fitnessapp.presentation.components.BackButton
 import com.example.fitnessapp.presentation.components.DefaultButton
 import com.example.fitnessapp.presentation.screens.user_data_package.level_screen.models.LevelList
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
@@ -42,6 +43,7 @@ import com.example.fitnessapp.ui.theme.FitnessAppTheme
 fun LevelContent(
     onPersonLevel: (String) -> Unit,
     levelList: MutableList<LevelList>,
+    onBack: () -> Unit = {}
 ) {
 
     val personLevel = remember { mutableStateOf("") }
@@ -103,6 +105,9 @@ fun LevelContent(
                     }
                 },
                 message = isLevelSelected.value
+            )
+            BackButton(
+                onclick = onBack
             )
         }
     }

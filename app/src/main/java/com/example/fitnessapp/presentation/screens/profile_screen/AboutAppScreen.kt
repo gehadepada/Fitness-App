@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.navigation.Screens
+import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 
 /**
@@ -45,7 +46,7 @@ fun AboutAppScreen(onNavigateBack: () -> Unit) {
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors( // Use theme colors
-                    containerColor = MaterialTheme.colorScheme.primary,
+                    containerColor = MaterialTheme.colorScheme.background,
                     titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     navigationIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer
                 )
@@ -69,7 +70,7 @@ fun AboutAppScreen(onNavigateBack: () -> Unit) {
 
 
             Text(
-                text = "Turpo Fit",
+                text = R.string.app_name.toString(),
                 style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Center
             )
@@ -86,7 +87,7 @@ fun AboutAppScreen(onNavigateBack: () -> Unit) {
             Text(
 
                 text = "An app for tracking fitness and workouts.",
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -104,8 +105,8 @@ fun AboutAppScreen(onNavigateBack: () -> Unit) {
             Text(
 
                 text = "© ${java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)} Your Company or Developer Nagy Osman. All rights reserved.",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center
             )
         }
@@ -115,7 +116,7 @@ fun AboutAppScreen(onNavigateBack: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun AboutAppScreenPreview() {
-    MaterialTheme {
+    FitnessAppTheme {
         AboutAppScreen(onNavigateBack = { Screens.ProfileScreen })
     }
 }

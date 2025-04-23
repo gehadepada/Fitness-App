@@ -1,5 +1,6 @@
 package com.example.fitnessapp.presentation.screens.user_data_package.height_select
-import com.example.fitnessapp.presentation.components.BackBottom
+
+import com.example.fitnessapp.presentation.components.BackButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
@@ -33,12 +34,15 @@ import androidx.compose.ui.unit.sp
 import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.components.DefaultButton
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
 @Composable
 fun rememberPickerState() = remember { PickerState() }
-
+val database = FirebaseDatabase.getInstance()
+val userId = FirebaseAuth.getInstance().currentUser?.uid
 class PickerState {
     var selectedItem by mutableStateOf("")
 }
@@ -143,7 +147,7 @@ fun Modifier.fadingEdge(brush: Brush) = this
 private fun pixelsToDp(pixels: Int) = with(LocalDensity.current) { pixels.toDp() }
 
 @Composable
-fun NumberPickerDemo(onHeight: () -> Unit = {}) {
+fun NumberPickerDemo(onHeight: () -> Unit = {}, onBack: () -> Unit = {}) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -191,7 +195,8 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}) {
             state = valuesPickerState,
             items = values,
             visibleItemsCount = 5,
-            modifier = Modifier.fillMaxWidth(0.5f)
+            modifier = Modifier
+                .fillMaxWidth(0.5f)
                 .weight(1f),
             textModifier = Modifier.padding(10.dp),
             textStyle = TextStyle(fontSize = 32.sp, color = Color(0xFFFFFFFF)),
@@ -204,16 +209,22 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}) {
         ) {
             DefaultButton(
                 onClick = {
+                    userId?.let {
+                        database.reference.child("Users").child(it)
+                            .child("height").setValue(valuesPickerState.selectedItem)
+                            .addOnSuccessListener { println("Height saved successfully!") }
+                            .addOnFailureListener { e -> println("Error saving height: $e") }
+                    }
                     onHeight()
-                    println("Selected Height: ${valuesPickerState.selectedItem} Cm")
+
                 },
-                color = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.surface)
             )
 
-            BackBottom(text = "Back")
+            BackButton(
+                text = "Back",
+                onclick = onBack
+            )
         }
-
-
 
 
     }

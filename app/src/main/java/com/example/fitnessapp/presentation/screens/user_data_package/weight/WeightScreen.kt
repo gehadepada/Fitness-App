@@ -19,16 +19,22 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.fitnessapp.presentation.components.BackButton
 import com.example.fitnessapp.presentation.components.DefaultButton
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import java.lang.Math.toRadians
 import kotlin.math.cos
 import kotlin.math.sin
 
 @Composable
 fun WeightScreen(
-    onWeight: () -> Unit = {}
+    onWeight: () -> Unit = {},
+    onBack: () -> Unit = {}
 ) {
+    val database = FirebaseDatabase.getInstance()
+    val userId = FirebaseAuth.getInstance().currentUser?.uid
     var weight by remember { mutableFloatStateOf(70f) } // Default weight
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -91,8 +97,17 @@ fun WeightScreen(
 
         DefaultButton(
             onClick = {
+                userId?.let {
+                    database.reference.child("Users").child(it)
+                        .child("weight").setValue(weight.toInt()) // Convert float to int for clean storage
+                        .addOnSuccessListener { println("Weight saved successfully!") }
+                        .addOnFailureListener { e -> println("Error saving weight: $e") }
+                }
                 onWeight()
             }
+        )
+        BackButton(
+            onclick = onBack
         )
     }
 
