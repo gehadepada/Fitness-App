@@ -67,8 +67,6 @@ fun ExercisesScreen(onExercise:(id: Int) -> Unit) {
 
         }
     }
-
-
 }
 
 @Composable

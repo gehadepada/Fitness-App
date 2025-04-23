@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.fitnessapp.domain.repo.MusclesRepository
 import com.example.fitnessapp.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -19,10 +20,17 @@ class ExercisesViewModel @Inject constructor(private val muscleRepo: MusclesRepo
     val muscleState = _muscleState.asStateFlow()
 
     fun fetchMuscles() {
-
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             muscleRepo.getAllMuscleExercises()
                 .collect { resource ->
+                    _muscleState.value = MuscleState.Loading
+
+//                    try {
+//                        _muscleState.value = MuscleState.Success(resource)
+//                    }catch(e: Exception) {
+//                        _muscleState.value = MuscleState.Error(e.message.toString())
+//                    }
+
                     when (resource) {
                         is Resource.Loading -> {
                             _muscleState.value = MuscleState.Loading
@@ -33,11 +41,12 @@ class ExercisesViewModel @Inject constructor(private val muscleRepo: MusclesRepo
                         }
 
                         is Resource.Error -> {
-                            _muscleState.value = MuscleState.Error(resource.message)
                             Log.e(
                                 "MusclesViewModel Al-qiran",
                                 "Error fetching muscles: ${resource.message}"
                             )
+                            _muscleState.value = MuscleState.Error(resource.message)
+
                         }
                     }
                 }

@@ -1,4 +1,4 @@
-package com.example.fitnessapp.ui.settings
+package com.example.fitnessapp.presentation.screens.profile_screen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons

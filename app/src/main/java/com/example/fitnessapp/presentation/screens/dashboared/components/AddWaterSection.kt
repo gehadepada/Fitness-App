@@ -22,7 +22,7 @@ import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.navigation.Screens
 
 @Composable
-fun AddHabitSection(navController: NavController) {
+fun AddWaterSection(navController: NavController) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
