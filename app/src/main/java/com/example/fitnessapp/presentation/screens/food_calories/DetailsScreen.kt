@@ -132,4 +132,8 @@ fun DetailsScreen(foodName: String, calories: String) {
             }
         }
     }
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes

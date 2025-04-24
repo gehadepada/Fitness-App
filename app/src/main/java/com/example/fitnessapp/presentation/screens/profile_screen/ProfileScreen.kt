@@ -56,6 +56,7 @@ fun UserProfile() {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Icon(
+
                     imageVector = Icons.Default.AccountCircle,
                     contentDescription = null,
                     tint = Color.Gray,

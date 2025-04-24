@@ -1,4 +1,7 @@
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 package com.example.fitnessapp
 
 import android.content.pm.PackageManager
@@ -42,6 +45,10 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
+            }
         }
+<<<<<<< Updated upstream
     }
+=======
+>>>>>>> Stashed changes
 }
