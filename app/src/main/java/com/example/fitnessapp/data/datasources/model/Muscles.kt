@@ -1,4 +1,4 @@
-package com.example.fitnessapp.data.datasources.remote.model
+package com.example.fitnessapp.data.datasources.model
 
 
 data class Muscles(
