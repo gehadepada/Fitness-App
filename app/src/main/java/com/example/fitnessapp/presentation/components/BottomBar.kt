@@ -25,7 +25,7 @@ fun CustomBottomBar(
         Icons.Default.Home to "Home",
         Icons.Default.FitnessCenter to "Workout",
         Icons.Default.Person to "Profile",
-        Icons.Default.ShoppingCart to "Shop"
+        Icons.Default.Settings to "Shop"
     )
 
     Surface(
@@ -91,6 +91,6 @@ fun BottomBarPreviewWrapper() {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewCustomBottomBar() {
+fun FitnessAppTheme() {
     BottomBarPreviewWrapper()
 }
