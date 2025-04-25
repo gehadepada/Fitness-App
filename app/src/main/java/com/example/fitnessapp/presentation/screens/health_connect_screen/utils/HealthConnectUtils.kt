@@ -196,7 +196,7 @@ object HealthConnectUtils {
                         trackTime = trackTime.plusDays(1).toLocalDate().atStartOfDay()
                     }
                 }
-                val totaldistance = dailyResult.result[DistanceRecord.DISTANCE_TOTAL]?.inMiles
+                val totaldistance = (dailyResult.result[DistanceRecord.DISTANCE_TOTAL]?.inKilometers?.times(1.60934))?.let {"%.3f".format(it)}
                 distanceData.add(
                     DataRecord(
                         metricValue = (totaldistance ?: 0).toString(),
@@ -357,7 +357,7 @@ object HealthConnectUtils {
                     if (response.records[index].startTime > end) {
                         sleepData.add(
                             DataRecord(
-                                metricValue = Duration.between(start, end).toMinutes()
+                                metricValue = Duration.between(start, end).toHours()
                                     .toString(),
                                 dataType = DataType.SLEEP,
                                 toDatetime = end.atZone(ZoneId.systemDefault())
@@ -374,7 +374,7 @@ object HealthConnectUtils {
                 }
                 sleepData.add(
                     DataRecord(
-                        metricValue = Duration.between(start, end).toMinutes().toString(),
+                        metricValue = Duration.between(start, end).toHours().toString(),
                         dataType = DataType.SLEEP,
                         toDatetime = end.atZone(ZoneId.systemDefault())
                             .format(dateTimeFormatter),

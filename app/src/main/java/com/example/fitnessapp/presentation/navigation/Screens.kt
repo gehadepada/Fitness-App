@@ -40,6 +40,8 @@ sealed class Screens(val route: String) {
 
     data object HealthScreen: Screens("health")
 
+    data object HealthConnectScreen: Screens("health_connect")
+
     data object ProfileScreen: Screens("profile")
 
     data object ScanFoodScreen: Screens("scan_food")
