@@ -109,12 +109,14 @@ fun UserProfile() {
 data class ProfileItem(val title: String, val icon: ImageVector)
 
 @Composable
-fun ProfileListItem(title: String, icon: ImageVector) {
+fun ProfileListItem(title: String, icon: ImageVector, onClick:() -> Unit = {}) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { /* Action here */ }
+            .clickable {
+                onClick()
+            }
             .padding(vertical = 12.dp)
     ) {
         Icon(icon, contentDescription = null, tint = Color.White)

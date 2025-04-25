@@ -4,7 +4,6 @@ import com.example.fitnessapp.data.datasources.model.Muscles
 
 sealed class MuscleState {
     data object Loading: MuscleState()
-    data object Entered: MuscleState()
     data class Success(val muscles: List<Muscles>): MuscleState()
     data class Error(val message: String): MuscleState()
 }

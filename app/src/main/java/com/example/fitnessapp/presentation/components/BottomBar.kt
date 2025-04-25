@@ -1,3 +1,5 @@
+package com.example.fitnessapp.presentation.components
+
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.clickable

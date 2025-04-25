@@ -22,6 +22,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import kotlinx.coroutines.delay
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -31,6 +32,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.fitnessapp.R
 import com.example.fitnessapp.data.datasources.model.Muscles
+import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.screens.muscle_screen.viewModel.ExercisesViewModel
 import com.example.fitnessapp.presentation.screens.muscle_screen.viewModel.MuscleState
 
@@ -48,10 +50,22 @@ fun ExerciseDetailScreen(id: Int) {
 
     when (musclesState) {
         is MuscleState.Error -> {
-            Log.e("Al-qiran", "Error ${(musclesState as MuscleState.Error).message}")
+            FailedLoadingScreen(
+                errorMessage = "${(musclesState as MuscleState.Error).message}..",
+                onFailed = {
+                    muscleViewModel.loadMuscles()
+                }
+            )
         }
 
         is MuscleState.Loading -> {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator()
+            }
             Log.d("Al-qiran", "Loading Loading Loading")
         }
 
@@ -60,7 +74,6 @@ fun ExerciseDetailScreen(id: Int) {
             ExerciseDetails(musclesData)
         }
 
-        else -> Unit
     }
 }
 

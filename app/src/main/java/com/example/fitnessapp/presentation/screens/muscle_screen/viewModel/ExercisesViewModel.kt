@@ -1,6 +1,5 @@
 package com.example.fitnessapp.presentation.screens.muscle_screen.viewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitnessapp.domain.repo.MusclesRepository
@@ -15,18 +14,18 @@ import javax.inject.Inject
 class ExercisesViewModel @Inject constructor(private val muscleRepo: MusclesRepository) :
     ViewModel() {
 
-    private val _muscleState = MutableStateFlow<MuscleState>(MuscleState.Entered)
+    private val _muscleState = MutableStateFlow<MuscleState>(MuscleState.Loading)
     val muscleState = _muscleState.asStateFlow()
 
     fun loadMuscles() {
+
+        _muscleState.value = MuscleState.Loading
+
         viewModelScope.launch(Dispatchers.IO) {
-            _muscleState.value = MuscleState.Loading
             try {
                 _muscleState.value = MuscleState.Success(muscleRepo.getAllMuscleExercises())
-                Log.d("Al-qiran", "Data Loaded Successfully")
             } catch (e: Exception) {
                 _muscleState.value = MuscleState.Error(e.message ?: "Unknown error")
-                Log.d("Al-qiran", "Error: ${e.message}")
             }
 
         }
