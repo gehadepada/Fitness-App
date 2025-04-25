@@ -22,31 +22,33 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.fitnessapp.data.datasources.remote.model.Exercises
-import com.example.fitnessapp.data.datasources.remote.model.Muscles
+import com.example.fitnessapp.data.datasources.model.Exercises
+import com.example.fitnessapp.data.datasources.model.Muscles
 import com.example.fitnessapp.presentation.screens.muscle_screen.viewModel.ExercisesViewModel
 import com.example.fitnessapp.presentation.screens.muscle_screen.viewModel.MuscleState
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 @Composable
-fun ExercisesScreen(onExercise:(id: Int) -> Unit) {
+fun ExercisesScreen(onExercise: (id: Int) -> Unit) {
 
     val muscleViewModel = hiltViewModel<ExercisesViewModel>()
     val musclesState by muscleViewModel.muscleState.collectAsStateWithLifecycle()
 
-
     LaunchedEffect(Unit) {
-        muscleViewModel.fetchMuscles()
+        muscleViewModel.loadMuscles()
     }
 
 
-    when(musclesState) {
+    when (musclesState) {
         is MuscleState.Error -> {
             Log.e("Al-qiran", "Error ${(musclesState as MuscleState.Error).message}")
         }
+
         is MuscleState.Loading -> {
             Log.d("Al-qiran", "Loading Loading Loading")
         }
+
         is MuscleState.Success -> {
             Column(
                 modifier = Modifier
@@ -57,11 +59,12 @@ fun ExercisesScreen(onExercise:(id: Int) -> Unit) {
             ) {
                 Spacer(modifier = Modifier.weight(1f)) // Pushes content down
 
-                GridItems((musclesState as MuscleState.Success).muscles, onExercise =  onExercise)
+                GridItems((musclesState as MuscleState.Success).muscles, onExercise = onExercise)
 
                 Spacer(modifier = Modifier.weight(1f)) // Adds spacing below content
             }
         }
+
         else -> {
             Log.d("Al-qiran", "Entered")
 
@@ -72,7 +75,7 @@ fun ExercisesScreen(onExercise:(id: Int) -> Unit) {
 @Composable
 fun GridItems(
     muscles: List<Muscles>,
-    onExercise:(id: Int) -> Unit
+    onExercise: (id: Int) -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.SpaceEvenly,

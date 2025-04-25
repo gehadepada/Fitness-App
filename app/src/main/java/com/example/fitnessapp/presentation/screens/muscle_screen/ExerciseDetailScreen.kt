@@ -30,7 +30,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.fitnessapp.R
-import com.example.fitnessapp.data.datasources.remote.model.Muscles
+import com.example.fitnessapp.data.datasources.model.Muscles
 import com.example.fitnessapp.presentation.screens.muscle_screen.viewModel.ExercisesViewModel
 import com.example.fitnessapp.presentation.screens.muscle_screen.viewModel.MuscleState
 
@@ -43,7 +43,7 @@ fun ExerciseDetailScreen(id: Int) {
 
 
     LaunchedEffect(Unit) {
-        muscleViewModel.fetchMuscles()
+        muscleViewModel.loadMuscles()
     }
 
     when (musclesState) {

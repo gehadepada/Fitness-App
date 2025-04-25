@@ -1,4 +1,3 @@
-
 package com.example.fitnessapp
 
 import android.content.pm.PackageManager
