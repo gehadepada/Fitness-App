@@ -1,5 +1,6 @@
 package com.example.fitnessapp.presentation.screens.dashboared.components
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,8 +14,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -23,6 +28,14 @@ import com.example.fitnessapp.presentation.navigation.Screens
 
 @Composable
 fun AddWaterSection(navController: NavController) {
+    val context= LocalContext.current
+    val sharedPreferences= context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+    val dailyGoal= remember {
+        mutableStateOf(sharedPreferences.getInt("daily_goal",2000))
+    }
+    LaunchedEffect(Unit) {
+        dailyGoal.value=sharedPreferences.getInt("daily_goal",2000)
+    }
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -45,7 +58,7 @@ fun AddWaterSection(navController: NavController) {
 
         )
         Text(
-            text = "Add Water",
+            text = "today goal : ${dailyGoal.value} ml",
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onSurface
         )
