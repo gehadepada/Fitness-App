@@ -35,6 +35,8 @@ import com.example.fitnessapp.presentation.components.DefaultButton
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
@@ -144,9 +146,11 @@ fun Modifier.fadingEdge(brush: Brush) = this
 
 @Composable
 private fun pixelsToDp(pixels: Int) = with(LocalDensity.current) { pixels.toDp() }
-
 @Composable
 fun NumberPickerDemo(onHeight: () -> Unit = {}) {
+    val firestore = FirebaseFirestore.getInstance()
+    val userId = FirebaseAuth.getInstance().currentUser?.uid
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -154,7 +158,6 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}) {
             .background(MaterialTheme.colorScheme.background)
             .fillMaxWidth()
     ) {
-
 
         val values = remember { (140..210).map { it.toString() } }
         val valuesPickerState = rememberPickerState()
@@ -181,7 +184,6 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}) {
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.padding(end = 10.dp)
             )
-            // Selected Height Text
             Text(
                 text = "Cm",
                 textAlign = TextAlign.Center,
@@ -208,26 +210,22 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}) {
             DefaultButton(
                 onClick = {
                     userId?.let {
-                        database.reference.child("Users").child(it)
-                            .child("height").setValue(valuesPickerState.selectedItem)
-                            .addOnSuccessListener { println("Height saved successfully!") }
+                        val heightData = hashMapOf("height" to valuesPickerState.selectedItem)
+
+                        firestore.collection("Users").document(it)
+                            .set(heightData, SetOptions.merge())
+                            .addOnSuccessListener { println("Height saved successfully to Firestore!") }
                             .addOnFailureListener { e -> println("Error saving height: $e") }
                     }
                     onHeight()
-
                 },
                 color = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.surface)
             )
 
             BackBottom(text = "Back")
         }
-
-
-
-
     }
 }
-
 @Preview
 @Composable
 private fun Prev() {

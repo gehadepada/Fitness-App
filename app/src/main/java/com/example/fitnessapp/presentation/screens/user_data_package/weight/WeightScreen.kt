@@ -23,6 +23,8 @@ import com.example.fitnessapp.presentation.components.DefaultButton
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import java.lang.Math.toRadians
 import kotlin.math.cos
 import kotlin.math.sin
@@ -30,10 +32,10 @@ import kotlin.math.sin
 @Composable
 fun WeightScreen(
     onWeight: () -> Unit = {}
-
 ) {
-    val database = FirebaseDatabase.getInstance()
-    val userId = FirebaseAuth.getInstance().currentUser?.uid
+    val firestore = FirebaseFirestore.getInstance() // Initialize Firestore
+    val userId = FirebaseAuth.getInstance().currentUser?.uid // Get current user ID
+
     var weight by remember { mutableFloatStateOf(70f) } // Default weight
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -77,16 +79,16 @@ fun WeightScreen(
                 .weight(1f)
         ) {
             Canvas(modifier = Modifier.fillMaxSize()) {
-                drawCircularDial(20, 180) // Before: drawCircularDial(30, 150)
-                drawPointer(weight, 20, 180) // Before: drawPointer(weight, 30, 150)
+                drawCircularDial(20, 180)
+                drawPointer(weight, 20, 180)
             }
         }
 
         Slider(
             value = weight,
             onValueChange = { weight = it },
-            valueRange = 20f..180f, // Before: 30f..150f
-            steps = 160, // Before: steps = 120, adjusted for smoother control
+            valueRange = 20f..180f,
+            steps = 160, // Adjusted for smoother control
             colors = SliderDefaults.colors(
                 thumbColor = Color.Green,
                 activeTrackColor = Color.Green
@@ -97,16 +99,22 @@ fun WeightScreen(
         DefaultButton(
             onClick = {
                 userId?.let {
-                    database.reference.child("Users").child(it)
-                        .child("weight").setValue(weight.toInt()) // Convert float to int for clean storage
-                        .addOnSuccessListener { println("Weight saved successfully!") }
-                        .addOnFailureListener { e -> println("Error saving weight: $e") }
+                    // Save weight to Firestore
+                    val weightData = hashMapOf("weight" to weight.toInt()) // Convert float to int for clean storage
+
+                    firestore.collection("Users").document(it)
+                        .set(weightData, SetOptions.merge()) // Save or merge data
+                        .addOnSuccessListener {
+                            println("Weight saved successfully to Firestore!")
+                            onWeight()
+                        }
+                        .addOnFailureListener { e ->
+                            println("Error saving weight: $e")
+                        }
                 }
-                onWeight()
             }
         )
     }
-
 }
 
 fun DrawScope.drawCircularDial(minWeight: Int, maxWeight: Int) {
@@ -117,9 +125,9 @@ fun DrawScope.drawCircularDial(minWeight: Int, maxWeight: Int) {
 
     val radius = size.minDimension / 2
     val totalSteps = maxWeight - minWeight
-    val stepAngle = 360f / totalSteps // Before: 90f / totalSteps
+    val stepAngle = 360f / totalSteps
 
-    for (i in 0..totalSteps step 10) { // Before: step 20
+    for (i in 0..totalSteps step 10) {
         val weightValue = minWeight + i
         val angle = i * stepAngle - 90f
         val x = (radius * cos(toRadians(angle.toDouble()))).toFloat() + center.x
@@ -139,7 +147,7 @@ fun DrawScope.drawCircularDial(minWeight: Int, maxWeight: Int) {
 
 fun DrawScope.drawPointer(weight: Float, minWeight: Int, maxWeight: Int) {
     val totalSteps = maxWeight - minWeight
-    val stepAngle = 360f / totalSteps // Before: 90f / totalSteps
+    val stepAngle = 360f / totalSteps
     val angle = (weight - minWeight) * stepAngle - 90f
 
     val radius = size.minDimension / 2
@@ -153,8 +161,8 @@ fun DrawScope.drawPointer(weight: Float, minWeight: Int, maxWeight: Int) {
         end = Offset(x, y),
         strokeWidth = 8f
     )
-
 }
+
 
 
 @Preview
