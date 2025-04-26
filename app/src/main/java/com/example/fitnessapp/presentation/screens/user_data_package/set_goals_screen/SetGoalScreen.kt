@@ -34,16 +34,18 @@ import com.example.fitnessapp.presentation.components.DefaultButton
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 
 @Composable
 fun SetGoalsScreen(
     onSetGoals: () -> Unit = {},
     onBack:() -> Unit = {}
 ) {
-    val database = FirebaseDatabase.getInstance()
-    val userId = FirebaseAuth.getInstance().currentUser?.uid
+    val firestore = FirebaseFirestore.getInstance() // Initialize Firestore
+    val userId = FirebaseAuth.getInstance().currentUser?.uid // Get current user ID
 
-    val  personGoals = remember { mutableStateOf("") }
+    val personGoals = remember { mutableStateOf("") }
     val isGoalSelected = remember { mutableStateOf("") }
 
     Column(
@@ -125,12 +127,19 @@ fun SetGoalsScreen(
                     isGoalSelected.value = "Please select your goals"
                 } else {
                     userId?.let {
-                        database.reference.child("Users").child(it)
-                            .child("goal").setValue(personGoals.value)
-                            .addOnSuccessListener { println("Goal saved successfully!") }
-                            .addOnFailureListener { e -> println("Error saving goal: $e") }
+                        // Save selected goals to Firestore
+                        val goalsData = hashMapOf("goal" to personGoals.value)
+
+                        firestore.collection("Users").document(it)
+                            .set(goalsData, SetOptions.merge()) // Save or merge data
+                            .addOnSuccessListener {
+                                println("Goal saved successfully to Firestore!")
+                                onSetGoals()
+                            }
+                            .addOnFailureListener { e ->
+                                println("Error saving goal: $e")
+                            }
                     }
-                    onSetGoals()
                 }
             },
             message = isGoalSelected.value
@@ -140,6 +149,7 @@ fun SetGoalsScreen(
         )
     }
 }
+
 
 @Preview
 @Composable

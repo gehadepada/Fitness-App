@@ -37,7 +37,9 @@ import com.example.fitnessapp.presentation.components.BackButton
 import com.example.fitnessapp.presentation.components.DefaultButton
 import com.example.fitnessapp.presentation.screens.user_data_package.level_screen.models.LevelList
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
-
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 
 @Composable
 fun LevelContent(
@@ -45,6 +47,9 @@ fun LevelContent(
     levelList: MutableList<LevelList>,
     onBack: () -> Unit = {}
 ) {
+    // Initialize Firestore
+    val firestore = FirebaseFirestore.getInstance()
+    val userId = FirebaseAuth.getInstance().currentUser?.uid
 
     val personLevel = remember { mutableStateOf("") }
     val isLevelSelected = remember { mutableStateOf("") }
@@ -61,7 +66,6 @@ fun LevelContent(
             modifier = Modifier.padding(bottom = 10.dp)
         )
 
-
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
@@ -69,13 +73,12 @@ fun LevelContent(
             verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             var oldSelected: MutableState<Boolean>? = null
 
             items(levelList.size) { i ->
                 val isSelected = remember { mutableStateOf(levelList[i].isSelected) }
 
-                // changing the border color if it's false be
+                // Change the border color if selected
                 val border = if (isSelected.value) {
                     BorderStroke(3.dp, colorScheme.primary)
                 } else BorderStroke(3.dp, colorScheme.onBackground)
@@ -83,8 +86,9 @@ fun LevelContent(
                 RowElements(
                     levelList[i],
                     modifier = Modifier.clickable {
-                        if (oldSelected?.value != null)
+                        if (oldSelected?.value != null) {
                             oldSelected?.value = false
+                        }
                         oldSelected = isSelected
                         isSelected.value = true
 
@@ -101,6 +105,20 @@ fun LevelContent(
                     if (personLevel.value.isEmpty()) {
                         isLevelSelected.value = "Please select your level"
                     } else {
+                        userId?.let {
+                            // Save selected level to Firestore
+                            val levelData = hashMapOf("level" to personLevel.value)
+
+                            firestore.collection("Users").document(it)
+                                .set(levelData, SetOptions.merge())
+                                .addOnSuccessListener {
+                                    println("Level saved successfully to Firestore!")
+                                    onPersonLevel(personLevel.value)
+                                }
+                                .addOnFailureListener { e ->
+                                    println("Error saving level: $e")
+                                }
+                        }
                         onPersonLevel(personLevel.value)
                     }
                 },
@@ -117,34 +135,29 @@ fun LevelContent(
 fun RowElements(
     levelList: LevelList,
     modifier: Modifier = Modifier,
-    border: BorderStroke = BorderStroke(3.dp, colorScheme.onBackground)
+    border: BorderStroke = BorderStroke(3.dp, MaterialTheme.colorScheme.onBackground)
 ) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-
-        ) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
         Image(
             modifier = Modifier
                 .width(73.dp)
                 .height(73.dp)
                 .padding(end = 8.dp),
-            painter = painterResource(
-                id = levelList.levelImage
-            ),
+            painter = painterResource(id = levelList.levelImage),
             contentDescription = null,
-            colorFilter = ColorFilter.tint(colorScheme.primary),
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
         )
-
-        CardElement(levelList.levelName, modifier, border)
+        CardElement(
+            levelList = levelList.levelName,
+            modifier = modifier,
+            border = border
+        )
     }
 }
 
+
 @Composable
-fun CardElement(
-    levelList: String,
-    modifier: Modifier = Modifier,
-    border: BorderStroke
-) {
+fun CardElement(levelList: String, modifier: Modifier = Modifier, border: BorderStroke) {
     Card(
         colors = CardDefaults.cardColors(colorScheme.surface),
         modifier = Modifier
@@ -152,19 +165,13 @@ fun CardElement(
             .height(61.dp),
         border = border,
         shape = CircleShape,
-
-        ) {
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .then(modifier),
             contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = levelList,
-                style = MaterialTheme.typography.labelLarge
-            )
-        }
+        ) { Text(text = levelList, style = MaterialTheme.typography.labelLarge) }
     }
 }
 

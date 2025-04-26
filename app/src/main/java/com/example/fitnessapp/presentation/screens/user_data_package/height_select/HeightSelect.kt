@@ -1,5 +1,5 @@
-package com.example.fitnessapp.presentation.screens.user_data_package.height_select
 
+package com.example.fitnessapp.presentation.screens.user_data_package.height_select
 import com.example.fitnessapp.presentation.components.BackButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -36,6 +36,8 @@ import com.example.fitnessapp.presentation.components.DefaultButton
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
@@ -148,9 +150,12 @@ private fun pixelsToDp(pixels: Int) = with(LocalDensity.current) { pixels.toDp()
 
 @Composable
 fun NumberPickerDemo(onHeight: () -> Unit = {}, onBack: () -> Unit = {}) {
+    val firestore = FirebaseFirestore.getInstance()
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
+
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
             .fillMaxWidth()
@@ -210,12 +215,15 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}, onBack: () -> Unit = {}) {
             DefaultButton(
                 onClick = {
                     userId?.let {
-                        database.reference.child("Users").child(it)
-                            .child("height").setValue(valuesPickerState.selectedItem)
-                            .addOnSuccessListener { println("Height saved successfully!") }
+                        val heightData = hashMapOf("height" to valuesPickerState.selectedItem)
+
+                        firestore.collection("Users").document(it)
+                            .set(heightData, SetOptions.merge())
+                            .addOnSuccessListener { println("Height saved successfully to Firestore!") }
                             .addOnFailureListener { e -> println("Error saving height: $e") }
                     }
                     onHeight()
+
 
                 },
             )
@@ -237,3 +245,5 @@ private fun Prev() {
         NumberPickerDemo()
     }
 }
+
+
