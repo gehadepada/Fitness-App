@@ -1,3 +1,4 @@
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -29,14 +30,10 @@ import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.components.BackButton
 import com.example.fitnessapp.presentation.components.DefaultButton
 import com.example.fitnessapp.utils.firestore_utils.FirestoreUtils
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 
 
 @Composable
 fun GenderScreen(onGender: (String) -> Unit) {
-    val database = FirebaseDatabase.getInstance()
-    val userId = FirebaseAuth.getInstance().currentUser?.uid
 
     val isGenderSelected = remember { mutableStateOf("") }
 
