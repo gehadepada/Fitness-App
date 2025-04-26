@@ -25,9 +25,9 @@ fun DefaultButton(
     onClick: () -> Unit = {},
     text: String = "Continue",
     enabled: Boolean = true,
-    color: ButtonColors = ButtonDefaults.buttonColors(containerColor = colorScheme.surface),
+    color: ButtonColors = ButtonDefaults.buttonColors(containerColor = colorScheme.primary),
     message: String = "",
-    modifier: Modifier = Modifier.padding(bottom = 32.dp),
+    modifier: Modifier = Modifier.padding(bottom = 12.dp),
 ) {
     Column(
         modifier = modifier,

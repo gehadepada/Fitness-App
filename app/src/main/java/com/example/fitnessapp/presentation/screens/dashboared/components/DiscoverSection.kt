@@ -35,10 +35,12 @@ fun DiscoverSection(navController: NavController) {
         Text(
             text = "Discover",
             style = MaterialTheme.typography.headlineMedium,
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.Bold
         )
+
         Spacer(modifier = Modifier.height(16.dp))
+
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -47,24 +49,29 @@ fun DiscoverSection(navController: NavController) {
             DiscoverButton(
                 icon = painterResource(id = R.drawable.moon_svgrepo_com),
                 label = "Profile",
-                onClick = { navController.navigate(Screens.ProfileScreen.route) }
+                onClick = { navController.navigate(Screens.ProfileScreen.route) },
+                modifier = Modifier.weight(1f)
             )
             DiscoverButton(
                 icon = painterResource(id = R.drawable.dinner_icon),
                 label = "Recipes",
                 onClick = {
                     navController.navigate(Screens.FoodScreen.route)
-                }
+                },
+                modifier = Modifier.weight(1f)
             )
             DiscoverButton(
                 icon = painterResource(id = R.drawable.baseline_fitness_center_24),
                 label = "Workouts",
                 onClick = {
                     navController.navigate(Screens.ExerciseScreen.route)
-                }
+                },
+                modifier = Modifier.weight(1f)
             )
         }
+
         Spacer(modifier = Modifier.height(16.dp))
+
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -73,12 +80,14 @@ fun DiscoverSection(navController: NavController) {
             DiscoverButton(
                 icon = painterResource(id = android.R.drawable.ic_menu_search),
                 label = "Search",
-                onClick = { navController.navigate(Screens.SearchBtnScreen.route) }
+                onClick = { navController.navigate(Screens.SearchBtnScreen.route) },
+                modifier = Modifier.weight(1f)
             )
             DiscoverButton(
                 icon = painterResource(id = R.drawable.heart_pulse_solid),
                 label = "Health",
-                onClick = { navController.navigate(Screens.HealthScreen.route) }
+                onClick = { navController.navigate(Screens.HealthScreen.route) },
+                modifier = Modifier.weight(1f)
             )
             DiscoverButton(
                 icon = painterResource(id = R.drawable.moon_svgrepo_com),
@@ -88,7 +97,8 @@ fun DiscoverSection(navController: NavController) {
                     navController.navigate(Screens.LogInScreen.route) {
                         popUpTo(Screens.DashBoardScreen.route)
                     }
-                }
+                },
+                modifier = Modifier.weight(1f)
             )
         }
     }

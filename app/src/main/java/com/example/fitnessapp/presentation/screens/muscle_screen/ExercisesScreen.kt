@@ -1,11 +1,12 @@
 package com.example.fitnessapp.presentation.screens.muscle_screen
 
-import android.util.Log
 import com.example.fitnessapp.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,31 +23,43 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.fitnessapp.data.datasources.remote.model.Exercises
-import com.example.fitnessapp.data.datasources.remote.model.Muscles
+import com.example.fitnessapp.data.datasources.model.Muscles
+import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.screens.muscle_screen.viewModel.ExercisesViewModel
 import com.example.fitnessapp.presentation.screens.muscle_screen.viewModel.MuscleState
 
 
 @Composable
-fun ExercisesScreen(onExercise:(id: Int) -> Unit) {
+fun ExercisesScreen(onExercise: (id: Int) -> Unit) {
 
     val muscleViewModel = hiltViewModel<ExercisesViewModel>()
     val musclesState by muscleViewModel.muscleState.collectAsStateWithLifecycle()
 
-
     LaunchedEffect(Unit) {
-        muscleViewModel.fetchMuscles()
+        muscleViewModel.loadMuscles()
     }
 
 
-    when(musclesState) {
+    when (musclesState) {
         is MuscleState.Error -> {
-            Log.e("Al-qiran", "Error ${(musclesState as MuscleState.Error).message}")
+            FailedLoadingScreen(
+                errorMessage = "${(musclesState as MuscleState.Error).message}...",
+                onFailed = {
+                    muscleViewModel.loadMuscles()
+                }
+            )
         }
+
         is MuscleState.Loading -> {
-            Log.d("Al-qiran", "Loading Loading Loading")
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator()
+            }
         }
+
         is MuscleState.Success -> {
             Column(
                 modifier = Modifier
@@ -55,26 +68,20 @@ fun ExercisesScreen(onExercise:(id: Int) -> Unit) {
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Spacer(modifier = Modifier.weight(1f)) // Pushes content down
+                Spacer(modifier = Modifier.weight(1f))
 
-                GridItems((musclesState as MuscleState.Success).muscles, onExercise =  onExercise)
+                GridItems((musclesState as MuscleState.Success).muscles, onExercise = onExercise)
 
-                Spacer(modifier = Modifier.weight(1f)) // Adds spacing below content
+                Spacer(modifier = Modifier.weight(1f))
             }
         }
-        else -> {
-            Log.d("Al-qiran", "Entered")
-
-        }
     }
-
-
 }
 
 @Composable
 fun GridItems(
     muscles: List<Muscles>,
-    onExercise:(id: Int) -> Unit
+    onExercise: (id: Int) -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.SpaceEvenly,
@@ -88,12 +95,11 @@ fun GridItems(
                     .padding(vertical = 4.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                row.forEach { (id, muscleName, exerciseImage, exercises) ->
+                row.forEach { (id, muscleName, exerciseImage) ->
                     ExerciseItem(
                         id = id,
                         name = muscleName,
                         imageUrl = exerciseImage,
-                        exercises = exercises,
                         onExercise = onExercise
                     )
                 }
@@ -107,7 +113,6 @@ fun ExerciseItem(
     id: Int,
     name: String,
     imageUrl: String,
-    exercises: List<Exercises>,
     onExercise: (id: Int) -> Unit
 ) {
 

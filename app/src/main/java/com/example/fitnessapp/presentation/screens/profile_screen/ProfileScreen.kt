@@ -1,19 +1,24 @@
 package com.example.fitnessapp.presentation.screens.profile_screen
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 @Composable
 fun UserProfile() {
@@ -27,8 +32,15 @@ fun UserProfile() {
         ProfileItem("About this app", Icons.Default.Info)
     )
 
+    var selectedIndex by remember { mutableIntStateOf(3) }
+
     Scaffold(
-        bottomBar = { BottomNavigationBar() },
+        bottomBar = {
+            CustomBottomBar(
+                selectedIndex = selectedIndex,
+                onItemSelected = { selectedIndex = it }
+            )
+        },
         containerColor = Color.Black
     ) { innerPadding ->
         Column(
@@ -39,7 +51,6 @@ fun UserProfile() {
         ) {
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Profile Header
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
@@ -61,7 +72,6 @@ fun UserProfile() {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Competition Card
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -88,7 +98,6 @@ fun UserProfile() {
                 }
             }
 
-            // Profile Items List
             items.forEach { item ->
                 ProfileListItem(title = item.title, icon = item.icon)
                 HorizontalDivider(thickness = 0.5.dp, color = Color.DarkGray)
@@ -100,12 +109,14 @@ fun UserProfile() {
 data class ProfileItem(val title: String, val icon: ImageVector)
 
 @Composable
-fun ProfileListItem(title: String, icon: ImageVector) {
+fun ProfileListItem(title: String, icon: ImageVector, onClick:() -> Unit = {}) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { /* Action here */ }
+            .clickable {
+                onClick()
+            }
             .padding(vertical = 12.dp)
     ) {
         Icon(icon, contentDescription = null, tint = Color.White)
@@ -122,33 +133,72 @@ fun ProfileListItem(title: String, icon: ImageVector) {
 }
 
 @Composable
-fun BottomNavigationBar() {
-    NavigationBar(
-        containerColor = Color(0xFF121212)
+fun CustomBottomBar(
+    selectedIndex: Int,
+    onItemSelected: (Int) -> Unit
+) {
+    val items = listOf(
+        Icons.Default.Home to "Home",
+        Icons.Default.FitnessCenter to "Workout",
+        Icons.Default.ShoppingCart to "Shop",
+        Icons.Default.Person to "Profile"
+    )
+
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(12.dp),
+        shape = RoundedCornerShape(32.dp),
+        color = Color(0xFF121212),
+        shadowElevation = 8.dp
     ) {
-        NavigationBarItem(
-            icon = { Icon(Icons.Default.Favorite, contentDescription = null) },
-            label = { Text("Health") },
-            selected = true,
-            onClick = {}
-        )
-        NavigationBarItem(
-            icon = { Icon(Icons.Default.Favorite, contentDescription = null) },
-            label = { Text("Workout") },
-            selected = false,
-            onClick = {}
-        )
-        NavigationBarItem(
-            icon = { Icon(Icons.Default.Favorite, contentDescription = null) },
-            label = { Text("Device") },
-            selected = false,
-            onClick = {}
-        )
-        NavigationBarItem(
-            icon = { Icon(Icons.Default.Person, contentDescription = null) },
-            label = { Text("Profile") },
-            selected = false,
-            onClick = {}
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 10.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            items.forEachIndexed { index, (icon, label) ->
+                val animatedSize by animateDpAsState(
+                    targetValue = if (index == selectedIndex) 30.dp else 24.dp,
+                    label = "iconSize"
+                )
+
+                val animatedColor by animateColorAsState(
+                    targetValue = if (index == selectedIndex) Color(0xFF7CFC00) else Color.Gray,
+                    label = "iconColor"
+                )
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .padding(horizontal = 4.dp)
+                        .clickable { onItemSelected(index) }
+                ) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = label,
+                        tint = animatedColor,
+                        modifier = Modifier.size(animatedSize)
+                    )
+                    Spacer(modifier = Modifier.height(2.dp))
+                    Text(
+                        text = label,
+                        fontSize = 11.sp,
+                        color = animatedColor,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+@Preview(showBackground = true, showSystemUi = true)
+fun UserProfilePreview() {
+    FitnessAppTheme {
+        UserProfile()
     }
 }

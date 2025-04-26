@@ -28,7 +28,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -38,99 +37,99 @@ fun DetailsScreen(foodName: String, calories: String) {
     var quantity by remember { mutableIntStateOf(1) }
     val totalCalories = calories.toInt() * quantity
     val context = LocalContext.current
-        Column(
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.Black),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Card(
             modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.Black),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                .fillMaxWidth(),
+
+            colors = CardDefaults.cardColors(
+                containerColor = Color.Black
+            )
         ) {
-            Card(
+
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth(),
-
-                colors = CardDefaults.cardColors(
-                 containerColor = Color.Black
-                )
+                    .padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
+                Text(
+                    text = foodName,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.bodyLarge,
+                    textAlign = TextAlign.Center
+                )
 
-                Column(
-                    modifier = Modifier
-                        .padding(24.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = "Calories per unit: $calories cal",
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Normal,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = foodName,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.bodyLarge,
-                        textAlign = TextAlign.Center
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Text(
-                        text = "Calories per unit: $calories cal",
-                        style = MaterialTheme.typography.labelSmall,
-                        fontWeight = FontWeight.Normal,
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
+                    Button(
+                        onClick = { if (quantity > 1) quantity-- },
+                        shape = RoundedCornerShape(8.dp),
                     ) {
-                        Button(
-                            onClick = { if (quantity > 1) quantity-- },
-                            shape = RoundedCornerShape(8.dp),
-                        ) {
-                            Text("-", fontSize = 20.sp)
-                        }
-
-                        Spacer(modifier = Modifier.width(16.dp))
-
-                        Text(
-                            text = "$quantity",
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.Normal,
-                        )
-
-                        Spacer(modifier = Modifier.width(16.dp))
-
-                        Button(
-                            onClick = { quantity++ },
-                            shape = RoundedCornerShape(8.dp),
-                        ) {
-                            Text("+")
-                        }
+                        Text("-", fontSize = 20.sp)
                     }
 
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.width(16.dp))
 
                     Text(
-                        text = "Total Calories: $totalCalories cal",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onBackground
+                        text = "$quantity",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Normal,
                     )
 
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.width(16.dp))
 
                     Button(
-                        onClick = {
-                            Toast.makeText(
-                                context,
-                                "$totalCalories cal have been added.",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        },
-                        shape = RoundedCornerShape(12.dp),
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                        onClick = { quantity++ },
+                        shape = RoundedCornerShape(8.dp),
                     ) {
-                        Text("Add to My Diary")
+                        Text("+")
                     }
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Text(
+                    text = "Total Calories: $totalCalories cal",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Button(
+                    onClick = {
+                        Toast.makeText(
+                            context,
+                            "$totalCalories cal have been added.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    },
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                ) {
+                    Text("Add to My Diary")
                 }
             }
         }
     }
+}

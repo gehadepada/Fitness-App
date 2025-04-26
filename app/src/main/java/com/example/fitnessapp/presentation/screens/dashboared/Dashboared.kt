@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.fitnessapp.R
-import com.example.fitnessapp.presentation.screens.dashboared.components.AddHabitSection
+import com.example.fitnessapp.presentation.screens.dashboared.components.AddWaterSection
 import com.example.fitnessapp.presentation.screens.dashboared.components.CircularProgressIndicator
 import com.example.fitnessapp.presentation.screens.dashboared.components.DiscoverSection
 import com.google.firebase.auth.FirebaseAuth
@@ -140,17 +140,9 @@ fun ProfileScreen(navController: NavController) {
                 }
             }
 
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(start = 130.dp)
-            ) {
-                Arrow()
-                Arrow()
-                Arrow()
-            }
+            Spacer(modifier = Modifier.height(50.dp))
 
-            AddHabitSection(navController)
+            AddWaterSection(navController)
             DiscoverSection(navController)
         }
     }
@@ -187,17 +179,6 @@ fun BaseFoodExercise(
     Spacer(modifier = Modifier.height(16.dp))
 }
 
-@Composable
-fun Arrow() {
-    Image(
-        painter = painterResource(id = R.drawable.baseline_call_received_24),
-        contentDescription = "Arrow Icon",
-        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
-        modifier = Modifier
-            .height(40.dp)
-            .width(40.dp)
-    )
-}
 
 @Composable
 fun CustomBottomBar(

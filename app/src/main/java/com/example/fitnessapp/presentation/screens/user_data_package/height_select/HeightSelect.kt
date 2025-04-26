@@ -1,5 +1,6 @@
 package com.example.fitnessapp.presentation.screens.user_data_package.height_select
-import com.example.fitnessapp.presentation.components.BackBottom
+
+import com.example.fitnessapp.presentation.components.BackButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
@@ -146,6 +147,7 @@ fun Modifier.fadingEdge(brush: Brush) = this
 
 @Composable
 private fun pixelsToDp(pixels: Int) = with(LocalDensity.current) { pixels.toDp() }
+
 @Composable
 fun NumberPickerDemo(onHeight: () -> Unit = {}) {
     val firestore = FirebaseFirestore.getInstance()
@@ -158,6 +160,7 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}) {
             .background(MaterialTheme.colorScheme.background)
             .fillMaxWidth()
     ) {
+
 
         val values = remember { (140..210).map { it.toString() } }
         val valuesPickerState = rememberPickerState()
@@ -184,6 +187,7 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}) {
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.padding(end = 10.dp)
             )
+            // Selected Height Text
             Text(
                 text = "Cm",
                 textAlign = TextAlign.Center,
@@ -196,7 +200,8 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}) {
             state = valuesPickerState,
             items = values,
             visibleItemsCount = 5,
-            modifier = Modifier.fillMaxWidth(0.5f)
+            modifier = Modifier
+                .fillMaxWidth(0.5f)
                 .weight(1f),
             textModifier = Modifier.padding(10.dp),
             textStyle = TextStyle(fontSize = 32.sp, color = Color(0xFFFFFFFF)),
@@ -218,14 +223,21 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}) {
                             .addOnFailureListener { e -> println("Error saving height: $e") }
                     }
                     onHeight()
+
                 },
                 color = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.surface)
             )
 
-            BackBottom(text = "Back")
+            BackButton(
+                text = "Back",
+                onclick = onBack
+            )
         }
+
+
     }
 }
+
 @Preview
 @Composable
 private fun Prev() {

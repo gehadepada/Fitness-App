@@ -1,6 +1,7 @@
 package com.example.fitnessapp.presentation.navigation
 
 import GenderScreen
+import com.example.fitnessapp.presentation.screens.health_connect_screen.HealthConnectScreen
 import android.content.Context
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -22,7 +23,6 @@ import com.example.fitnessapp.presentation.screens.auth.signup_screen.SignUpScre
 import com.example.fitnessapp.presentation.screens.dashboared.components.ProfileTopBar
 import com.example.fitnessapp.presentation.screens.food_calories.Navigation
 import com.example.fitnessapp.presentation.screens.food_calories.SearchView
-import com.example.fitnessapp.presentation.screens.health_connect_screen.HealthConnectScreen
 import com.example.fitnessapp.presentation.screens.scan_meal_screen.ScanFood
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExerciseDetailScreen
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExercisesScreen
@@ -141,7 +141,8 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 PhysicalActivityLevel(
                     onPersonLevel = { personLevel ->
                         navController.navigate(Screens.WeightScreen.route)
-                    }
+                    },
+                    onBack = { navController.popBackStack() }
                 )
             }
 
@@ -159,7 +160,8 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 WeightScreen(
                     onWeight = {
                         navController.navigate(Screens.SetGoalsScreen.route)
-                    }
+                    },
+                    onBack = { navController.popBackStack() }
                 )
             }
 
@@ -173,7 +175,8 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                                 inclusive = true
                             }
                         }
-                    }
+                    },
+                    onBack = { navController.popBackStack() }
                 )
             }
 
@@ -189,6 +192,9 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 NumberPickerDemo(
                     onHeight = {
                         navController.navigate(Screens.LevelScreen.route)
+                    },
+                    onBack = {
+                        navController.popBackStack()
                     }
                 )
             }
@@ -219,6 +225,13 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                     navController.navigate(Screens.ScanFoodScreen.route)
                 })
             }
+
+            composable(Screens.HealthConnectScreen.route) {
+                HealthConnectScreen(onBack = {
+                    navController.popBackStack()
+                })
+            }
+
 
             composable(Screens.FoodSearchScreen.route) { Navigation() }
 

@@ -26,7 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.fitnessapp.R
-import com.example.fitnessapp.presentation.components.BackBottom
+import com.example.fitnessapp.presentation.components.BackButton
 import com.example.fitnessapp.presentation.components.DefaultButton
 import com.example.fitnessapp.utils.firestore_utils.FirestoreUtils
 import com.google.firebase.auth.FirebaseAuth
@@ -40,7 +40,6 @@ fun GenderScreen(onGender: (String) -> Unit) {
     val userId = FirebaseAuth.getInstance().currentUser?.uid
 
     val isGenderSelected = remember { mutableStateOf("") }
-
 
     val items = listOf(R.drawable.male, R.drawable.female)
     val gender = listOf("Male", "Female")
@@ -147,7 +146,6 @@ fun GenderScreen(onGender: (String) -> Unit) {
             )
         }
     }
-}
 @Composable
 @Preview
 fun GenderScreenPreview() {

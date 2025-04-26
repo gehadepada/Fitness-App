@@ -111,7 +111,6 @@ fun SignUpScreen(
             ) {
                 DefaultButton(
                     text = "Get Started",
-                    color = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     onClick = {
                         // Validation
                         signUpViewModel.createUser()

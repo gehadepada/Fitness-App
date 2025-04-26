@@ -14,7 +14,7 @@ import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 @SuppressLint("MutableCollectionMutableState")
 @Composable
-fun PhysicalActivityLevel(onPersonLevel: (String) -> Unit) {
+fun PhysicalActivityLevel(onPersonLevel: (String) -> Unit, onBack:() -> Unit = {}) {
 
     val levelList by remember {
         mutableStateOf(
@@ -35,7 +35,7 @@ fun PhysicalActivityLevel(onPersonLevel: (String) -> Unit) {
         )
     }
 
-    LevelContent(onPersonLevel, levelList)
+    LevelContent(onPersonLevel, levelList, onBack)
 }
 
 

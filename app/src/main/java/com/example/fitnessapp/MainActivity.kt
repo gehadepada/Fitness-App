@@ -10,7 +10,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.fitnessapp.presentation.navigation.MyAppNavigation
 import com.example.fitnessapp.presentation.screens.waterScreen.ReminderScheduler
-import com.example.fitnessapp.presentation.screens.waterScreen.WaterTrackerScreen
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 import android.Manifest
 import dagger.hilt.android.AndroidEntryPoint
