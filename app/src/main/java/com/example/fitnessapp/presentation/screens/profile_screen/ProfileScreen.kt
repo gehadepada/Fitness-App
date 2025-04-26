@@ -99,7 +99,7 @@ fun UserProfile() {
             }
 
             items.forEach { item ->
-                ProfileListItem(title = item.title, icon = item.icon)
+                ProfileListItem(title = item.title, icon = item.icon, )
                 HorizontalDivider(thickness = 0.5.dp, color = Color.DarkGray)
             }
         }

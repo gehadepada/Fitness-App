@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.Dp
 import kotlinx.coroutines.delay
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -190,37 +191,38 @@ fun AnimatedImage(image1: String, image2: String, imageSize: Dp) {
         contentAlignment = Alignment.Center
     ) {
 
-        AsyncImage(
-            model = ImageRequest.Builder(context = LocalContext.current)
-                .data(image1)
-                .crossfade(true)
-                .build(),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(160.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .clickable { isPlaying = !isPlaying }
-                .alpha(if (currentImage == image1) 1f else 0f),
-            placeholder = painterResource(id = R.drawable.ex_exercise),
-            error = painterResource(id = R.drawable.baseline_notifications_24)
-        )
+        Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.surface)) {
+            AsyncImage(
+                model = ImageRequest.Builder(context = LocalContext.current)
+                    .data(image1)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(160.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .clickable { isPlaying = !isPlaying }
+                    .alpha(if (currentImage == image1) 1f else 0f),
+                placeholder = painterResource(id = R.drawable.ex_exercise),
+                error = painterResource(id = R.drawable.baseline_notifications_24)
+            )
 
-        AsyncImage(
-            model = ImageRequest.Builder(context = LocalContext.current)
-                .data(image2)
-                .crossfade(true)
-                .build(),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(160.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .alpha(if (currentImage == image2) 1f else 0f),
-            placeholder = painterResource(id = R.drawable.ex_exercise),
-            error = painterResource(id = R.drawable.baseline_notifications_24)
-        )
-
+            AsyncImage(
+                model = ImageRequest.Builder(context = LocalContext.current)
+                    .data(image2)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(160.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .alpha(if (currentImage == image2) 1f else 0f),
+                placeholder = painterResource(id = R.drawable.ex_exercise),
+                error = painterResource(id = R.drawable.baseline_notifications_24)
+            )
+        }
 
         Icon(
             painter = painterResource(if (isPlaying) R.drawable.ic_pause else R.drawable.ic_play),
