@@ -1,5 +1,5 @@
-package com.example.fitnessapp.presentation.screens.user_data_package.height_select
 
+package com.example.fitnessapp.presentation.screens.user_data_package.height_select
 import com.example.fitnessapp.presentation.components.BackButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -149,13 +149,13 @@ fun Modifier.fadingEdge(brush: Brush) = this
 private fun pixelsToDp(pixels: Int) = with(LocalDensity.current) { pixels.toDp() }
 
 @Composable
-fun NumberPickerDemo(onHeight: () -> Unit = {}) {
+fun NumberPickerDemo(onHeight: () -> Unit = {}, onBack: () -> Unit = {}) {
     val firestore = FirebaseFirestore.getInstance()
-    val userId = FirebaseAuth.getInstance().currentUser?.uid
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
+
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
             .fillMaxWidth()
@@ -224,8 +224,8 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}) {
                     }
                     onHeight()
 
+
                 },
-                color = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.surface)
             )
 
             BackButton(
@@ -245,3 +245,5 @@ private fun Prev() {
         NumberPickerDemo()
     }
 }
+
+

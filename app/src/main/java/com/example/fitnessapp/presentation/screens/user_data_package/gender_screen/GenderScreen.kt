@@ -31,12 +31,11 @@ import com.example.fitnessapp.presentation.components.DefaultButton
 import com.example.fitnessapp.utils.firestore_utils.FirestoreUtils
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
+
+
 @Composable
 fun GenderScreen(onGender: (String) -> Unit) {
-
-    val firestore = FirebaseFirestore.getInstance()
+    val database = FirebaseDatabase.getInstance()
     val userId = FirebaseAuth.getInstance().currentUser?.uid
 
     val isGenderSelected = remember { mutableStateOf("") }
@@ -123,29 +122,26 @@ fun GenderScreen(onGender: (String) -> Unit) {
                     if (selectedIndex.value == -1) {
                         showError = true
                     } else {
-                        userId?.let {
-                            // Create a user data map
-                            val userData = hashMapOf(
-                                "gender" to gender[selectedIndex.value]
-                            )
+                        FirestoreUtils.saveUserData(
+                            fieldName = "gender",
+                            value =gender[selectedIndex.value],
+                            onSuccess = {
+                                println("Gender saved successfully!")
+                                onGender(gender[selectedIndex.value])
+                            },
+                            onFailure = { e -> println("Error: $e") }
+                        )
 
-                            FirestoreUtils.saveUserData(
-                                fieldName = "gender",
-                                value =gender[selectedIndex.value],
-                                onSuccess = {
-                                    println("Gender saved successfully!")
-                                    onGender(gender[selectedIndex.value])
-                                },
-                                onFailure = { e -> println("Error: $e") }
-                            )
-                        }
-                        onGender(gender[selectedIndex.value])
                     }
-                },
-                message = isGenderSelected.value
+                }, message = isGenderSelected.value
+            )
+            BackButton(
+                enabled = false,
             )
         }
     }
+}
+
 @Composable
 @Preview
 fun GenderScreenPreview() {
