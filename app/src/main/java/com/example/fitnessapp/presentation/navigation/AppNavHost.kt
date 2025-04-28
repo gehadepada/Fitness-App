@@ -1,6 +1,6 @@
 package com.example.fitnessapp.presentation.navigation
 
-import GenderScreen
+import com.example.fitnessapp.presentation.screens.user_data_package.gender_screen.GenderScreen
 import com.example.fitnessapp.presentation.screens.health_connect_screen.HealthConnectScreen
 import android.content.Context
 import androidx.compose.foundation.layout.padding

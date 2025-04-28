@@ -1,5 +1,6 @@
 
 package com.example.fitnessapp.presentation.screens.user_data_package.height_select
+import android.util.Log
 import com.example.fitnessapp.presentation.components.BackButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -7,7 +8,7 @@ import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
@@ -31,20 +32,19 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.components.DefaultButton
+import com.example.fitnessapp.presentation.components.FailedLoadingScreen
+import com.example.fitnessapp.presentation.screens.user_data_package.viewModel.UserDataState
+import com.example.fitnessapp.presentation.screens.user_data_package.viewModel.UserDataViewModel
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
 @Composable
 fun rememberPickerState() = remember { PickerState() }
-val database = FirebaseDatabase.getInstance()
-val userId = FirebaseAuth.getInstance().currentUser?.uid
 class PickerState {
     var selectedItem by mutableStateOf("")
 }
@@ -150,7 +150,49 @@ private fun pixelsToDp(pixels: Int) = with(LocalDensity.current) { pixels.toDp()
 
 @Composable
 fun NumberPickerDemo(onHeight: () -> Unit = {}, onBack: () -> Unit = {}) {
-    val firestore = FirebaseFirestore.getInstance()
+
+    val values = remember { (140..210).map { it.toString() } }
+    val valuesPickerState = rememberPickerState()
+
+    val userDataViewModel = hiltViewModel<UserDataViewModel>()
+    val userDataState = userDataViewModel.userDataState.collectAsStateWithLifecycle()
+
+    var loadTrigger by remember { mutableStateOf(false) }
+
+    if (loadTrigger) {
+        LaunchedEffect(Unit) {
+            userDataViewModel.saveDataToFirestore(
+                mapOf("height" to valuesPickerState.selectedItem)
+            )
+            loadTrigger = false
+        }
+    }
+
+    when (userDataState.value) {
+        is UserDataState.Error -> {
+            Log.d("Al-qiran", "Error from screen")
+            FailedLoadingScreen()
+        }
+
+        UserDataState.Loading -> {
+            Log.d("Al-qiran", "Loading from screen")
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+
+        UserDataState.Success -> {
+            Log.d("Al-qiran", "Success from screen")
+            LaunchedEffect(Unit) {
+                onHeight()
+            }
+        }
+        else -> Unit
+    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -162,8 +204,7 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}, onBack: () -> Unit = {}) {
     ) {
 
 
-        val values = remember { (140..210).map { it.toString() } }
-        val valuesPickerState = rememberPickerState()
+
 
         // Title Text
         Text(
@@ -214,17 +255,7 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}, onBack: () -> Unit = {}) {
         ) {
             DefaultButton(
                 onClick = {
-                    userId?.let {
-                        val heightData = hashMapOf("height" to valuesPickerState.selectedItem)
-
-                        firestore.collection("Users").document(it)
-                            .set(heightData, SetOptions.merge())
-                            .addOnSuccessListener { println("Height saved successfully to Firestore!") }
-                            .addOnFailureListener { e -> println("Error saving height: $e") }
-                    }
-                    onHeight()
-
-
+                    loadTrigger = true
                 },
             )
 

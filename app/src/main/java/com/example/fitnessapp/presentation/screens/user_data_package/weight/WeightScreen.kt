@@ -1,9 +1,11 @@
 package com.example.fitnessapp.presentation.screens.user_data_package.weight
 
 import android.graphics.Paint
+import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
@@ -19,13 +21,14 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.fitnessapp.presentation.components.BackButton
 import com.example.fitnessapp.presentation.components.DefaultButton
+import com.example.fitnessapp.presentation.components.FailedLoadingScreen
+import com.example.fitnessapp.presentation.screens.user_data_package.viewModel.UserDataState
+import com.example.fitnessapp.presentation.screens.user_data_package.viewModel.UserDataViewModel
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 import java.lang.Math.toRadians
 import kotlin.math.cos
 import kotlin.math.sin
@@ -35,10 +38,50 @@ fun WeightScreen(
     onWeight: () -> Unit = {},
     onBack: () -> Unit = {}
 ) {
-    val firestore = FirebaseFirestore.getInstance() // Initialize Firestore
-    val userId = FirebaseAuth.getInstance().currentUser?.uid // Get current user ID
 
     var weight by remember { mutableFloatStateOf(70f) } // Default weight
+
+    var loadTrigger by remember { mutableStateOf(false) }
+
+    val userDataViewModel = hiltViewModel<UserDataViewModel>()
+    val userDataState = userDataViewModel.userDataState.collectAsStateWithLifecycle()
+
+    if (loadTrigger) {
+        LaunchedEffect(Unit) {
+            userDataViewModel.saveDataToFirestore(
+                mapOf("weight" to weight.toInt())
+            )
+            loadTrigger = false
+        }
+    }
+
+    when (userDataState.value) {
+        is UserDataState.Error -> {
+            Log.d("Al-qiran", "Error from screen")
+            FailedLoadingScreen()
+        }
+
+        UserDataState.Loading -> {
+            Log.d("Al-qiran", "Loading from screen")
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+
+        UserDataState.Success -> {
+            Log.d("Al-qiran", "Success from screen")
+            LaunchedEffect(Unit) {
+                onWeight()
+                userDataViewModel.resetUserDataState()
+            }
+        }
+        else -> Unit
+    }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -100,20 +143,7 @@ fun WeightScreen(
 
         DefaultButton(
             onClick = {
-                userId?.let {
-                    // Save weight to Firestore
-                    val weightData = hashMapOf("weight" to weight.toInt()) // Convert float to int for clean storage
-
-                    firestore.collection("Users").document(it)
-                        .set(weightData, SetOptions.merge()) // Save or merge data
-                        .addOnSuccessListener {
-                            println("Weight saved successfully to Firestore!")
-                            onWeight()
-                        }
-                        .addOnFailureListener { e ->
-                            println("Error saving weight: $e")
-                        }
-                }
+                loadTrigger = true
             }
         )
         BackButton(

@@ -2,7 +2,7 @@ package com.example.fitnessapp.presentation.screens.muscle_screen.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.fitnessapp.domain.repo.MusclesRepository
+import com.example.fitnessapp.domain.repo.FirebaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ExercisesViewModel @Inject constructor(private val muscleRepo: MusclesRepository) :
+class ExercisesViewModel @Inject constructor(private val muscleRepo: FirebaseRepository) :
     ViewModel() {
 
     private val _muscleState = MutableStateFlow<MuscleState>(MuscleState.Loading)

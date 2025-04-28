@@ -1,6 +1,7 @@
 package com.example.fitnessapp.presentation.screens.user_data_package.level_screen.components
 
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,13 +19,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -32,14 +37,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.components.BackButton
 import com.example.fitnessapp.presentation.components.DefaultButton
+import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.screens.user_data_package.level_screen.models.LevelList
+import com.example.fitnessapp.presentation.screens.user_data_package.viewModel.UserDataState
+import com.example.fitnessapp.presentation.screens.user_data_package.viewModel.UserDataViewModel
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 
 @Composable
 fun LevelContent(
@@ -47,12 +54,51 @@ fun LevelContent(
     levelList: MutableList<LevelList>,
     onBack: () -> Unit = {}
 ) {
-    // Initialize Firestore
-    val firestore = FirebaseFirestore.getInstance()
-    val userId = FirebaseAuth.getInstance().currentUser?.uid
 
     val personLevel = remember { mutableStateOf("") }
     val isLevelSelected = remember { mutableStateOf("") }
+
+    var loadTrigger by remember { mutableStateOf(false) }
+
+    val userDataViewModel = hiltViewModel<UserDataViewModel>()
+    val userDataState = userDataViewModel.userDataState.collectAsStateWithLifecycle()
+
+    if (loadTrigger) {
+        LaunchedEffect(Unit) {
+            userDataViewModel.saveDataToFirestore(
+                mapOf("level" to personLevel.value)
+            )
+            loadTrigger = false
+        }
+    }
+
+    when (userDataState.value) {
+        is UserDataState.Error -> {
+            Log.d("Al-qiran", "Error from screen")
+            FailedLoadingScreen()
+        }
+
+        UserDataState.Loading -> {
+            Log.d("Al-qiran", "Loading from screen")
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+
+        UserDataState.Success -> {
+            Log.d("Al-qiran", "Success from screen")
+            LaunchedEffect(Unit) {
+                onPersonLevel(personLevel.value)
+                userDataViewModel.resetUserDataState()
+            }
+        }
+        else -> Unit
+    }
+
 
     Column(
         modifier = Modifier
@@ -105,21 +151,7 @@ fun LevelContent(
                     if (personLevel.value.isEmpty()) {
                         isLevelSelected.value = "Please select your level"
                     } else {
-                        userId?.let {
-                            // Save selected level to Firestore
-                            val levelData = hashMapOf("level" to personLevel.value)
-
-                            firestore.collection("Users").document(it)
-                                .set(levelData, SetOptions.merge())
-                                .addOnSuccessListener {
-                                    println("Level saved successfully to Firestore!")
-                                    onPersonLevel(personLevel.value)
-                                }
-                                .addOnFailureListener { e ->
-                                    println("Error saving level: $e")
-                                }
-                        }
-                        onPersonLevel(personLevel.value)
+                        loadTrigger = true
                     }
                 },
                 message = isLevelSelected.value
@@ -135,7 +167,7 @@ fun LevelContent(
 fun RowElements(
     levelList: LevelList,
     modifier: Modifier = Modifier,
-    border: BorderStroke = BorderStroke(3.dp, MaterialTheme.colorScheme.onBackground)
+    border: BorderStroke = BorderStroke(3.dp, colorScheme.onBackground)
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Image(
@@ -145,7 +177,7 @@ fun RowElements(
                 .padding(end = 8.dp),
             painter = painterResource(id = levelList.levelImage),
             contentDescription = null,
-            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
+            colorFilter = ColorFilter.tint(colorScheme.primary),
         )
         CardElement(
             levelList = levelList.levelName,
