@@ -1,7 +1,5 @@
 package com.example.fitnessapp.presentation.screens.profile_screen
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,22 +13,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 @Composable
-fun UserProfile() {
+fun ProfileScreen(
+    onUser: () -> Unit,
+    onPermissions: () -> Unit,
+    onVersion: () -> Unit,
+    onAbout: () -> Unit
+) {
     val items = listOf(
-        ProfileItem("App settings", Icons.Default.Settings),
-        ProfileItem("Third-party data", Icons.Default.Sync),
-        ProfileItem("Device permissions", Icons.Default.Security),
-        ProfileItem("App permissions", Icons.Default.Lock),
-        ProfileItem("Feedback", Icons.Default.Feedback),
-        ProfileItem("Version 3.37.2i", Icons.Default.Info),
-        ProfileItem("About this app", Icons.Default.Info)
+        ProfileItem("App settings", Icons.Default.Settings, onClick = {  }),
+        ProfileItem("Third-party data", Icons.Default.Sync, onClick = { }),
+        ProfileItem("Device permissions", Icons.Default.Security, onClick = {}),
+        ProfileItem("App permissions", Icons.Default.Lock, onClick = { onPermissions() }),
+        ProfileItem("Feedback", Icons.Default.Feedback, onClick = { }),
+        ProfileItem("Version 3.37.2i", Icons.Default.Info, onClick = { onVersion() }),
+        ProfileItem("About this app", Icons.Default.Info, onClick = { onAbout() })
     )
 
     Column(
@@ -43,7 +45,11 @@ fun UserProfile() {
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    onUser()
+                }
         ) {
             Icon(
                 imageVector = Icons.Default.AccountCircle,
@@ -99,14 +105,14 @@ fun UserProfile() {
         }
 
         items.forEach { item ->
-            ProfileListItem(title = item.title, icon = item.icon)
+            ProfileListItem(title = item.title, icon = item.icon, item.onClick)
             HorizontalDivider(thickness = 0.5.dp, color = Color.DarkGray)
         }
     }
 }
 
 
-data class ProfileItem(val title: String, val icon: ImageVector)
+data class ProfileItem(val title: String, val icon: ImageVector, val onClick: () -> Unit = {})
 
 @Composable
 fun ProfileListItem(title: String, icon: ImageVector, onClick: () -> Unit = {}) {
@@ -133,72 +139,9 @@ fun ProfileListItem(title: String, icon: ImageVector, onClick: () -> Unit = {}) 
 }
 
 @Composable
-fun CustomBottomBar(
-    selectedIndex: Int,
-    onItemSelected: (Int) -> Unit
-) {
-    val items = listOf(
-        Icons.Default.Home to "Home",
-        Icons.Default.FitnessCenter to "Workout",
-        Icons.Default.ShoppingCart to "Shop",
-        Icons.Default.Person to "Profile"
-    )
-
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(12.dp),
-        shape = RoundedCornerShape(32.dp),
-        color = Color(0xFF121212),
-        shadowElevation = 8.dp
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 10.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            items.forEachIndexed { index, (icon, label) ->
-                val animatedSize by animateDpAsState(
-                    targetValue = if (index == selectedIndex) 30.dp else 24.dp,
-                    label = "iconSize"
-                )
-
-                val animatedColor by animateColorAsState(
-                    targetValue = if (index == selectedIndex) Color(0xFF7CFC00) else Color.Gray,
-                    label = "iconColor"
-                )
-
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .padding(horizontal = 4.dp)
-                        .clickable { onItemSelected(index) }
-                ) {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = label,
-                        tint = animatedColor,
-                        modifier = Modifier.size(animatedSize)
-                    )
-                    Spacer(modifier = Modifier.height(2.dp))
-                    Text(
-                        text = label,
-                        fontSize = 11.sp,
-                        color = animatedColor,
-                        textAlign = TextAlign.Center
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
 @Preview(showBackground = true, showSystemUi = true)
 fun UserProfilePreview() {
     FitnessAppTheme {
-        UserProfile()
+        ProfileScreen({},{},{},{})
     }
 }

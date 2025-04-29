@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fitnessapp.R
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun UserProfileScreen(
@@ -119,7 +120,11 @@ fun UserProfileScreen(
         Spacer(modifier = Modifier.weight(1f))
 
         Button(
-            onClick = onLogoutClick,
+            onClick = {
+                val auth = FirebaseAuth.getInstance()
+                auth.signOut()
+                onLogoutClick()
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),

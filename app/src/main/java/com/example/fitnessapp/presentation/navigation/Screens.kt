@@ -42,10 +42,12 @@ sealed class Screens(val route: String) {
 
     data object HealthConnectScreen: Screens("health_connect")
 
+    data object ScanFoodScreen: Screens("scan_food")
+
+
     data object ProfileScreen: Screens("profile")
 
-    data object ScanFoodScreen: Screens("scan_food")
-    data object UserProfile : Screens("user_profile")
-    data object AppPermissionsScreen : Screens("appPermissions")
-    data object AboutAppScreen : Screens("aboutApp")
+    data object UserProfileScreen : Screens("user_profile")
+    data object AppPermissionsScreen : Screens("app_permissions")
+    data object AboutAppScreen : Screens("about_app")
 }

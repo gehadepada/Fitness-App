@@ -1,5 +1,6 @@
 package com.example.fitnessapp.presentation.navigation
 
+import UserProfileScreen
 import com.example.fitnessapp.presentation.screens.user_data_package.gender_screen.GenderScreen
 import com.example.fitnessapp.presentation.screens.health_connect_screen.HealthConnectScreen
 import android.content.Context
@@ -30,7 +31,9 @@ import com.example.fitnessapp.presentation.screens.food_calories.SearchView
 import com.example.fitnessapp.presentation.screens.scan_meal_screen.ScanFood
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExerciseDetailScreen
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExercisesScreen
-import com.example.fitnessapp.presentation.screens.profile_screen.UserProfile
+import com.example.fitnessapp.presentation.screens.profile_screen.AboutAppScreen
+import com.example.fitnessapp.presentation.screens.profile_screen.AppPermissionsScreen
+import com.example.fitnessapp.presentation.screens.profile_screen.ProfileScreen
 import com.example.fitnessapp.presentation.screens.user_data_package.set_goals_screen.SetGoalsScreen
 import com.example.fitnessapp.presentation.screens.splash_screen.SplashScreen
 import com.example.fitnessapp.presentation.screens.user_data_package.weight.WeightScreen
@@ -65,19 +68,31 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 }
 
                 "food" -> {
-                    TopBar("Food", navController = navController)
+                    TopBar("Food") { navController.popBackStack() }
                 }
 
                 "exercises" -> {
-                    TopBar("Exercises", navController = navController)
+                    TopBar("Exercises") { navController.popBackStack() }
                 }
 
                 "water" -> {
-                    TopBar("Add Water", navController = navController)
+                    TopBar("Add Water") { navController.popBackStack() }
                 }
 
                 "addFood" -> {
-                    TopBar("Add Food", navController = navController)
+                    TopBar("Add Food") { navController.popBackStack() }
+                }
+
+                "userProfile" -> {
+                    TopBar("User Profile") { navController.popBackStack() }
+                }
+
+                "appPermissions" -> {
+                    TopBar("App Permissions") { navController.popBackStack() }
+                }
+
+                "aboutApp" -> {
+                    TopBar("About App") { navController.popBackStack() }
                 }
 
                 else -> Unit
@@ -263,16 +278,45 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 HealthConnectScreen()
             }
 
-            composable(Screens.ProfileScreen.route) {
-                topBar.value = "profile"
-                selectedIndex = 3
-                UserProfile()
-            }
-
             composable(Screens.ScanFoodScreen.route) {
                 topBar.value = "addFood"
                 ScanFood()
             }
+
+
+            // profile and profile components
+            composable(Screens.ProfileScreen.route) {
+                topBar.value = "profile"
+                selectedIndex = 3
+                ProfileScreen(
+                    onUser = { navController.navigate(Screens.UserProfileScreen.route) },
+                    onPermissions = { navController.navigate(Screens.AppPermissionsScreen.route) },
+                    onVersion = {},
+                    onAbout = { navController.navigate(Screens.AboutAppScreen.route) }
+                )
+            }
+
+            composable(Screens.UserProfileScreen.route) {
+                topBar.value = "userProfile"
+                UserProfileScreen(
+                    onLogoutClick = {
+                        navController.navigate(Screens.LogInScreen.route) {
+                            popUpTo(Screens.DashBoardScreen.route)
+                        }
+                    },
+                    onEditProfileClick = {
+
+                    })
+            }
+            composable(Screens.AppPermissionsScreen.route) {
+                topBar.value = "appPermissions"
+                AppPermissionsScreen()
+            }
+            composable(Screens.AboutAppScreen.route) {
+                topBar.value = "aboutApp"
+                AboutAppScreen()
+            }
+
         }
     }
 }

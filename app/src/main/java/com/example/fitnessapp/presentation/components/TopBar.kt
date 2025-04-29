@@ -25,7 +25,7 @@ import com.example.fitnessapp.R
 @OptIn(ExperimentalMaterial3Api::class)
 
 @Composable
-fun TopBar(title: String, navController: NavHostController) {
+fun TopBar(title: String, onClick:() -> Unit) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.background),
         modifier = Modifier.padding(horizontal = 16.dp),
@@ -47,7 +47,7 @@ fun TopBar(title: String, navController: NavHostController) {
             Image(
                 modifier = Modifier.size(27.dp)
                     .clickable {
-                        navController.popBackStack()
+                        onClick()
                     },
                 painter = painterResource(id = R.drawable.back_arrow),
                 contentDescription = "back",
