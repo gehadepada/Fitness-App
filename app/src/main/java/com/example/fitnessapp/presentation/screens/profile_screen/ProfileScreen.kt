@@ -2,6 +2,7 @@ package com.example.fitnessapp.presentation.screens.profile_screen
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,84 +33,83 @@ fun UserProfile() {
         ProfileItem("About this app", Icons.Default.Info)
     )
 
-    var selectedIndex by remember { mutableIntStateOf(3) }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .padding(horizontal = 16.dp)
+    ) {
+        Spacer(modifier = Modifier.height(24.dp))
 
-    Scaffold(
-        bottomBar = {
-            CustomBottomBar(
-                selectedIndex = selectedIndex,
-                onItemSelected = { selectedIndex = it }
-            )
-        },
-        containerColor = Color.Black
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = 16.dp)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
         ) {
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Icon(
-                    imageVector = Icons.Default.AccountCircle,
-                    contentDescription = null,
-                    tint = Color.Gray,
-                    modifier = Modifier.size(64.dp)
+            Icon(
+                imageVector = Icons.Default.AccountCircle,
+                contentDescription = null,
+                tint = Color.Gray,
+                modifier = Modifier.size(64.dp)
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Column {
+                Text(
+                    "6635477650",
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
                 )
-                Spacer(modifier = Modifier.width(16.dp))
-                Column {
-                    Text("6635477650", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                    Text("Male  •  170cm  •  20", color = Color.Gray, fontSize = 14.sp)
-                }
-                Spacer(modifier = Modifier.weight(1f))
-                Icon(Icons.Default.Add, contentDescription = null, tint = Color.White)
+                Text("Male  •  170cm  •  20", color = Color.Gray, fontSize = 14.sp)
             }
+            Spacer(modifier = Modifier.weight(1f))
+            Icon(Icons.Default.Add, contentDescription = null, tint = Color.White)
+        }
 
-            Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
-            Card(
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+            shape = RoundedCornerShape(12.dp),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFF1E1E1E))
+        ) {
+            Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-                shape = RoundedCornerShape(12.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFF1E1E1E))
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(Icons.Default.EmojiEvents, contentDescription = null, tint = Color(0xFFFF9800))
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text("Competition", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                        Text("Start a competition", color = Color.Gray, fontSize = 13.sp)
-                    }
-                    Button(onClick = { /* View competition */ }) {
-                        Text("View")
-                    }
+                Icon(Icons.Default.EmojiEvents, contentDescription = null, tint = Color(0xFFFF9800))
+                Spacer(modifier = Modifier.width(16.dp))
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        "Competition",
+                        color = Color.White,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text("Start a competition", color = Color.Gray, fontSize = 13.sp)
+                }
+                Button(onClick = { /* View competition */ }) {
+                    Text("View")
                 }
             }
+        }
 
-            items.forEach { item ->
-                ProfileListItem(title = item.title, icon = item.icon, )
-                HorizontalDivider(thickness = 0.5.dp, color = Color.DarkGray)
-            }
+        items.forEach { item ->
+            ProfileListItem(title = item.title, icon = item.icon)
+            HorizontalDivider(thickness = 0.5.dp, color = Color.DarkGray)
         }
     }
 }
 
+
 data class ProfileItem(val title: String, val icon: ImageVector)
 
 @Composable
-fun ProfileListItem(title: String, icon: ImageVector, onClick:() -> Unit = {}) {
+fun ProfileListItem(title: String, icon: ImageVector, onClick: () -> Unit = {}) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier

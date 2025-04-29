@@ -6,15 +6,19 @@ import android.content.Context
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.fitnessapp.presentation.components.CustomBottomBar
 import com.example.fitnessapp.presentation.components.TopBar
 import com.example.fitnessapp.presentation.components.TopBarWithLogo
-import com.example.fitnessapp.presentation.screens.dashboared.ProfileScreen
+import com.example.fitnessapp.presentation.screens.dashboared.DashboardScreen
 import com.example.fitnessapp.presentation.screens.food_screen.FoodScreen
 import com.example.fitnessapp.presentation.screens.user_data_package.height_select.NumberPickerDemo
 import com.example.fitnessapp.presentation.screens.user_data_package.level_screen.PhysicalActivityLevel
@@ -45,6 +49,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
     val navController = rememberNavController()
 
     val topBar = remember { mutableStateOf("") }
+    var selectedIndex by remember { mutableIntStateOf(-1) }
 
     val currentUser = FirebaseAuth.getInstance().currentUser
 
@@ -76,6 +81,22 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 }
 
                 else -> Unit
+            }
+        },
+        bottomBar = {
+            if (selectedIndex != -1) {
+                CustomBottomBar(
+                    selectedIndex = selectedIndex,
+                    onItemSelected = {
+                        if (selectedIndex != it) {
+                            selectedIndex = it
+                            when (selectedIndex) {
+                                0 -> navController.navigate(Screens.DashBoardScreen.route)
+                                3 -> navController.navigate(Screens.ProfileScreen.route)
+                            }
+                        }
+                    }
+                )
             }
         }
     ) { paddingValues ->
@@ -130,7 +151,8 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
             composable(Screens.DashBoardScreen.route) {
                 topBar.value = "profile"
-                ProfileScreen(
+                selectedIndex = 0
+                DashboardScreen(
                     navController
                 )
             }
@@ -139,7 +161,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 topBar.value = "TopBarWithLogo"
 
                 PhysicalActivityLevel(
-                    onPersonLevel = { personLevel ->
+                    onPersonLevel = {
                         navController.navigate(Screens.WeightScreen.route)
                     },
                     onBack = { navController.popBackStack() }
@@ -149,7 +171,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
             composable(Screens.GenderScreen.route) {
                 topBar.value = "TopBarWithLogo"
 
-                GenderScreen { gender ->
+                GenderScreen {
                     navController.navigate(Screens.HeightScreen.route)
                 }
             }
@@ -243,6 +265,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
             composable(Screens.ProfileScreen.route) {
                 topBar.value = "profile"
+                selectedIndex = 3
                 UserProfile()
             }
 

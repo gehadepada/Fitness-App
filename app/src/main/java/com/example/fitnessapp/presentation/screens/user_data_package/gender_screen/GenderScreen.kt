@@ -40,7 +40,7 @@ import com.example.fitnessapp.presentation.screens.user_data_package.viewModel.U
 
 
 @Composable
-fun GenderScreen(onGender: (String) -> Unit) {
+fun GenderScreen(onGender: () -> Unit) {
 
     val userDataViewModel = hiltViewModel<UserDataViewModel>()
     val userDataState = userDataViewModel.userDataState.collectAsStateWithLifecycle()
@@ -83,7 +83,7 @@ fun GenderScreen(onGender: (String) -> Unit) {
         UserDataState.Success -> {
             Log.d("Al-qiran", "Success from screen")
             LaunchedEffect(Unit) {
-                onGender(gender[selectedIndex.intValue])
+                onGender()
                 userDataViewModel.resetUserDataState()
             }
         }

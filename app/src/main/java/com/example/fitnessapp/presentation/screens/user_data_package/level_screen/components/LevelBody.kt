@@ -50,7 +50,7 @@ import com.example.fitnessapp.ui.theme.FitnessAppTheme
 
 @Composable
 fun LevelContent(
-    onPersonLevel: (String) -> Unit,
+    onPersonLevel: () -> Unit,
     levelList: MutableList<LevelList>,
     onBack: () -> Unit = {}
 ) {
@@ -92,7 +92,7 @@ fun LevelContent(
         UserDataState.Success -> {
             Log.d("Al-qiran", "Success from screen")
             LaunchedEffect(Unit) {
-                onPersonLevel(personLevel.value)
+                onPersonLevel()
                 userDataViewModel.resetUserDataState()
             }
         }
@@ -212,7 +212,7 @@ fun CardElement(levelList: String, modifier: Modifier = Modifier, border: Border
 private fun Prev() {
     FitnessAppTheme {
         LevelContent(
-            onPersonLevel = { _ -> },
+            onPersonLevel = {},
             levelList = mutableListOf(
                 LevelList(
                     levelName = "Beginner",

@@ -6,14 +6,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -29,8 +26,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
 @Composable
-fun ProfileScreen(navController: NavController) {
-    var selectedIndex by remember { mutableStateOf(0) }
+fun DashboardScreen(navController: NavController) {
     val database = FirebaseDatabase.getInstance()
     val userId = FirebaseAuth.getInstance().currentUser?.uid
 
@@ -45,9 +41,15 @@ fun ProfileScreen(navController: NavController) {
                 .get()
                 .addOnSuccessListener { dataSnapshot ->
                     if (dataSnapshot.exists()) {
-                        goalCalories = dataSnapshot.child("goalCalories").value?.toString()?.toLongOrNull()?.toInt() ?: 3000
-                        consumedCalories = dataSnapshot.child("consumedCalories").value?.toString()?.toLongOrNull()?.toInt() ?: 2000
-                        exerciseCalories = dataSnapshot.child("exerciseCalories").value?.toString()?.toLongOrNull()?.toInt() ?: 500
+                        goalCalories =
+                            dataSnapshot.child("goalCalories").value?.toString()?.toLongOrNull()
+                                ?.toInt() ?: 3000
+                        consumedCalories =
+                            dataSnapshot.child("consumedCalories").value?.toString()?.toLongOrNull()
+                                ?.toInt() ?: 2000
+                        exerciseCalories =
+                            dataSnapshot.child("exerciseCalories").value?.toString()?.toLongOrNull()
+                                ?.toInt() ?: 500
 
                     }
                 }
@@ -55,96 +57,85 @@ fun ProfileScreen(navController: NavController) {
         }
     }
 
-    Scaffold(
-        bottomBar = {
-            CustomBottomBar(
-                selectedIndex = selectedIndex,
-                onItemSelected = { selectedIndex = it }
+    Column(
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+            .fillMaxSize()
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 15.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = "Today",
+                style = MaterialTheme.typography.headlineLarge,
+                color = MaterialTheme.colorScheme.onBackground
             )
-        },
-        containerColor = MaterialTheme.colorScheme.background
-    ) { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(8.dp))
+                    .padding(horizontal = 5.dp, vertical = 3.dp)
+            ) {
+                Text(
+                    text = "Edit",
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.headlineMedium,
+                )
+            }
+        }
+
         Column(
             modifier = Modifier
-                .padding(innerPadding)
-                .verticalScroll(rememberScrollState())
-                .fillMaxSize()
+                .padding(all = 15.dp)
+                .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(21.dp))
+                .fillMaxWidth()
+                .padding(16.dp)
         ) {
+            val remainingCalories = goalCalories - consumedCalories + exerciseCalories
+
+            Text(
+                text = "Calories",
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
+            )
+            Text(
+                text = "Remaining = $goalCalories - $consumedCalories + $exerciseCalories = $remainingCalories",
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.labelLarge,
+            )
+
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(all = 15.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.padding(top = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                Text(
-                    text = "Today",
-                    style = MaterialTheme.typography.headlineLarge,
-                    color = MaterialTheme.colorScheme.onBackground
+                CircularProgressIndicator(
+                    progress = consumedCalories.toFloat() / goalCalories,
+                    remainingText = remainingCalories.toString(),
+                    modifier = Modifier.size(120.dp)
                 )
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(8.dp))
-                        .padding(horizontal = 5.dp, vertical = 3.dp)
-                ) {
-                    Text(
-                        text = "Edit",
-                        color = MaterialTheme.colorScheme.primary,
-                        style = MaterialTheme.typography.headlineMedium,
+                Spacer(modifier = Modifier.width(50.dp))
+
+                Column {
+                    BaseFoodExercise(R.drawable.baseline_flag_24, "Base Goal", "Base Goal")
+                    BaseFoodExercise(
+                        R.drawable.dinner_icon,
+                        "Food",
+                        "Food (377)",
+                        ColorFilter.tint(MaterialTheme.colorScheme.primary)
                     )
+                    BaseFoodExercise(R.drawable.hot_icon, "Exercise", "Exercise (20)")
                 }
             }
-
-            Column(
-                modifier = Modifier
-                    .padding(all = 15.dp)
-                    .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(21.dp))
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                val remainingCalories = goalCalories - consumedCalories + exerciseCalories
-
-                Text(
-                    text = "Calories",
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold,
-                )
-                Text(
-                    text = "Remaining = $goalCalories - $consumedCalories + $exerciseCalories = $remainingCalories",
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.labelLarge,
-                )
-
-                Row(
-                    modifier = Modifier.padding(top = 16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    CircularProgressIndicator(
-                        progress = consumedCalories.toFloat() / goalCalories,
-                        remainingText = remainingCalories.toString(),
-                        modifier = Modifier.size(120.dp)
-                    )
-                    Spacer(modifier = Modifier.width(50.dp))
-
-                    Column {
-                        BaseFoodExercise(R.drawable.baseline_flag_24, "Base Goal", "Base Goal")
-                        BaseFoodExercise(
-                            R.drawable.dinner_icon,
-                            "Food",
-                            "Food (377)",
-                            ColorFilter.tint(MaterialTheme.colorScheme.primary)
-                        )
-                        BaseFoodExercise(R.drawable.hot_icon, "Exercise", "Exercise (20)")
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(50.dp))
-
-            AddWaterSection(navController)
-            DiscoverSection(navController)
         }
+
+        Spacer(modifier = Modifier.height(50.dp))
+
+        AddWaterSection(navController)
+        DiscoverSection(navController)
     }
 }
 
@@ -180,49 +171,8 @@ fun BaseFoodExercise(
 }
 
 
-@Composable
-fun CustomBottomBar(
-    selectedIndex: Int,
-    onItemSelected: (Int) -> Unit
-) {
-    val items = listOf(
-        Icons.Default.Home,
-        Icons.Default.ShoppingBag,
-        Icons.Default.Person,
-        Icons.Default.AddShoppingCart
-    )
-
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        shape = RoundedCornerShape(32.dp),
-        color = Color(0xFF1C1C1E),
-        shadowElevation = 8.dp
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 12.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            items.forEachIndexed { index, icon ->
-                IconButton(onClick = { onItemSelected(index) }) {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = null,
-                        tint = if (index == selectedIndex) Color(0xFF7CFC00) else Color.Gray,
-                        modifier = Modifier.size(28.dp)
-                    )
-                }
-            }
-        }
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewAll() {
-    ProfileScreen(navController = rememberNavController())
+    DashboardScreen(navController = rememberNavController())
 }
