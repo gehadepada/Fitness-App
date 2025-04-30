@@ -286,7 +286,6 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 ScanFood()
             }
 
-
             // profile and profile components
             composable(Screens.ProfileScreen.route) {
                 topBar.value = "profile"
@@ -294,7 +293,6 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 ProfileScreen(
                     onUser = { navController.navigate(Screens.UserProfileScreen.route) },
                     onPermissions = { navController.navigate(Screens.AppPermissionsScreen.route) },
-                    onVersion = {},
                     onAbout = { navController.navigate(Screens.AboutAppScreen.route) }
                 )
             }
