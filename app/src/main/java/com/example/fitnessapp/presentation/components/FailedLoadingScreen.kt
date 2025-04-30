@@ -23,7 +23,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.example.fitnessapp.ui.theme.FitnessAppTheme
+import com.example.fitnessapp.theme.FitnessAppTheme
 
 @Composable
 fun FailedLoadingScreen(onFailed: () -> Unit = {}, errorMessage: String = "Unknown Error...") {

@@ -26,49 +26,43 @@ fun CustomBottomBar(
         Icons.Default.Person to "Profile"
     )
 
-    Surface(
+
+    Row(
         modifier = Modifier
+            .padding(vertical = 16.dp)
             .fillMaxWidth()
-            .padding(16.dp),
-        shape = RoundedCornerShape(32.dp),
-        color = MaterialTheme.colorScheme.surface,
-        shadowElevation = 8.dp
+            .navigationBarsPadding(),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
-            modifier = Modifier
-                .padding(vertical = 12.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            items.forEachIndexed { index, (icon, label) ->
-                IconButton(
-                    modifier = Modifier
-                        .height(48.dp)
-                        .width(80.dp),
-                    onClick = { onItemSelected(index) }
+        items.forEachIndexed { index, (icon, label) ->
+            IconButton(
+                modifier = Modifier
+                    .height(48.dp)
+                    .width(80.dp),
+                onClick = { onItemSelected(index) }
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Icon(
-                            imageVector = icon,
-                            contentDescription = null,
-                            tint = if (index == selectedIndex) MaterialTheme.colorScheme.primary else Color.Gray,
-                            modifier = Modifier.size(28.dp)
-                        )
-                        Spacer(modifier = Modifier.height(2.dp))
-                        Text(
-                            text = label,
-                            style = MaterialTheme.typography.labelSmall,
-                            color = if (index == selectedIndex) MaterialTheme.colorScheme.primary else Color.Gray,
-                            textAlign = TextAlign.Center
-                        )
-                    }
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null,
+                        tint = if (index == selectedIndex) MaterialTheme.colorScheme.primary else Color.Gray,
+                        modifier = Modifier.size(28.dp)
+                    )
+                    Spacer(modifier = Modifier.height(2.dp))
+                    Text(
+                        text = label,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = if (index == selectedIndex) MaterialTheme.colorScheme.primary else Color.Gray,
+                        textAlign = TextAlign.Center
+                    )
                 }
             }
         }
     }
+
 }
 
 @Preview(showBackground = true)

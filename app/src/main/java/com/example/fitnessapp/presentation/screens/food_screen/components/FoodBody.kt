@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.fitnessapp.presentation.screens.food_screen.preview.foods
-import com.example.fitnessapp.ui.theme.FitnessAppTheme
+import com.example.fitnessapp.theme.FitnessAppTheme
 
 @Composable
 fun FoodBody(modifier: Modifier = Modifier) {

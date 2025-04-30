@@ -1,7 +1,7 @@
 package com.example.fitnessapp.presentation.navigation
 
 import UserProfileScreen
-import com.example.fitnessapp.presentation.screens.user_data_package.gender_screen.GenderScreen
+import com.example.fitnessapp.presentation.screens.auth.user_data_package.gender_screen.GenderScreen
 import com.example.fitnessapp.presentation.screens.health_connect_screen.HealthConnectScreen
 import android.content.Context
 import androidx.compose.foundation.layout.padding
@@ -21,8 +21,8 @@ import com.example.fitnessapp.presentation.components.TopBar
 import com.example.fitnessapp.presentation.components.TopBarWithLogo
 import com.example.fitnessapp.presentation.screens.dashboared.DashboardScreen
 import com.example.fitnessapp.presentation.screens.food_screen.FoodScreen
-import com.example.fitnessapp.presentation.screens.user_data_package.height_select.NumberPickerDemo
-import com.example.fitnessapp.presentation.screens.user_data_package.level_screen.PhysicalActivityLevel
+import com.example.fitnessapp.presentation.screens.auth.user_data_package.height_select.NumberPickerDemo
+import com.example.fitnessapp.presentation.screens.auth.user_data_package.level_screen.PhysicalActivityLevel
 import com.example.fitnessapp.presentation.screens.auth.login_screen.LoginScreen
 import com.example.fitnessapp.presentation.screens.auth.signup_screen.SignUpScreen
 import com.example.fitnessapp.presentation.screens.dashboared.components.ProfileTopBar
@@ -34,9 +34,9 @@ import com.example.fitnessapp.presentation.screens.muscle_screen.ExercisesScreen
 import com.example.fitnessapp.presentation.screens.profile_screen.AboutAppScreen
 import com.example.fitnessapp.presentation.screens.profile_screen.AppPermissionsScreen
 import com.example.fitnessapp.presentation.screens.profile_screen.ProfileScreen
-import com.example.fitnessapp.presentation.screens.user_data_package.set_goals_screen.SetGoalsScreen
+import com.example.fitnessapp.presentation.screens.auth.user_data_package.set_goals_screen.SetGoalsScreen
 import com.example.fitnessapp.presentation.screens.splash_screen.SplashScreen
-import com.example.fitnessapp.presentation.screens.user_data_package.weight.WeightScreen
+import com.example.fitnessapp.presentation.screens.auth.user_data_package.weight.WeightScreen
 import com.example.fitnessapp.presentation.screens.waterScreen.WaterTrackerScreen
 import com.google.firebase.auth.FirebaseAuth
 
@@ -123,6 +123,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
         ) {
 
             composable(Screens.SplashScreen.route) {
+                if(selectedIndex != -1) selectedIndex = -1
                 SplashScreen {
                     navController.navigate(Screens.LogInScreen.route) {
                         popUpTo(Screens.SplashScreen.route) { inclusive = true }
@@ -131,6 +132,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
             }
 
             composable(Screens.LogInScreen.route) {
+                if(selectedIndex != -1) selectedIndex = -1
                 topBar.value = "TopBarWithLogo"
 
                 LoginScreen(
@@ -148,10 +150,11 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
             }
 
             composable(Screens.SignUpScreen.route) {
+                if(selectedIndex != -1) selectedIndex = -1
                 topBar.value = "TopBarWithLogo"
 
                 SignUpScreen(
-                    onSignUp = { username, email, password ->
+                    onSignUp = {
                         navController.navigate(Screens.GenderScreen.route) {
                             popUpTo(0)
                         }
@@ -166,7 +169,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
             composable(Screens.DashBoardScreen.route) {
                 topBar.value = "profile"
-                selectedIndex = 0
+                if(selectedIndex != 0) selectedIndex = 0
                 DashboardScreen(
                     navController
                 )

@@ -20,9 +20,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.fitnessapp.ui.theme.DarkGreySurface
-import com.example.fitnessapp.ui.theme.GreenAccent
-import com.example.fitnessapp.ui.theme.LightGreySurface
+import com.example.fitnessapp.theme.DarkGreySurface
+import com.example.fitnessapp.theme.GreenAccent
+import com.example.fitnessapp.theme.LightGreySurface
 
 @Composable
 fun CustomOutlinedTextField(

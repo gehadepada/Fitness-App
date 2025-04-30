@@ -17,12 +17,12 @@ import com.example.fitnessapp.presentation.components.DefaultButton
 import com.example.fitnessapp.presentation.screens.auth.components.CustomOutlinedTextField
 import com.example.fitnessapp.presentation.screens.auth.signup_screen.viewModel.SignUpState
 import com.example.fitnessapp.presentation.screens.auth.signup_screen.viewModel.SignUpViewModel
-import com.example.fitnessapp.ui.theme.FitnessAppTheme
+import com.example.fitnessapp.theme.FitnessAppTheme
 
 
 @Composable
 fun SignUpScreen(
-    onSignUp: (String, String, String) -> Unit,
+    onSignUp: () -> Unit,
     goToLogin: () -> Unit = {}
 ) {
     val signUpViewModel: SignUpViewModel = viewModel()
@@ -40,7 +40,7 @@ fun SignUpScreen(
     LaunchedEffect(state) {
         when (state) {
             SignUpState.Authenticated -> {
-                onSignUp(userName, email, password)
+                onSignUp()
             }
 
             is SignUpState.Error -> {
@@ -150,7 +150,7 @@ fun SignUpScreen(
 private fun Prev() {
     FitnessAppTheme {
         SignUpScreen(
-            onSignUp = { _, _, _ -> }
+            onSignUp = { }
         )
     }
 }

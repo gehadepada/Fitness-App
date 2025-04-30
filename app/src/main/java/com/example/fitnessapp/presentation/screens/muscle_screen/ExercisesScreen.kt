@@ -23,7 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.fitnessapp.data.datasources.model.Muscles
+import com.example.fitnessapp.data.datasources.firestore.model.Muscles
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.screens.muscle_screen.viewModel.ExercisesViewModel
 import com.example.fitnessapp.presentation.screens.muscle_screen.viewModel.MuscleState

@@ -8,11 +8,9 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -115,7 +113,9 @@ fun HealthConnectScreen(onBack: () -> Unit = {}) {
     }
 
 
-        Surface(modifier = Modifier.fillMaxSize().padding(14.dp)) {
+        Surface(modifier = Modifier
+            .fillMaxSize()
+            .padding(14.dp)) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -182,11 +182,13 @@ fun HealthConnectScreen(onBack: () -> Unit = {}) {
                             imageVector = Icons.Default.Error,
                             contentDescription = "Error Icon",
                             tint = Color.Red,
-                            modifier = Modifier.size(55.dp).padding(bottom = 10.dp)
+                            modifier = Modifier
+                                .size(55.dp)
+                                .padding(bottom = 10.dp)
                         )
 
                         Button(
-                            onClick = onBack,
+                            onClick = { onBack() },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 16.dp),

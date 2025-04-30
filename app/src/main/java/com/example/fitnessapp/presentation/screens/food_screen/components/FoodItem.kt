@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.screens.food_screen.models.FoodModel
 import com.example.fitnessapp.presentation.screens.food_screen.preview.food1
-import com.example.fitnessapp.ui.theme.FitnessAppTheme
+import com.example.fitnessapp.theme.FitnessAppTheme
 
 @Composable
 fun FoodItem(food: FoodModel,modifier: Modifier = Modifier) {

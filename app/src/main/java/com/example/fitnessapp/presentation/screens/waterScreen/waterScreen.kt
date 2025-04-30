@@ -27,7 +27,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardType
-import com.example.fitnessapp.presentation.components.TopBarWithLogo
 
 @Composable
 fun WaterTrackerScreen(context: Context) {
@@ -280,21 +279,3 @@ fun WaterTrackerScreen(context: Context) {
 
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -17,7 +17,7 @@ import com.example.fitnessapp.presentation.components.DefaultButton
 import com.example.fitnessapp.presentation.screens.auth.login_screen.viewModel.LoginState
 import com.example.fitnessapp.presentation.screens.auth.login_screen.viewModel.LoginViewModel
 import com.example.fitnessapp.presentation.screens.auth.components.CustomOutlinedTextField
-import com.example.fitnessapp.ui.theme.FitnessAppTheme
+import com.example.fitnessapp.theme.FitnessAppTheme
 
 
 @Composable

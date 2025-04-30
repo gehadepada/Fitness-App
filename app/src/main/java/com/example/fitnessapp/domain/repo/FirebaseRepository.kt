@@ -1,6 +1,6 @@
 package com.example.fitnessapp.domain.repo
 
-import com.example.fitnessapp.data.datasources.model.Muscles
+import com.example.fitnessapp.data.datasources.firestore.model.Muscles
 import com.google.firebase.firestore.DocumentSnapshot
 
 interface FirebaseRepository {
