@@ -9,11 +9,23 @@ Our fitness app is still in development. We are working on creating a platform t
 Our goal is to create an app that empowers users to take control of their fitness journeys by providing personalized workout plans, tracking tools, and the ability to set and achieve their fitness goals.
 
 
-## Technologies Used
+## App Features  
+- Syncs data from Health Connect to track personal health  
+- Tracks daily water intake  
+- Provides workout routines for maintaining fitness  
+- Allows users to search for healthy foods and calculate calorie intake  
+- Scans meals to automatically estimate calorie content  
 
-- **Language:** Kotlin
-- **Tools:** Android Studio
-- **Frameworks:** Jetpack Compose for UI development
+## Technologies Used  
+- **Language:** Kotlin  
+- **Tools:** Android Studio  
+- **Frameworks:** Jetpack Compose for UI development  
+- **Libraries & APIs:** Firebase, Room, Health Connect API  
+- **Architecture:** Clean Architecture (Data Sources, Domain Layer)  
+- **Dependency Injection:** Dagger Hilt  
+- **Asynchronous Programming:** Kotlin Coroutines, Flows  
+- **UI/UX Design:** Material 3 Design, Jetpack Compose Components  
+- **State Management:** ViewModel, StateFlow
 
 
 ## Team Members
