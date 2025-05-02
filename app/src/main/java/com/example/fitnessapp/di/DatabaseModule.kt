@@ -21,12 +21,14 @@ object DatabaseModule {
             context = context,
             klass = FoodAndCaloriesDatabase::class.java,
             name = "food_and_calories"
-        ).build()
+        ).fallbackToDestructiveMigration() // For development
+        .build()
     }
 
     @Provides
     @Singleton
-    fun provideFoodAndCaloriesDao(foodAndCaloriesDatabase: FoodAndCaloriesDatabase) =
-        foodAndCaloriesDatabase.foodAndCalorieDao()
+    fun provideFoodAndCaloriesDao(foodAndCaloriesDatabase: FoodAndCaloriesDatabase): FoodAndCaloriesDao {
+        return foodAndCaloriesDatabase.foodAndCalorieDao()
+    }
 
 }

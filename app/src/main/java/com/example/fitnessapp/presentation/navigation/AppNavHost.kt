@@ -26,7 +26,6 @@ import com.example.fitnessapp.presentation.screens.auth.user_data_package.level_
 import com.example.fitnessapp.presentation.screens.auth.login_screen.LoginScreen
 import com.example.fitnessapp.presentation.screens.auth.signup_screen.SignUpScreen
 import com.example.fitnessapp.presentation.screens.dashboared.components.ProfileTopBar
-import com.example.fitnessapp.presentation.screens.food_calories.Navigation
 import com.example.fitnessapp.presentation.screens.food_calories.SearchView
 import com.example.fitnessapp.presentation.screens.scan_meal_screen.ScanFood
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExerciseDetailScreen
@@ -37,6 +36,8 @@ import com.example.fitnessapp.presentation.screens.profile_screen.ProfileScreen
 import com.example.fitnessapp.presentation.screens.auth.user_data_package.set_goals_screen.SetGoalsScreen
 import com.example.fitnessapp.presentation.screens.splash_screen.SplashScreen
 import com.example.fitnessapp.presentation.screens.auth.user_data_package.weight.WeightScreen
+import com.example.fitnessapp.presentation.screens.food_calories.FoodSelectedItem
+import com.example.fitnessapp.presentation.screens.food_calories.SearchFoodScreen
 import com.example.fitnessapp.presentation.screens.waterScreen.WaterTrackerScreen
 import com.google.firebase.auth.FirebaseAuth
 
@@ -250,7 +251,6 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                     navController.navigate(Screens.ExercisesDetails.passId(id))
                 })
             }
-
             composable(Screens.ExercisesDetails.route) { backStackEntry ->
                 topBar.value = ""
                 val id = backStackEntry.arguments?.getString("id")?.toIntOrNull() ?: 5
@@ -273,8 +273,6 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
             }
 
 
-            composable(Screens.FoodSearchScreen.route) { Navigation() }
-
 
             composable(Screens.HealthScreen.route) {
                 topBar.value = "Health"
@@ -285,6 +283,23 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 topBar.value = "addFood"
                 ScanFood()
             }
+
+
+            // Search and search components
+            composable(Screens.FoodSearchScreen.route) {
+
+                SearchFoodScreen(onSearchFood = { foodName, calories ->
+                    navController.navigate(Screens.FoodSelectItemScreen.passFoodNameAndCalories(foodName, calories))
+                })
+            }
+            composable(Screens.FoodSelectItemScreen.route) { backStackEntry ->
+
+                val foodName = backStackEntry.arguments?.getString("foodName") ?: ""
+                val calories = backStackEntry.arguments?.getString("calories") ?: ""
+                FoodSelectedItem(foodName = foodName, calories = calories)
+            }
+
+
 
             // profile and profile components
             composable(Screens.ProfileScreen.route) {
@@ -317,7 +332,6 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 topBar.value = "aboutApp"
                 AboutAppScreen()
             }
-
         }
     }
 }

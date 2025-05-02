@@ -1,6 +1,5 @@
 package com.example.fitnessapp.data.datasources.firestore
 
-import android.util.Log
 import com.example.fitnessapp.data.datasources.firestore.model.Muscles
 import com.example.fitnessapp.utils.firestore_utils.FirestoreUtils.getCurrentUserId
 import com.google.firebase.firestore.DocumentSnapshot
@@ -49,7 +48,6 @@ class FirestoreDataSource @Inject constructor(private val firestore: FirebaseFir
                     throw NoSuchElementException("Sorry we can't add the User")
                 }
                 .addOnSuccessListener {
-                    Log.d("Al-qiran", "Success from Firestore DataSource")
                 }
         } catch (e: Exception) {
             throw e

@@ -17,6 +17,10 @@ class ExercisesViewModel @Inject constructor(private val muscleRepo: FirebaseRep
     private val _muscleState = MutableStateFlow<MuscleState>(MuscleState.Loading)
     val muscleState = _muscleState.asStateFlow()
 
+    init {
+        loadMuscles()
+    }
+
     fun loadMuscles() {
 
         _muscleState.value = MuscleState.Loading

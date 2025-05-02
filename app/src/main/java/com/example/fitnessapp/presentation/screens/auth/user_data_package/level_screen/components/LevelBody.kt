@@ -74,7 +74,6 @@ fun LevelContent(
 
     when (userDataState.value) {
         is UserDataState.Error -> {
-            Log.d("Al-qiran", "Error from screen")
             FailedLoadingScreen()
         }
 

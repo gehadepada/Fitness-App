@@ -16,7 +16,7 @@ class UserDataViewModel @Inject constructor(
     private val firebaseRepository: FirebaseRepository
 ) : ViewModel() {
 
-    private val _userDataState = MutableStateFlow<UserDataState>(UserDataState.Idle)
+    private val _userDataState = MutableStateFlow<UserDataState>(UserDataState.None)
     val userDataState = _userDataState.asStateFlow()
 
     fun saveDataToFirestore(
@@ -36,7 +36,7 @@ class UserDataViewModel @Inject constructor(
     }
 
     fun resetUserDataState() {
-        _userDataState.value = UserDataState.Idle
+        _userDataState.value = UserDataState.None
     }
 
 }

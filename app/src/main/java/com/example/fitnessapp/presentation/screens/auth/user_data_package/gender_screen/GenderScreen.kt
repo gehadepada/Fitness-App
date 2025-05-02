@@ -67,7 +67,6 @@ fun GenderScreen(onGender: () -> Unit) {
 
     when (userDataState.value) {
         is UserDataState.Error -> {
-            Log.d("Al-qiran", "Error from screen")
             FailedLoadingScreen()
         }
 
@@ -83,7 +82,6 @@ fun GenderScreen(onGender: () -> Unit) {
         }
 
         UserDataState.Success -> {
-            Log.d("Al-qiran", "Success from screen")
             LaunchedEffect(Unit) {
                 onGender()
                 userDataViewModel.resetUserDataState()

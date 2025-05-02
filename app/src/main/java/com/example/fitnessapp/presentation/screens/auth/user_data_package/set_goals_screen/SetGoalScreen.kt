@@ -67,12 +67,10 @@ fun SetGoalsScreen(
 
     when (userDataState.value) {
         is UserDataState.Error -> {
-            Log.d("Al-qiran", "Error from screen")
             FailedLoadingScreen()
         }
 
         UserDataState.Loading -> {
-            Log.d("Al-qiran", "Loading from screen")
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,

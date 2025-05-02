@@ -1,6 +1,5 @@
 package com.example.fitnessapp.presentation.screens.muscle_screen
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -44,11 +43,6 @@ fun ExerciseDetailScreen(id: Int) {
     val muscleViewModel = hiltViewModel<ExercisesViewModel>()
     val musclesState by muscleViewModel.muscleState.collectAsStateWithLifecycle()
 
-
-    LaunchedEffect(Unit) {
-        muscleViewModel.loadMuscles()
-    }
-
     when (musclesState) {
         is MuscleState.Error -> {
             FailedLoadingScreen(
@@ -67,7 +61,6 @@ fun ExerciseDetailScreen(id: Int) {
             ) {
                 CircularProgressIndicator()
             }
-            Log.d("Al-qiran", "Loading Loading Loading")
         }
 
         is MuscleState.Success -> {

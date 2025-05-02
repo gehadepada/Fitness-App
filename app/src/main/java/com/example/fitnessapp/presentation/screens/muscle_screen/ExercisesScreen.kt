@@ -35,11 +35,6 @@ fun ExercisesScreen(onExercise: (id: Int) -> Unit) {
     val muscleViewModel = hiltViewModel<ExercisesViewModel>()
     val musclesState by muscleViewModel.muscleState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        muscleViewModel.loadMuscles()
-    }
-
-
     when (musclesState) {
         is MuscleState.Error -> {
             FailedLoadingScreen(

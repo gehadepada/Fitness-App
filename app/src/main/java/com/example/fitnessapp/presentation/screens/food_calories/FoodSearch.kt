@@ -1,5 +1,6 @@
 package com.example.fitnessapp.presentation.screens.food_calories
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,41 +27,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 
 
 @Composable
-fun Navigation() {
-    val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "main") {
-        composable("main") {
-            MainScreen(navController = navController)
-        }
-        composable(
-            "details/{foodName}/{calories}",
-            arguments = listOf(
-                navArgument("foodName") { type = NavType.StringType },
-                navArgument("calories") { type = NavType.StringType }
-            )
-        ) { backStackEntry ->
-            val foodName = backStackEntry.arguments?.getString("foodName") ?: ""
-            val calories = backStackEntry.arguments?.getString("calories") ?: ""
-            DetailsScreen(foodName, calories)
-        }
-    }
-}
-
-@Composable
-fun MainScreen(navController: NavController) {
+fun SearchFoodScreen(onSearchFood:(foodName: String, calories: String) -> Unit) {
     val textState = remember { mutableStateOf(TextFieldValue("")) }
     Column {
         SearchView(textState)
-        FoodList(navController = navController, state = textState)
+        FoodList(onSearchFood, state = textState)
     }
 }
 
@@ -88,7 +62,7 @@ fun SearchView(state: MutableState<TextFieldValue>) {
 
 
 @Composable
-fun FoodList(navController: NavController, state: MutableState<TextFieldValue>) {
+fun FoodList(onSearchFood:(foodName: String, calories: String) -> Unit, state: MutableState<TextFieldValue>) {
     val searchedText = state.value.text
     val filteredFoods = if (searchedText.isEmpty()) {
         foodCaloriesList.take(10) // Show only 10 by default
@@ -110,14 +84,24 @@ fun FoodList(navController: NavController, state: MutableState<TextFieldValue>) 
             items(filteredFoods) { (foodName, calories) ->
                 Row(
                     modifier = Modifier
-                        .clickable { navController.navigate("details/$foodName/$calories") }
+                        .clickable {
+                            Log.d("Al-qiran from Main screen", "$foodName $calories")
+                            onSearchFood(foodName, calories)
+                        }
                         .padding(14.dp)
                         .fillMaxSize(),
-
                     ) {
                     Column {
-                        Text(text = foodName, color = Color.White,style = MaterialTheme.typography.labelMedium)
-                        Text(text = "Calories: $calories kcal",color = Color.Gray,style = MaterialTheme.typography.labelSmall)
+                        Text(
+                            text = foodName,
+                            color = Color.White,
+                            style = MaterialTheme.typography.labelMedium
+                        )
+                        Text(
+                            text = "Calories: $calories kcal",
+                            color = Color.Gray,
+                            style = MaterialTheme.typography.labelSmall
+                        )
                     }
                 }
             }

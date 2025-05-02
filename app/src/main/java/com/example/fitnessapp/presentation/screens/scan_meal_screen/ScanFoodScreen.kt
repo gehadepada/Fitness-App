@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -26,15 +27,56 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.drawable.toBitmap
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
+import com.example.fitnessapp.data.datasources.local.FoodAndCalories
+import com.example.fitnessapp.presentation.components.FailedLoadingScreen
+import com.example.fitnessapp.presentation.components.SuccessDialog
+import com.example.fitnessapp.presentation.viewModels.foodAndCalories_viewModel.FoodAndCaloriesState
+import com.example.fitnessapp.presentation.viewModels.foodAndCalories_viewModel.FoodAndCaloriesViewModel
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun ScanFood() {
+
+    // For View Model
+    val foodAndCalorieViewModel = hiltViewModel<FoodAndCaloriesViewModel>()
+    val foodAndCaloriesState =
+        foodAndCalorieViewModel.foodAndCaloriesState.collectAsStateWithLifecycle()
+    var foodInsert by remember { mutableStateOf<FoodAndCalories?>(null) }
+    var loadTrigger by remember { mutableStateOf(false) }
+    var showDialog by remember { mutableStateOf(true) }
+
+    if (loadTrigger) {
+        LaunchedEffect(foodInsert) {
+            Log.d("Al-qiran from viewModel", "$foodInsert")
+            foodAndCalorieViewModel.insertFoodAndCalories(foodInsert!!)
+            loadTrigger = false
+            showDialog = true
+        }
+    }
+    when(foodAndCaloriesState.value) {
+        is FoodAndCaloriesState.Error -> {
+            FailedLoadingScreen(onFailed = {
+                foodAndCalorieViewModel.insertFoodAndCalories(foodInsert!!)
+            }, errorMessage = "Failed Saving to database")
+        }
+        FoodAndCaloriesState.Loading -> CircularProgressIndicator()
+        FoodAndCaloriesState.Success -> {
+            if (showDialog) {
+                SuccessDialog(onDismiss = {
+                    showDialog = false
+                })
+            }
+        }
+        else -> {}
+    }
+
     val context = LocalContext.current
     var imageBitmap by remember { mutableStateOf<Bitmap?>(null) }
     var isLoading by remember { mutableStateOf(false) }
@@ -133,7 +175,7 @@ fun ScanFood() {
                     .fillMaxSize()
                     .padding(padding)
                     .padding(16.dp)
-                    .verticalScroll(rememberScrollState()), // 👈 makes the screen scrollable
+                    .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top
             )  {
@@ -229,6 +271,12 @@ fun ScanFood() {
 
                         Button(
                             onClick = {
+                                foodInsert = FoodAndCalories(
+                                    foodName = detectedFoodItems.toString(),
+                                    calories = detectedCalories.toDouble(),
+                                    totalAmount = 1
+                                )
+                                loadTrigger = true
                                 Toast.makeText(
                                     context,
                                     "Data ready to be passed: $detectedFoodItems, $detectedCalories kcal",

@@ -9,8 +9,8 @@ import java.util.Locale
 @Entity(tableName = "food_and_calories")
 data class FoodAndCalories(
     @PrimaryKey(autoGenerate = false)
-    val date: String = SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS", Locale.getDefault()).format(Date()),
-    val foodName: String,
-    val totalAmount: Int,
-    val calories: Double
+    val date: String = SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS", Locale.ENGLISH).format(Date()),
+    val foodName: String = "",
+    val totalAmount: Int = 0,
+    val calories: Double = 0.0
 )

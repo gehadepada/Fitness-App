@@ -36,7 +36,12 @@ sealed class Screens(val route: String) {
 
     data object SearchBtnScreen: Screens("search")
 
-    data object FoodSearchScreen: Screens("food_Search")
+    data object FoodSearchScreen: Screens("food_search")
+    data object FoodSelectItemScreen: Screens("food_select_item/{foodName}/{calories}") {
+        fun passFoodNameAndCalories(foodName: String, calories: String): String {
+            return "food_select_item/$foodName/$calories"
+        }
+    }
 
     data object HealthScreen: Screens("health")
 
