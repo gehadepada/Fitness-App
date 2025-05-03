@@ -10,8 +10,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.fitnessapp.presentation.navigation.MyAppNavigation
 import com.example.fitnessapp.presentation.screens.waterScreen.ReminderScheduler
-import com.example.fitnessapp.theme.FitnessAppTheme
 import android.Manifest
+import com.example.fitnessapp.theme.FitnessAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            FitnessAppTheme {
+        FitnessAppTheme {
                 MyAppNavigation(this)
 
                 val sharedPreferences = getSharedPreferences("WaterReminderPrefs", MODE_PRIVATE)
