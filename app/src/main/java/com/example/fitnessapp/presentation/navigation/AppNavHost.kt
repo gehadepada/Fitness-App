@@ -38,6 +38,7 @@ import com.example.fitnessapp.presentation.screens.splash_screen.SplashScreen
 import com.example.fitnessapp.presentation.screens.auth.user_data_package.weight.WeightScreen
 import com.example.fitnessapp.presentation.screens.food_calories.FoodSelectedItem
 import com.example.fitnessapp.presentation.screens.food_calories.SearchFoodScreen
+import com.example.fitnessapp.presentation.screens.today_plan_screen.TodayPlanScreen
 import com.example.fitnessapp.presentation.screens.waterScreen.WaterTrackerScreen
 import com.google.firebase.auth.FirebaseAuth
 
@@ -227,7 +228,6 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
             }
 
 
-
             composable(Screens.HeightScreen.route) {
                 topBar.value = "TopBarWithLogo"
                 NumberPickerDemo(
@@ -277,6 +277,12 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
             composable(Screens.HealthScreen.route) {
                 topBar.value = "Health"
                 HealthConnectScreen()
+            }
+
+
+            composable(Screens.TodayPlanScreen.route) {
+                topBar.value = "todayPlan"
+                TodayPlanScreen()
             }
 
             composable(Screens.ScanFoodScreen.route) {
