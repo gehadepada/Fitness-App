@@ -38,6 +38,8 @@ import com.example.fitnessapp.presentation.screens.splash_screen.SplashScreen
 import com.example.fitnessapp.presentation.screens.auth.user_data_package.weight.WeightScreen
 import com.example.fitnessapp.presentation.screens.food_calories.FoodSelectedItem
 import com.example.fitnessapp.presentation.screens.food_calories.SearchFoodScreen
+import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.RecipeDetailScreen
+import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.RecipesScreen
 import com.example.fitnessapp.presentation.screens.waterScreen.WaterTrackerScreen
 import com.google.firebase.auth.FirebaseAuth
 
@@ -68,8 +70,8 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                     ProfileTopBar()
                 }
 
-                "food" -> {
-                    TopBar("Food") { navController.popBackStack() }
+                "recipes" -> {
+                    TopBar("Recipes") { navController.popBackStack() }
                 }
 
                 "exercises" -> {
@@ -221,10 +223,10 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 )
             }
 
-            composable(Screens.FoodScreen.route) {
-                topBar.value = "food"
-                FoodScreen()
-            }
+//            composable(Screens.FoodScreen.route) {
+//                topBar.value = "food"
+//                FoodScreen()
+//            }
 
 
 
@@ -331,6 +333,20 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
             composable(Screens.AboutAppScreen.route) {
                 topBar.value = "aboutApp"
                 AboutAppScreen()
+            }
+
+
+
+            // For Recipes
+            composable(Screens.RecipesScreen.route) {
+                topBar.value = "Recipes"
+                RecipesScreen(onClick = { id ->
+                    navController.navigate(Screens.RecipesDetailsScreen.passId(id))
+                })
+            }
+            composable(Screens.RecipesDetailsScreen.route) { backStackEntry ->
+                val id = backStackEntry.arguments?.getString("id")?.toIntOrNull() ?: 0
+                RecipeDetailScreen(id)
             }
         }
     }

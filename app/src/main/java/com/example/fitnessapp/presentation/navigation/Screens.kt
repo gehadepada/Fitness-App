@@ -55,4 +55,12 @@ sealed class Screens(val route: String) {
     data object UserProfileScreen : Screens("user_profile")
     data object AppPermissionsScreen : Screens("app_permissions")
     data object AboutAppScreen : Screens("about_app")
+
+
+    data object RecipesScreen: Screens("recipes")
+    data object RecipesDetailsScreen: Screens("recipes_details/{id}") {
+        fun passId(id: Int): String {
+            return "recipes_details/$id"
+        }
+    }
 }
