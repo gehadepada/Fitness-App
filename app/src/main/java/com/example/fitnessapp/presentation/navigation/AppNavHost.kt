@@ -40,6 +40,7 @@ import com.example.fitnessapp.presentation.screens.food_calories.FoodSelectedIte
 import com.example.fitnessapp.presentation.screens.food_calories.SearchFoodScreen
 import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.RecipeDetailScreen
 import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.RecipesScreen
+import com.example.fitnessapp.presentation.screens.today_plan_screen.TodayPlanScreen
 import com.example.fitnessapp.presentation.screens.waterScreen.WaterTrackerScreen
 import com.google.firebase.auth.FirebaseAuth
 
@@ -229,7 +230,6 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 //            }
 
 
-
             composable(Screens.HeightScreen.route) {
                 topBar.value = "TopBarWithLogo"
                 NumberPickerDemo(
@@ -280,6 +280,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 topBar.value = "Health"
                 HealthConnectScreen()
             }
+
 
             composable(Screens.ScanFoodScreen.route) {
                 topBar.value = "addFood"
@@ -347,6 +348,10 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
             composable(Screens.RecipesDetailsScreen.route) { backStackEntry ->
                 val id = backStackEntry.arguments?.getString("id")?.toIntOrNull() ?: 0
                 RecipeDetailScreen(id)
+            }
+            composable(Screens.TodayPlanScreen.route) {
+                topBar.value = "todayPlan"
+                TodayPlanScreen()
             }
         }
     }

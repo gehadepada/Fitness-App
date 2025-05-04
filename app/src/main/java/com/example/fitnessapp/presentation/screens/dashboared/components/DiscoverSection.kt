@@ -91,12 +91,9 @@ fun DiscoverSection(navController: NavController) {
             )
             DiscoverButton(
                 icon = painterResource(id = R.drawable.moon_svgrepo_com),
-                label = "Log out",
+                label = "Today's Plan",
                 onClick = {
-                    auth.signOut()
-                    navController.navigate(Screens.LogInScreen.route) {
-                        popUpTo(Screens.DashBoardScreen.route)
-                    }
+                    navController.navigate(Screens.TodayPlanScreen.route)
                 },
                 modifier = Modifier.weight(1f)
             )
