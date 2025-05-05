@@ -5,6 +5,8 @@ import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
@@ -38,8 +40,7 @@ fun WeightScreen(
     onWeight: () -> Unit = {},
     onBack: () -> Unit = {}
 ) {
-
-    var weight by remember { mutableFloatStateOf(70f) } // Default weight
+    var weight by remember { mutableFloatStateOf(70f) }
 
     var loadTrigger by remember { mutableStateOf(false) }
 
@@ -57,12 +58,10 @@ fun WeightScreen(
 
     when (userDataState.value) {
         is UserDataState.Error -> {
-            Log.d("Al-qiran", "Error from screen")
             FailedLoadingScreen()
         }
 
         UserDataState.Loading -> {
-            Log.d("Al-qiran", "Loading from screen")
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -73,55 +72,53 @@ fun WeightScreen(
         }
 
         UserDataState.Success -> {
-            Log.d("Al-qiran", "Success from screen")
             LaunchedEffect(Unit) {
                 onWeight()
                 userDataViewModel.resetUserDataState()
             }
         }
+
         else -> Unit
     }
 
+    // Main UI wrapped in scrollable column
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
         modifier = Modifier
-            .background(MaterialTheme.colorScheme.background)
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp, vertical = 24.dp), // general padding
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             "What is your weight?",
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.padding(top=20.dp,bottom = 20.dp)
         )
-        Spacer(modifier = Modifier.height(20.dp))
 
         Row(
-            modifier = Modifier
-                .padding(vertical = 16.dp)
-                .padding(vertical = 10.dp, horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(bottom = 24.dp)
         ) {
             Text(
                 text = "${weight.toInt()}",
-                textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.displayLarge,
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.padding(end = 10.dp)
             )
             Text(
                 text = "Kg",
-                textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onBackground,
             )
         }
 
-        Column(
-            verticalArrangement = Arrangement.Center,
+        Box(
             modifier = Modifier
-                .padding(horizontal = 34.dp)
-                .weight(1f)
+                .fillMaxWidth(0.8f)
+                .aspectRatio(1f)
+                .padding(vertical = 16.dp)
         ) {
             Canvas(modifier = Modifier.fillMaxSize()) {
                 drawCircularDial(20, 180)
@@ -133,24 +130,21 @@ fun WeightScreen(
             value = weight,
             onValueChange = { weight = it },
             valueRange = 20f..180f,
-            steps = 160, // Adjusted for smoother control
+            steps = 160,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
             colors = SliderDefaults.colors(
                 thumbColor = Color.Green,
                 activeTrackColor = Color.Green
             )
         )
-        Spacer(modifier = Modifier.height(16.dp))
 
-        DefaultButton(
-            onClick = {
-                loadTrigger = true
-            }
-        )
-        BackButton(
-            onclick = onBack
-        )
+        Spacer(modifier = Modifier.height(24.dp))
+
+        DefaultButton(onClick = { loadTrigger = true })
+        BackButton(onclick = onBack)
     }
-
 }
 
 fun DrawScope.drawCircularDial(minWeight: Int, maxWeight: Int) {

@@ -9,11 +9,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
@@ -30,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,11 +47,10 @@ import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.viewModels.userData_viewModel.UserDataState
 import com.example.fitnessapp.presentation.viewModels.userData_viewModel.UserDataViewModel
 import com.example.fitnessapp.theme.FitnessAppTheme
-
 @Composable
 fun SetGoalsScreen(
     onSetGoals: () -> Unit = {},
-    onBack:() -> Unit = {}
+    onBack: () -> Unit = {}
 ) {
     val personGoals = remember { mutableStateOf("") }
     val isGoalSelected = remember { mutableStateOf("") }
@@ -66,9 +70,7 @@ fun SetGoalsScreen(
     }
 
     when (userDataState.value) {
-        is UserDataState.Error -> {
-            FailedLoadingScreen()
-        }
+        is UserDataState.Error -> FailedLoadingScreen()
 
         UserDataState.Loading -> {
             Column(
@@ -81,7 +83,6 @@ fun SetGoalsScreen(
         }
 
         UserDataState.Success -> {
-            Log.d("Al-qiran", "Success from screen")
             LaunchedEffect(Unit) {
                 onSetGoals()
                 userDataViewModel.resetUserDataState()
@@ -90,14 +91,20 @@ fun SetGoalsScreen(
         else -> Unit
     }
 
+
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp.dp
+    val screenHeight = configuration.screenHeightDp.dp
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(colorScheme.background),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+            .background(colorScheme.background)
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = screenWidth * 0.05f, vertical = screenHeight * 0.03f),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         val items = listOf(
             R.drawable.loseweight,
             R.drawable.weightscale,
@@ -111,55 +118,49 @@ fun SetGoalsScreen(
             text = "Set Your Goals",
             style = MaterialTheme.typography.headlineMedium,
             color = colorScheme.onBackground,
-            modifier = Modifier.padding(bottom = 10.dp)
+            modifier = Modifier
+                .padding(top = screenHeight * 0.02f, bottom = screenHeight * 0.02f)
         )
-        Spacer(Modifier.height(10.dp))
 
-        Column(
-            Modifier
-                .fillMaxSize()
-                .weight(1f),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-
-            items.forEachIndexed { index, image ->
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(bottom = 16.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(120.dp)
-                            .clip(RoundedCornerShape(16.dp))
-                            .border(
-                                width = 2.dp,
-                                color = if (selectedIndex.intValue == index) colorScheme.primary else Color.Gray,
-                                shape = RoundedCornerShape(16.dp)
-                            )
-                            .clickable {
-                                selectedIndex.intValue = index
-                                personGoals.value = goals[selectedIndex.intValue]
-                            }
-
-                            .background(color = colorScheme.surface)
-                    ) {
-                        Image(
-                            painter = painterResource(id = image),
-                            contentDescription = "Goal Image",
-                            modifier = Modifier
-                                .padding(15.dp)
-                                .fillMaxSize(),
-                            contentScale = ContentScale.Crop
+        items.forEachIndexed { index, image ->
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .padding(bottom = screenHeight * 0.015f)
+                    .fillMaxWidth()
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.35f)
+                        .aspectRatio(1f)
+                        .clip(RoundedCornerShape(16.dp))
+                        .border(
+                            width = 2.dp,
+                            color = if (selectedIndex.intValue == index) colorScheme.primary else Color.Gray,
+                            shape = RoundedCornerShape(16.dp)
                         )
-                    }
-                    Text(
-                        text = goals[index],
-                        modifier = Modifier.padding(top = 5.dp),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = colorScheme.onBackground
+                        .clickable {
+                            selectedIndex.intValue = index
+                            personGoals.value = goals[selectedIndex.intValue]
+                        }
+                        .background(color = colorScheme.surface)
+                ) {
+                    Image(
+                        painter = painterResource(id = image),
+                        contentDescription = "Goal Image",
+                        modifier = Modifier
+                            .padding(15.dp)
+                            .fillMaxSize(),
+                        contentScale = ContentScale.Crop
                     )
                 }
+
+                Text(
+                    text = goals[index],
+                    modifier = Modifier.padding(top = screenHeight * 0.01f),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = colorScheme.onBackground
+                )
             }
         }
 
@@ -173,9 +174,8 @@ fun SetGoalsScreen(
             },
             message = isGoalSelected.value
         )
-        BackButton(
-            onclick = onBack
-        )
+
+        BackButton(onclick = onBack)
     }
 }
 
