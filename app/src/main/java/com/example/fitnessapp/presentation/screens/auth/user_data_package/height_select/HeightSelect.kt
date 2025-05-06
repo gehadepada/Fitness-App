@@ -1,5 +1,6 @@
 
 package com.example.fitnessapp.presentation.screens.auth.user_data_package.height_select
+import android.annotation.SuppressLint
 import android.util.Log
 import com.example.fitnessapp.presentation.components.BackButton
 import androidx.compose.foundation.Image
@@ -8,6 +9,8 @@ import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.LocalTextStyle
@@ -106,7 +109,7 @@ fun Picker(
                         overflow = TextOverflow.Ellipsis,
                         style = if (isSelected) {
                             textStyle.copy(
-                                fontWeight = FontWeight.Bold // Bolder font weight for selected item
+                                fontWeight = FontWeight.Bold
                             )
                         } else {
                             textStyle
@@ -130,12 +133,14 @@ fun Picker(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ruler), // Use the vector drawable
+                painter = painterResource(id = R.drawable.ruler),
                 contentDescription = "Ruler",
                 modifier = Modifier.size(350.dp)
             )
         }
     }
+
+
 }
 
 fun Modifier.fadingEdge(brush: Brush) = this
@@ -148,9 +153,9 @@ fun Modifier.fadingEdge(brush: Brush) = this
 @Composable
 private fun pixelsToDp(pixels: Int) = with(LocalDensity.current) { pixels.toDp() }
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun NumberPickerDemo(onHeight: () -> Unit = {}, onBack: () -> Unit = {}) {
-
     val values = remember { (140..210).map { it.toString() } }
     val valuesPickerState = rememberPickerState()
 
@@ -170,12 +175,10 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}, onBack: () -> Unit = {}) {
 
     when (userDataState.value) {
         is UserDataState.Error -> {
-            Log.d("Al-qiran", "Error from screen")
             FailedLoadingScreen()
         }
 
         UserDataState.Loading -> {
-            Log.d("Al-qiran", "Loading from screen")
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -186,73 +189,71 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}, onBack: () -> Unit = {}) {
         }
 
         UserDataState.Success -> {
-            Log.d("Al-qiran", "Success from screen")
             LaunchedEffect(Unit) {
                 onHeight()
             }
         }
+
         else -> Unit
     }
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-
+    BoxWithConstraints(
         modifier = Modifier
+            .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .fillMaxWidth()
     ) {
-
-
-
-
-        // Title Text
-        Text(
-            text = "What is your Height?",
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onBackground,
-        )
-
-        Row(
-            modifier = Modifier
-                .padding(vertical = 16.dp)
-                .padding(vertical = 10.dp, horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            // Selected Height Text
-            Text(
-                text = valuesPickerState.selectedItem,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.displayLarge,
-                color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.padding(end = 10.dp)
-            )
-            // Selected Height Text
-            Text(
-                text = "Cm",
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onBackground,
-            )
-        }
-
-        Picker(
-            state = valuesPickerState,
-            items = values,
-            visibleItemsCount = 5,
-            modifier = Modifier
-                .fillMaxWidth(0.5f)
-                .weight(1f),
-            textModifier = Modifier.padding(10.dp),
-            textStyle = TextStyle(fontSize = 32.sp, color = Color(0xFFFFFFFF)),
-        )
+        val screenHeight = maxHeight
+        val screenWidth = maxWidth
 
         Column(
             modifier = Modifier
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = screenWidth * 0.05f, vertical = screenHeight * 0.05f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
         ) {
+            Spacer(modifier = Modifier.height(screenHeight * 0.05f))
+            Text(
+                text = "What is your Height?",
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.onBackground,
+            )
+
+            Row(
+                modifier = Modifier
+                    .padding(vertical = screenHeight * 0.02f),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = valuesPickerState.selectedItem,
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.displayLarge,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.padding(end = screenWidth * 0.02f)
+                )
+                Text(
+                    text = "Cm",
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
+            }
+
+            Picker(
+                state = valuesPickerState,
+                items = values,
+                visibleItemsCount = 5,
+                modifier = Modifier
+                    .fillMaxWidth(0.5f)
+                    .height(screenHeight * 0.35f),
+                textModifier = Modifier.padding(10.dp),
+                textStyle = TextStyle(fontSize = screenHeight.value.sp * 0.04f, color = Color.White),
+            )
+
+            Spacer(modifier = Modifier.height(screenHeight * 0.05f))
+
             DefaultButton(
                 onClick = {
                     loadTrigger = true
@@ -264,8 +265,6 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}, onBack: () -> Unit = {}) {
                 onclick = onBack
             )
         }
-
-
     }
 }
 
@@ -276,5 +275,3 @@ private fun Prev() {
         NumberPickerDemo()
     }
 }
-
-

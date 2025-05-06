@@ -1,18 +1,21 @@
 package com.example.fitnessapp.presentation.screens.auth.user_data_package.gender_screen
 
-import android.util.Log
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,7 +31,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.fitnessapp.R
@@ -37,12 +39,12 @@ import com.example.fitnessapp.presentation.components.DefaultButton
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.viewModels.userData_viewModel.UserDataState
 import com.example.fitnessapp.presentation.viewModels.userData_viewModel.UserDataViewModel
+import androidx.compose.foundation.rememberScrollState
 
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun GenderScreen(onGender: () -> Unit) {
-
-
     val isGenderSelected = remember { mutableStateOf("") }
 
     val items = listOf(R.drawable.male, R.drawable.female)
@@ -54,7 +56,6 @@ fun GenderScreen(onGender: () -> Unit) {
     val userDataState = userDataViewModel.userDataState.collectAsStateWithLifecycle()
 
     var loadTrigger by remember { mutableStateOf(false) }
-
 
     if (loadTrigger) {
         LaunchedEffect(Unit) {
@@ -68,10 +69,10 @@ fun GenderScreen(onGender: () -> Unit) {
     when (userDataState.value) {
         is UserDataState.Error -> {
             FailedLoadingScreen()
+            return
         }
 
         UserDataState.Loading -> {
-            Log.d("Al-qiran", "Loading from screen")
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -79,6 +80,7 @@ fun GenderScreen(onGender: () -> Unit) {
             ) {
                 CircularProgressIndicator()
             }
+            return
         }
 
         UserDataState.Success -> {
@@ -87,46 +89,52 @@ fun GenderScreen(onGender: () -> Unit) {
                 userDataViewModel.resetUserDataState()
             }
         }
+
         else -> Unit
     }
 
-
-    Column(
+    @Suppress("BoxWithConstraintsScopeUnused")
+    BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
-        horizontalAlignment = Alignment.CenterHorizontally,
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        val maxHeight = maxHeight
+        val maxWidth = maxWidth
 
-        ) {
-
-        Text(
-            text = "What's Your Gender ?",
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onBackground,
-        )
+        val imageSize = maxWidth * 0.40f
+        val scrollState = rememberScrollState()
 
         Column(
-            Modifier
+            modifier = Modifier
                 .fillMaxSize()
-                .weight(1f),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+                .verticalScroll(scrollState)
+                .padding(horizontal = maxWidth * 0.05f, vertical = maxHeight * 0.03f),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
+            Spacer(modifier = Modifier.height(maxHeight * 0.08f))
 
+            Text(
+                text = "What's Your Gender ?",
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.padding(top=20.dp,bottom=15.dp)
+            )
             items.forEachIndexed { index, image ->
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(bottom = 16.dp)
+                    modifier = Modifier.padding(bottom = maxHeight * 0.04f)
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(150.dp)
+                            .size(imageSize)
                             .clip(RoundedCornerShape(16.dp))
                             .border(
                                 width = 2.dp,
-                                color = if (selectedIndex.intValue == index) MaterialTheme.colorScheme.primary else Color.Gray,
+                                color = if (selectedIndex.intValue == index)
+                                    MaterialTheme.colorScheme.primary else Color.Gray,
                                 shape = RoundedCornerShape(16.dp)
                             )
                             .clickable {
@@ -139,13 +147,14 @@ fun GenderScreen(onGender: () -> Unit) {
                             painter = painterResource(id = image),
                             contentDescription = "Gender Image",
                             modifier = Modifier
-                                .padding(15.dp)
+                                .padding(imageSize * 0.1f)
                                 .fillMaxSize(),
                             contentScale = ContentScale.Crop
                         )
                     }
+
                     Text(
-                        modifier = Modifier.padding(top = 5.dp),
+                        modifier = Modifier.padding(top = maxHeight * 0.01f),
                         text = gender[index],
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onBackground
@@ -154,14 +163,12 @@ fun GenderScreen(onGender: () -> Unit) {
             }
 
             if (showError) {
-                isGenderSelected.value = "Please select a gender"
+                Text(
+                    text = "Please select a gender",
+                    color = Color.Red,
+                    modifier = Modifier.padding(bottom = maxHeight * 0.02f)
+                )
             }
-        }
-        Column(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
 
             DefaultButton(
                 onClick = {
@@ -170,17 +177,13 @@ fun GenderScreen(onGender: () -> Unit) {
                     } else {
                         loadTrigger = true
                     }
-                }, message = isGenderSelected.value
+                },
+                message = isGenderSelected.value
             )
-            BackButton(
-                enabled = false,
-            )
+
+            BackButton(enabled = false)
         }
     }
 }
 
-@Composable
-@Preview
-fun GenderScreenPreview() {
-    GenderScreen(onGender = {})
-}
+
