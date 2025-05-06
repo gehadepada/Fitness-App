@@ -7,9 +7,9 @@ import java.util.Date
 import java.util.Locale
 
 @Entity(tableName = "food_and_calories")
-data class FoodAndCalories(
+data class FoodAndCaloriesLocalModel(
     @PrimaryKey(autoGenerate = false)
-    val date: String = SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS", Locale.ENGLISH).format(Date()),
+    val date: String = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.ENGLISH).format(Date()),
     val foodName: String = "",
     val totalAmount: Int = 0,
     val calories: Double = 0.0

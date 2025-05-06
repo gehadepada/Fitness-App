@@ -8,13 +8,13 @@ import androidx.room.Query
 @Dao
 interface FoodAndCaloriesDao {
     @Insert
-    suspend fun insertFoodAndCalories(foodAndCalories: FoodAndCalories)
+    suspend fun insertFoodAndCalories(foodAndCaloriesLocalModel: FoodAndCaloriesLocalModel)
 
     @Delete
-    suspend fun deleteFoodAndCalories(foodAndCalories: FoodAndCalories)
+    suspend fun deleteFoodAndCalories(foodAndCaloriesLocalModel: FoodAndCaloriesLocalModel)
 
-    @Query("SELECT * FROM food_and_calories WHERE substr(date, 1, 10) = :date")
-    suspend fun getFoodAndCaloriesByDate(date: String): List<FoodAndCalories>
+    @Query("SELECT * FROM food_and_calories WHERE substr(date, 1, 10) <= substr(:startDate, 1, 10) AND substr(date, 1, 10) >= substr(:endDate, 1, 10)")
+    suspend fun getFoodAndCaloriesByDate(startDate: String, endDate: String): List<FoodAndCaloriesLocalModel>
 
 
 }

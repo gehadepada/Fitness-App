@@ -32,7 +32,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
-import com.example.fitnessapp.data.datasources.local.FoodAndCalories
+import com.example.fitnessapp.data.datasources.local.FoodAndCaloriesLocalModel
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.components.SuccessDialog
 import com.example.fitnessapp.presentation.viewModels.foodAndCalories_viewModel.FoodAndCaloriesState
@@ -48,7 +48,7 @@ fun ScanFood() {
     val foodAndCalorieViewModel = hiltViewModel<FoodAndCaloriesViewModel>()
     val foodAndCaloriesState =
         foodAndCalorieViewModel.foodAndCaloriesState.collectAsStateWithLifecycle()
-    var foodInsert by remember { mutableStateOf<FoodAndCalories?>(null) }
+    var foodInsert by remember { mutableStateOf<FoodAndCaloriesLocalModel?>(null) }
     var loadTrigger by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(true) }
 
@@ -271,7 +271,7 @@ fun ScanFood() {
 
                         Button(
                             onClick = {
-                                foodInsert = FoodAndCalories(
+                                foodInsert = FoodAndCaloriesLocalModel(
                                     foodName = detectedFoodItems.toString(),
                                     calories = detectedCalories.toDouble(),
                                     totalAmount = 1
