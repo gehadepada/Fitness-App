@@ -1,6 +1,7 @@
 package com.example.fitnessapp.data.datasources.firestore
 
 import com.example.fitnessapp.data.datasources.firestore.model.Muscles
+import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.model.RecipesModel
 import com.example.fitnessapp.utils.firestore_utils.FirestoreUtils.getCurrentUserId
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -64,5 +65,30 @@ class FirestoreDataSource @Inject constructor(private val firestore: FirebaseFir
             .get()
             .addOnSuccessListener { onSuccess(it) }
             .addOnFailureListener { onFailure(it) }
+    }
+
+
+    suspend fun getAllRecipes(): List<RecipesModel> {
+        return try {
+            val cacheSnapshot = firestore.collection("Recipes")
+                .orderBy("id")
+                .get(Source.CACHE)
+                .await()
+            if (!cacheSnapshot.isEmpty) {
+                cacheSnapshot.map { it.toObject(RecipesModel::class.java) }
+            }
+
+            val snapshot = firestore.collection("Recipes")
+                .orderBy("id")
+                .get()
+                .await()
+            if (!snapshot.isEmpty) {
+                snapshot.map { it.toObject(RecipesModel::class.java) }
+            } else {
+                throw NoSuchElementException("No Recipes data found in cache or server.")
+            }
+        } catch (e: FirebaseFirestoreException) {
+            throw e
+        }
     }
 }

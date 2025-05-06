@@ -20,7 +20,6 @@ import com.example.fitnessapp.presentation.components.CustomBottomBar
 import com.example.fitnessapp.presentation.components.TopBar
 import com.example.fitnessapp.presentation.components.TopBarWithLogo
 import com.example.fitnessapp.presentation.screens.dashboared.DashboardScreen
-import com.example.fitnessapp.presentation.screens.food_screen.FoodScreen
 import com.example.fitnessapp.presentation.screens.auth.user_data_package.height_select.NumberPickerDemo
 import com.example.fitnessapp.presentation.screens.auth.user_data_package.level_screen.PhysicalActivityLevel
 import com.example.fitnessapp.presentation.screens.auth.login_screen.LoginScreen
@@ -107,12 +106,10 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 CustomBottomBar(
                     selectedIndex = selectedIndex,
                     onItemSelected = {
-                        if (selectedIndex != it) {
-                            selectedIndex = it
-                            when (selectedIndex) {
-                                0 -> navController.navigate(Screens.DashBoardScreen.route)
-                                3 -> navController.navigate(Screens.ProfileScreen.route)
-                            }
+                        selectedIndex = it
+                        when (selectedIndex) {
+                            0 -> navController.navigate(Screens.DashBoardScreen.route)
+                            3 -> navController.navigate(Screens.ProfileScreen.route)
                         }
                     }
                 )
@@ -127,7 +124,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
         ) {
 
             composable(Screens.SplashScreen.route) {
-                if(selectedIndex != -1) selectedIndex = -1
+                if (selectedIndex != -1) selectedIndex = -1
                 SplashScreen {
                     navController.navigate(Screens.LogInScreen.route) {
                         popUpTo(Screens.SplashScreen.route) { inclusive = true }
@@ -136,7 +133,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
             }
 
             composable(Screens.LogInScreen.route) {
-                if(selectedIndex != -1) selectedIndex = -1
+                if (selectedIndex != -1) selectedIndex = -1
                 topBar.value = "TopBarWithLogo"
 
                 LoginScreen(
@@ -154,7 +151,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
             }
 
             composable(Screens.SignUpScreen.route) {
-                if(selectedIndex != -1) selectedIndex = -1
+                if (selectedIndex != -1) selectedIndex = -1
                 topBar.value = "TopBarWithLogo"
 
                 SignUpScreen(
@@ -173,7 +170,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
             composable(Screens.DashBoardScreen.route) {
                 topBar.value = "profile"
-                if(selectedIndex != 0) selectedIndex = 0
+                if (selectedIndex != 0) selectedIndex = 0
                 DashboardScreen(
                     navController
                 )
@@ -223,12 +220,6 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                     onBack = { navController.popBackStack() }
                 )
             }
-
-//            composable(Screens.FoodScreen.route) {
-//                topBar.value = "food"
-//                FoodScreen()
-//            }
-
 
             composable(Screens.HeightScreen.route) {
                 topBar.value = "TopBarWithLogo"
@@ -292,7 +283,12 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
             composable(Screens.FoodSearchScreen.route) {
 
                 SearchFoodScreen(onSearchFood = { foodName, calories ->
-                    navController.navigate(Screens.FoodSelectItemScreen.passFoodNameAndCalories(foodName, calories))
+                    navController.navigate(
+                        Screens.FoodSelectItemScreen.passFoodNameAndCalories(
+                            foodName,
+                            calories
+                        )
+                    )
                 })
             }
             composable(Screens.FoodSelectItemScreen.route) { backStackEntry ->
@@ -301,7 +297,6 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 val calories = backStackEntry.arguments?.getString("calories") ?: ""
                 FoodSelectedItem(foodName = foodName, calories = calories)
             }
-
 
 
             // profile and profile components
@@ -335,7 +330,6 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 topBar.value = "aboutApp"
                 AboutAppScreen()
             }
-
 
 
             // For Recipes

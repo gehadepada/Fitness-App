@@ -1,21 +1,15 @@
 package com.example.fitnessapp.presentation.navigation
 
-import android.util.Log
 
 sealed class Screens(val route: String) {
 
     data object SplashScreen: Screens("splash")
 
+    // User data
     data object SignUpScreen: Screens("sign_up")
-
     data object LogInScreen: Screens("login")
-
     data object LevelScreen: Screens("level")
-
-    data object FoodScreen: Screens("food")
-
     data object HeightScreen: Screens("height")
-
     data object GenderScreen: Screens("gender")
 
     data object DashBoardScreen: Screens("dashBoard")
