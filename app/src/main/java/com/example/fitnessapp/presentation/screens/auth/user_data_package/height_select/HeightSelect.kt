@@ -1,7 +1,6 @@
 
 package com.example.fitnessapp.presentation.screens.auth.user_data_package.height_select
 import android.annotation.SuppressLint
-import android.util.Log
 import com.example.fitnessapp.presentation.components.BackButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

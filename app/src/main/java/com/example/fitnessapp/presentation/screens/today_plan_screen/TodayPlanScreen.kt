@@ -1,6 +1,5 @@
 package com.example.fitnessapp.presentation.screens.today_plan_screen
 
-import FoodViewModel
 import android.app.DatePickerDialog
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
@@ -26,79 +25,48 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
+import com.example.fitnessapp.presentation.mapper.toFoodAndCaloriesLocalModel
 import com.example.fitnessapp.presentation.model.FoodAndCaloriesUIModel
 import com.example.fitnessapp.presentation.viewModels.foodAndCalories_viewModel.FoodAndCaloriesState
 import com.example.fitnessapp.presentation.viewModels.foodAndCalories_viewModel.FoodAndCaloriesViewModel
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.Date
 import java.util.Locale
 
 @Composable
-fun TodayPlanScreen(viewModel: FoodViewModel = viewModel()) {
+fun TodayPlanScreen() {
     val context = LocalContext.current
-    val selectedDate = viewModel.selectedDate
+    val currentDate = LocalDate.now()
+
+    val coroutineScope = rememberCoroutineScope()
 
     val foodAndCaloriesViewModel = hiltViewModel<FoodAndCaloriesViewModel>()
     val foodAndCaloriesState = foodAndCaloriesViewModel.foodAndCaloriesState.collectAsStateWithLifecycle()
-    val foodDelete = remember {mutableStateOf(FoodAndCaloriesUIModel("","", 0,0.0))}
 
     val endDate = remember { mutableStateOf(SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.ENGLISH).format(Date())) }
     val startDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.ENGLISH).format(Date())
 
+    val deleteFood: (FoodAndCaloriesUIModel) -> Unit = { food ->
+        coroutineScope.launch {
+            foodAndCaloriesViewModel.deleteFoodAndCalorie(food.toFoodAndCaloriesLocalModel())
+            foodAndCaloriesViewModel.getFoodAndCalories(startDate, endDate.value)
+        }
+    }
+
+
+
     LaunchedEffect(endDate.value) {
-        Log.d("Al-qiran", "$startDate || ${endDate.value}")
         foodAndCaloriesViewModel.getFoodAndCalories(startDate, endDate.value)
-    }
-
-    LaunchedEffect(foodDelete.value) {
-        if (foodDelete.value != FoodAndCaloriesUIModel("","", 0,0.0)) {
-            foodAndCaloriesViewModel.deleteFoodAndCalorie(foodDelete.value.)
-        }
-    }
-
-    when (foodAndCaloriesState.value) {
-        is FoodAndCaloriesState.Error -> {
-            FailedLoadingScreen(
-                errorMessage = "${(foodAndCaloriesState.value as FoodAndCaloriesState.Error).error}..",
-            )
-        }
-
-        FoodAndCaloriesState.Loading -> {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                CircularProgressIndicator()
-            }
-        }
-
-        is FoodAndCaloriesState.SuccessWithData -> {
-            Column(modifier = Modifier.padding(16.dp)) {
-
-                Text("Date: $selectedDate", style = MaterialTheme.typography.titleSmall)
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                val foods =
-                    (foodAndCaloriesState.value as FoodAndCaloriesState.SuccessWithData).foodAndCaloriesUIModel
-                LazyColumn {
-                    items(foods) { food ->
-                        FoodItem(food)
-                    }
-                }
-            }
-        }
-
-        else -> Unit
     }
 
     Column {
@@ -111,20 +79,61 @@ fun TodayPlanScreen(viewModel: FoodViewModel = viewModel()) {
                     val selectedDate = "$year-$formattedMonth-$formattedDay 23:59:59.999"
                     endDate.value = selectedDate
                 },
-                selectedDate.year, selectedDate.monthValue - 1, selectedDate.dayOfMonth
+                currentDate.year, currentDate.monthValue - 1, currentDate.dayOfMonth
             )
             datePicker.show()
 
         }) {
             Text("Pick a Date", style = MaterialTheme.typography.titleLarge)
         }
-        Spacer(modifier = Modifier.height(16.dp))
+
+        when (foodAndCaloriesState.value) {
+            is FoodAndCaloriesState.Error -> {
+                FailedLoadingScreen(
+                    errorMessage = "${(foodAndCaloriesState.value as FoodAndCaloriesState.Error).error}..",
+                )
+            }
+
+            FoodAndCaloriesState.Loading -> {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+
+            is FoodAndCaloriesState.SuccessWithData -> {
+                Column(modifier = Modifier.padding(12.dp)) {
+                    if (startDate.substring(0,10) == endDate.value.substring(0,10)) {
+                        Text("Date: Today", style = MaterialTheme.typography.titleSmall)
+                    } else {
+                        Text(
+                            "from Today to ${endDate.value.substring(0,10)}",
+                            style = MaterialTheme.typography.titleSmall
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    val foods =
+                        (foodAndCaloriesState.value as FoodAndCaloriesState.SuccessWithData).foodAndCaloriesUIModel
+                    LazyColumn {
+                        items(foods) { food ->
+                            FoodItem(food, onDelete = deleteFood)
+                        }
+                    }
+                }
+            }
+
+            else -> Unit
+        }
     }
 
 }
 
 @Composable
-fun FoodItem(food: FoodAndCaloriesUIModel) {
+fun FoodItem(food: FoodAndCaloriesUIModel, onDelete: (FoodAndCaloriesUIModel) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -139,7 +148,7 @@ fun FoodItem(food: FoodAndCaloriesUIModel) {
                     modifier = Modifier.weight(1f)
                 )
                 IconButton(onClick = {
-
+                    onDelete(food)
                 }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
