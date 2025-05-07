@@ -2,7 +2,6 @@ package com.example.fitnessapp.data.datasources.firestore
 
 import com.example.fitnessapp.data.datasources.firestore.model.Muscles
 import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.model.RecipesModel
-import com.example.fitnessapp.utils.firestore_utils.FirestoreUtils.getCurrentUserId
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
@@ -11,7 +10,7 @@ import com.google.firebase.firestore.Source
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-class FirestoreDataSource @Inject constructor(private val firestore: FirebaseFirestore) {
+class FirestoreDataSource @Inject constructor(private val firestore: FirebaseFirestore, private val userId: String?) {
 
     suspend fun getAllMuscles(): List<Muscles> {
         return try {
@@ -41,7 +40,7 @@ class FirestoreDataSource @Inject constructor(private val firestore: FirebaseFir
     fun saveUserDataFirestore(
         userData: Map<String, Any>
     ) {
-        val userId = getCurrentUserId() ?: return
+        if (userId == null) return
         try {
             firestore.collection("Users").document(userId)
                 .set(userData, SetOptions.merge())
@@ -59,7 +58,7 @@ class FirestoreDataSource @Inject constructor(private val firestore: FirebaseFir
         onSuccess: (DocumentSnapshot) -> Unit,
         onFailure: (Exception) -> Unit = {}
     ) {
-        val userId = getCurrentUserId() ?: return
+        if (userId == null) return
 
         firestore.collection("Users").document(userId)
             .get()

@@ -2,6 +2,7 @@ package com.example.fitnessapp.di
 
 import com.example.fitnessapp.data.datasources.firestore.repository.FirebaseRepoImp
 import com.example.fitnessapp.domain.repo.FirebaseRepository
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Binds
 import dagger.Module
@@ -18,6 +19,12 @@ object FirebaseModule {
     @Singleton
     fun provideFirestoreDatabase(): FirebaseFirestore {
         return FirebaseFirestore.getInstance()
+    }
+
+    @Provides
+    @Singleton
+    fun getCurrentUserId(): String? {
+        return FirebaseAuth.getInstance().currentUser?.uid
     }
 }
 

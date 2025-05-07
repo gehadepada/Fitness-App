@@ -343,6 +343,9 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 val id = backStackEntry.arguments?.getString("id")?.toIntOrNull() ?: 0
                 RecipeDetailScreen(id)
             }
+
+
+
             composable(Screens.TodayPlanScreen.route) {
                 topBar.value = "todayPlan"
                 TodayPlanScreen()

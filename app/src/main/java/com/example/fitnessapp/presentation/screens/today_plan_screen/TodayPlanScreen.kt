@@ -1,7 +1,6 @@
 package com.example.fitnessapp.presentation.screens.today_plan_screen
 
 import android.app.DatePickerDialog
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
