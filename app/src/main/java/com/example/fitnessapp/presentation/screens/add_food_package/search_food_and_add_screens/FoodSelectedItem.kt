@@ -1,4 +1,4 @@
-package com.example.fitnessapp.presentation.screens.food_calories
+package com.example.fitnessapp.presentation.screens.add_food_package.search_food_and_add_screens
 
 import android.util.Log
 import android.widget.Toast

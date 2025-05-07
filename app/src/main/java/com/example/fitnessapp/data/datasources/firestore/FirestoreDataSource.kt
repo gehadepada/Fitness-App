@@ -1,5 +1,6 @@
 package com.example.fitnessapp.data.datasources.firestore
 
+import com.example.fitnessapp.data.datasources.firestore.model.FoodCaloriesModel
 import com.example.fitnessapp.data.datasources.firestore.model.Muscles
 import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.model.RecipesModel
 import com.google.firebase.firestore.DocumentSnapshot
@@ -90,4 +91,29 @@ class FirestoreDataSource @Inject constructor(private val firestore: FirebaseFir
             throw e
         }
     }
+
+    suspend fun getAllFoodsWithCalories(): List<FoodCaloriesModel> {
+        return try {
+            val cacheSnapshot = firestore.collection("FoodsWithCalories")
+                .orderBy("foodName")
+                .get(Source.CACHE)
+                .await()
+            if (!cacheSnapshot.isEmpty) {
+                cacheSnapshot.map { it.toObject(FoodCaloriesModel::class.java) }
+            }
+
+            val snapshot = firestore.collection("FoodsWithCalories")
+                .orderBy("foodName")
+                .get()
+                .await()
+            if (!snapshot.isEmpty) {
+                snapshot.map { it.toObject(FoodCaloriesModel::class.java) }
+            } else {
+                throw NoSuchElementException("No Foods data found in cache or server.")
+            }
+        } catch (e: FirebaseFirestoreException) {
+            throw e
+        }
+    }
+
 }

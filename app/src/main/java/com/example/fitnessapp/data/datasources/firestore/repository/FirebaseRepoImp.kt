@@ -1,6 +1,7 @@
 package com.example.fitnessapp.data.datasources.firestore.repository
 
 import com.example.fitnessapp.data.datasources.firestore.FirestoreDataSource
+import com.example.fitnessapp.data.datasources.firestore.model.FoodCaloriesModel
 import com.example.fitnessapp.data.datasources.firestore.model.Muscles
 import com.example.fitnessapp.domain.repo.FirebaseRepository
 import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.model.RecipesModel
@@ -28,5 +29,9 @@ class FirebaseRepoImp @Inject constructor(private val firestoreDataSource: Fires
 
     override suspend fun getAllRecipes(): List<RecipesModel> {
         return firestoreDataSource.getAllRecipes()
+    }
+
+    override suspend fun getAllFoodsWithCalories(): List<FoodCaloriesModel> {
+        return firestoreDataSource.getAllFoodsWithCalories()
     }
 }

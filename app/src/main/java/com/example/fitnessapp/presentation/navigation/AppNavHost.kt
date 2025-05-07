@@ -25,8 +25,8 @@ import com.example.fitnessapp.presentation.screens.auth.user_data_package.level_
 import com.example.fitnessapp.presentation.screens.auth.login_screen.LoginScreen
 import com.example.fitnessapp.presentation.screens.auth.signup_screen.SignUpScreen
 import com.example.fitnessapp.presentation.screens.dashboared.components.ProfileTopBar
-import com.example.fitnessapp.presentation.screens.food_calories.SearchView
-import com.example.fitnessapp.presentation.screens.scan_meal_screen.ScanFood
+import com.example.fitnessapp.presentation.screens.add_food_package.add_food_way_screen.AddFoodSelectOption
+import com.example.fitnessapp.presentation.screens.add_food_package.scan_meal_screen.ScanFood
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExerciseDetailScreen
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExercisesScreen
 import com.example.fitnessapp.presentation.screens.profile_screen.AboutAppScreen
@@ -35,8 +35,8 @@ import com.example.fitnessapp.presentation.screens.profile_screen.ProfileScreen
 import com.example.fitnessapp.presentation.screens.auth.user_data_package.set_goals_screen.SetGoalsScreen
 import com.example.fitnessapp.presentation.screens.splash_screen.SplashScreen
 import com.example.fitnessapp.presentation.screens.auth.user_data_package.weight.WeightScreen
-import com.example.fitnessapp.presentation.screens.food_calories.FoodSelectedItem
-import com.example.fitnessapp.presentation.screens.food_calories.SearchFoodScreen
+import com.example.fitnessapp.presentation.screens.add_food_package.search_food_and_add_screens.FoodSelectedItem
+import com.example.fitnessapp.presentation.screens.add_food_package.search_food_and_add_screens.SearchFoodScreen
 import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.RecipeDetailScreen
 import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.RecipesScreen
 import com.example.fitnessapp.presentation.screens.food_history_screen.FoodHistoryScreen
@@ -84,6 +84,10 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
                 "addFood" -> {
                     TopBar("Add Food") { navController.popBackStack() }
+                }
+
+                "foodHistory" -> {
+                    TopBar("Food History") { navController.popBackStack() }
                 }
 
                 "userProfile" -> {
@@ -252,7 +256,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
             composable(Screens.SearchBtnScreen.route) {
                 topBar.value = "addFood"
-                SearchView(onAddFood = {
+                AddFoodSelectOption(onAddFood = {
                     navController.navigate(Screens.FoodSearchScreen.route)
                 }, onScanFood = {
                     navController.navigate(Screens.ScanFoodScreen.route)
@@ -347,7 +351,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
 
             composable(Screens.TodayPlanScreen.route) {
-                topBar.value = "todayPlan"
+                topBar.value = "foodHistory"
                 FoodHistoryScreen()
             }
         }
