@@ -1,5 +1,6 @@
 package com.example.fitnessapp.presentation.screens.auth.user_data_package.set_goals_screen
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -7,6 +8,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -41,20 +43,20 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.fitnessapp.R
-import com.example.fitnessapp.presentation.components.BackButton
-import com.example.fitnessapp.presentation.components.DefaultButton
+import com.example.fitnessapp.presentation.components.BottomButtonsSection
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.viewModels.userData_viewModel.UserDataState
 import com.example.fitnessapp.presentation.viewModels.userData_viewModel.UserDataViewModel
 import com.example.fitnessapp.theme.FitnessAppTheme
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
+
 fun SetGoalsScreen(
     onSetGoals: () -> Unit = {},
     onBack: () -> Unit = {}
 ) {
     val personGoals = remember { mutableStateOf("") }
     val isGoalSelected = remember { mutableStateOf("") }
-
     var loadTrigger by remember { mutableStateOf(false) }
 
     val userDataViewModel = hiltViewModel<UserDataViewModel>()
@@ -71,7 +73,6 @@ fun SetGoalsScreen(
 
     when (userDataState.value) {
         is UserDataState.Error -> FailedLoadingScreen()
-
         UserDataState.Loading -> {
             Column(
                 modifier = Modifier.fillMaxSize(),
@@ -80,8 +81,8 @@ fun SetGoalsScreen(
             ) {
                 CircularProgressIndicator()
             }
+            return
         }
-
         UserDataState.Success -> {
             LaunchedEffect(Unit) {
                 onSetGoals()
@@ -91,93 +92,120 @@ fun SetGoalsScreen(
         else -> Unit
     }
 
+    val items = listOf(
+        R.drawable.loseweight,
+        R.drawable.weightscale,
+        R.drawable.machine
+    )
+    val goals = listOf("Lose Weight", "Gain Weight", "Maintain Weight")
+    val selectedIndex = remember { mutableIntStateOf(-1) }
 
-    val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp.dp
-    val screenHeight = configuration.screenHeightDp.dp
-
-
-    Column(
+    BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
-            .background(colorScheme.background)
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = screenWidth * 0.05f, vertical = screenHeight * 0.03f),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .background(MaterialTheme.colorScheme.background)
     ) {
-        val items = listOf(
-            R.drawable.loseweight,
-            R.drawable.weightscale,
-            R.drawable.machine
-        )
-        val goals = listOf("Lose Weight", "Gain Weight", "Maintain Weight")
-        val selectedIndex = remember { mutableIntStateOf(-1) }
+        val maxHeight = maxHeight
+        val maxWidth = maxWidth
+        val scrollState = rememberScrollState()
 
-
-        Text(
-            text = "Set Your Goals",
-            style = MaterialTheme.typography.headlineMedium,
-            color = colorScheme.onBackground,
+        Column(
             modifier = Modifier
-                .padding(top = screenHeight * 0.02f, bottom = screenHeight * 0.02f)
-        )
+                .fillMaxSize()
+                .padding(horizontal = maxWidth * 0.05f)
+        ) {
 
-        items.forEachIndexed { index, image ->
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
+            Spacer(modifier = Modifier.height(maxHeight * 0.05f))
+            Text(
+                text = "Set Your Goals",
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
-                    .padding(bottom = screenHeight * 0.015f)
-                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally)
+                    .padding(bottom = maxHeight * 0.02f)
+            )
+
+
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .verticalScroll(scrollState),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth(0.35f)
-                        .aspectRatio(1f)
-                        .clip(RoundedCornerShape(16.dp))
-                        .border(
-                            width = 2.dp,
-                            color = if (selectedIndex.intValue == index) colorScheme.primary else Color.Gray,
-                            shape = RoundedCornerShape(16.dp)
-                        )
-                        .clickable {
-                            selectedIndex.intValue = index
-                            personGoals.value = goals[selectedIndex.intValue]
-                        }
-                        .background(color = colorScheme.surface)
-                ) {
-                    Image(
-                        painter = painterResource(id = image),
-                        contentDescription = "Goal Image",
+                goals.forEachIndexed { index, goalText ->
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
-                            .padding(15.dp)
-                            .fillMaxSize(),
-                        contentScale = ContentScale.Crop
+                            .padding(bottom = maxHeight * 0.02f)
+                            .fillMaxWidth()
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth(0.35f)
+                                .aspectRatio(1f)
+                                .clip(RoundedCornerShape(16.dp))
+                                .border(
+                                    width = 2.dp,
+                                    color = if (selectedIndex.intValue == index)
+                                        MaterialTheme.colorScheme.primary
+                                    else Color.Gray,
+                                    shape = RoundedCornerShape(16.dp)
+                                )
+                                .clickable {
+                                    selectedIndex.intValue = index
+                                    personGoals.value = goals[index]
+                                    isGoalSelected.value = ""
+                                }
+                                .background(MaterialTheme.colorScheme.surface)
+                        ) {
+                            Image(
+                                painter = painterResource(id = items[index]),
+                                contentDescription = "Goal Image",
+                                modifier = Modifier
+                                    .padding(maxWidth * 0.04f)
+                                    .fillMaxSize(),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
+
+                        Text(
+                            text = goalText,
+                            modifier = Modifier.padding(top = maxHeight * 0.01f),
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
+                }
+
+                if (isGoalSelected.value.isNotEmpty()) {
+                    Text(
+                        text = isGoalSelected.value,
+                        color = Color.Red,
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(top = 4.dp)
                     )
                 }
-
-                Text(
-                    text = goals[index],
-                    modifier = Modifier.padding(top = screenHeight * 0.01f),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = colorScheme.onBackground
-                )
             }
+
+
+                BottomButtonsSection(
+                    onContinueClick = {
+                        if (personGoals.value.isEmpty()) {
+                            isGoalSelected.value = "Please select your goals"
+                        } else {
+                            loadTrigger = true
+                        }
+                    },
+                    onBackClick = onBack,
+                    continueMessage = isGoalSelected.value
+                )
+
+
+
         }
-
-        DefaultButton(
-            onClick = {
-                if (personGoals.value.isEmpty()) {
-                    isGoalSelected.value = "Please select your goals"
-                } else {
-                    loadTrigger = true
-                }
-            },
-            message = isGoalSelected.value
-        )
-
-        BackButton(onclick = onBack)
     }
 }
+
 
 
 @Preview

@@ -1,20 +1,22 @@
 package com.example.fitnessapp.presentation.screens.auth.user_data_package.level_screen.components
 
 
-import android.util.Log
+import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
@@ -40,24 +42,22 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.fitnessapp.R
-import com.example.fitnessapp.presentation.components.BackButton
-import com.example.fitnessapp.presentation.components.DefaultButton
+import com.example.fitnessapp.presentation.components.BottomButtonsSection
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.screens.auth.user_data_package.level_screen.models.LevelList
 import com.example.fitnessapp.presentation.viewModels.userData_viewModel.UserDataState
 import com.example.fitnessapp.presentation.viewModels.userData_viewModel.UserDataViewModel
 import com.example.fitnessapp.theme.FitnessAppTheme
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun LevelContent(
     onPersonLevel: () -> Unit,
     levelList: MutableList<LevelList>,
     onBack: () -> Unit = {}
 ) {
-
     val personLevel = remember { mutableStateOf("") }
     val isLevelSelected = remember { mutableStateOf("") }
-
     var loadTrigger by remember { mutableStateOf(false) }
 
     val userDataViewModel = hiltViewModel<UserDataViewModel>()
@@ -73,12 +73,8 @@ fun LevelContent(
     }
 
     when (userDataState.value) {
-        is UserDataState.Error -> {
-            FailedLoadingScreen()
-        }
-
+        is UserDataState.Error -> FailedLoadingScreen()
         UserDataState.Loading -> {
-            Log.d("Al-qiran", "Loading from screen")
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -89,78 +85,87 @@ fun LevelContent(
         }
 
         UserDataState.Success -> {
-            Log.d("Al-qiran", "Success from screen")
             LaunchedEffect(Unit) {
                 onPersonLevel()
                 userDataViewModel.resetUserDataState()
             }
         }
+
         else -> Unit
     }
 
-
-    Column(
+    BoxWithConstraints(
         modifier = Modifier
-            .background(colorScheme.background),
-        horizontalAlignment = Alignment.CenterHorizontally,
+            .fillMaxSize()
+            .background(colorScheme.background)
     ) {
-        Text(
-            text = stringResource(id = R.string.physical_activity_level),
-            style = MaterialTheme.typography.headlineMedium,
-            color = colorScheme.onBackground,
-            modifier = Modifier.padding(bottom = 10.dp)
-        )
+        val maxHeight = maxHeight
+        val maxWidth = maxWidth
 
-        LazyColumn(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-            verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxSize()
+                .padding(horizontal = maxWidth * 0.05f)
         ) {
-            var oldSelected: MutableState<Boolean>? = null
 
-            items(levelList.size) { i ->
-                val isSelected = remember { mutableStateOf(levelList[i].isSelected) }
+            Spacer(modifier = Modifier.height(maxHeight * 0.05f))
+            Text(
+                text = stringResource(id = R.string.physical_activity_level),
+                style = MaterialTheme.typography.headlineMedium,
+                color = colorScheme.onBackground,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(bottom = maxHeight * 0.02f)
+            )
 
-                // Change the border color if selected
-                val border = if (isSelected.value) {
-                    BorderStroke(3.dp, colorScheme.primary)
-                } else BorderStroke(3.dp, colorScheme.onBackground)
+            LazyColumn(
+                modifier = Modifier
+                    .weight(1f),
+                verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                var oldSelected: MutableState<Boolean>? = null
 
-                RowElements(
-                    levelList[i],
-                    modifier = Modifier.clickable {
-                        if (oldSelected?.value != null) {
-                            oldSelected?.value = false
-                        }
-                        oldSelected = isSelected
-                        isSelected.value = true
+                items(levelList.size) { i ->
+                    val isSelected = remember { mutableStateOf(levelList[i].isSelected) }
 
-                        personLevel.value = levelList[i].levelName
-                    },
-                    border = border
-                )
+                    val border = if (isSelected.value) {
+                        BorderStroke(3.dp, colorScheme.primary)
+                    } else BorderStroke(3.dp, colorScheme.onBackground)
+
+                    RowElements(
+                        levelList[i],
+                        modifier = Modifier.clickable {
+                            if (oldSelected?.value != null) {
+                                oldSelected?.value = false
+                            }
+                            oldSelected = isSelected
+                            isSelected.value = true
+
+                            personLevel.value = levelList[i].levelName
+                            isLevelSelected.value = ""
+                        },
+                        border = border
+                    )
+                }
             }
-        }
 
-        Column {
-            DefaultButton(
-                onClick = {
+
+            BottomButtonsSection(
+                onContinueClick = {
                     if (personLevel.value.isEmpty()) {
                         isLevelSelected.value = "Please select your level"
                     } else {
                         loadTrigger = true
                     }
                 },
-                message = isLevelSelected.value
-            )
-            BackButton(
-                onclick = onBack
+                onBackClick = onBack,
+                continueMessage = isLevelSelected.value
             )
         }
     }
 }
+
 
 @Composable
 fun RowElements(
@@ -168,41 +173,49 @@ fun RowElements(
     modifier: Modifier = Modifier,
     border: BorderStroke = BorderStroke(3.dp, colorScheme.onBackground)
 ) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp)
+    ) {
         Image(
             modifier = Modifier
-                .width(73.dp)
-                .height(73.dp)
-                .padding(end = 8.dp),
+                .size(64.dp) // حجم نسبي مناسب
+                .padding(end = 12.dp),
             painter = painterResource(id = levelList.levelImage),
             contentDescription = null,
             colorFilter = ColorFilter.tint(colorScheme.primary),
         )
+
         CardElement(
             levelList = levelList.levelName,
-            modifier = modifier,
+            modifier = modifier.weight(1f),
             border = border
         )
     }
 }
 
 
+
 @Composable
 fun CardElement(levelList: String, modifier: Modifier = Modifier, border: BorderStroke) {
     Card(
         colors = CardDefaults.cardColors(colorScheme.surface),
-        modifier = Modifier
-            .width(227.dp)
-            .height(61.dp),
+        modifier = modifier
+            .height(56.dp), // ارتفاع نسبي مناسب
         border = border,
         shape = CircleShape,
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .then(modifier),
+            modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
-        ) { Text(text = levelList, style = MaterialTheme.typography.labelLarge) }
+        ) {
+            Text(
+                text = levelList,
+                style = MaterialTheme.typography.labelLarge
+            )
+        }
     }
 }
 
