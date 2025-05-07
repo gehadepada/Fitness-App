@@ -1,33 +1,68 @@
 package com.example.fitnessapp.presentation.viewModels.foodAndCalories_viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.fitnessapp.data.datasources.local.FoodAndCalories
+import com.example.fitnessapp.data.datasources.local.FoodAndCaloriesLocalModel
 import com.example.fitnessapp.data.datasources.local.FoodAndCaloriesDao
+import com.example.fitnessapp.presentation.mapper.toFoodAndCaloriesUIModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.Int
+import kotlin.String
 
 @HiltViewModel
-class FoodAndCaloriesViewModel @Inject constructor(private val dao: FoodAndCaloriesDao): ViewModel() {
+class FoodAndCaloriesViewModel @Inject constructor(private val dao: FoodAndCaloriesDao) :
+    ViewModel() {
 
-    private val _foodAndCaloriesState = MutableStateFlow<FoodAndCaloriesState>(FoodAndCaloriesState.None)
+    private val _foodAndCaloriesState =
+        MutableStateFlow<FoodAndCaloriesState>(FoodAndCaloriesState.None)
     val foodAndCaloriesState = _foodAndCaloriesState.asStateFlow()
 
-    fun insertFoodAndCalories(foodAndCalories: FoodAndCalories) {
+    fun insertFoodAndCalories(foodAndCaloriesLocalModel: FoodAndCaloriesLocalModel) {
         viewModelScope.launch(Dispatchers.IO) {
             _foodAndCaloriesState.value = FoodAndCaloriesState.Loading
             try {
-                dao.insertFoodAndCalories(foodAndCalories)
+                dao.insertFoodAndCalories(foodAndCaloriesLocalModel)
                 _foodAndCaloriesState.value = FoodAndCaloriesState.Success
-            } catch(e: Exception) {
-                _foodAndCaloriesState.value = FoodAndCaloriesState.Error(e.suppressedExceptions.toString())
+            } catch (e: Exception) {
+                _foodAndCaloriesState.value =
+                    FoodAndCaloriesState.Error(e.suppressedExceptions.toString())
             }
         }
     }
 
+    fun getFoodAndCalories(startDate: String, date: String) {
+        _foodAndCaloriesState.value = FoodAndCaloriesState.Loading
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val data = dao.getFoodAndCaloriesByDate(startDate, date)
+                    .map { it.toFoodAndCaloriesUIModel() }
+                Log.d("Al-qiran", dao.getFoodAndCaloriesByDate(startDate, date).toString())
+                _foodAndCaloriesState.value = FoodAndCaloriesState.SuccessWithData(data)
+            } catch (e: Exception) {
+                _foodAndCaloriesState.value =
+                    FoodAndCaloriesState.Error(e.suppressedExceptions.toString())
+            }
+        }
+    }
+
+    fun deleteFoodAndCalorie(foodAndCaloriesLocalModel: FoodAndCaloriesLocalModel) {
+        _foodAndCaloriesState.value = FoodAndCaloriesState.Loading
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                dao.deleteFoodAndCalories(foodAndCaloriesLocalModel)
+                _foodAndCaloriesState.value = FoodAndCaloriesState.Success
+            } catch (e: Exception) {
+                _foodAndCaloriesState.value =
+                    FoodAndCaloriesState.Error(e.suppressedExceptions.toString())
+            }
+        }
+    }
 
 }

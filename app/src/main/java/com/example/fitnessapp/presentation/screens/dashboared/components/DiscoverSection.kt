@@ -56,7 +56,7 @@ fun DiscoverSection(navController: NavController) {
                 icon = painterResource(id = R.drawable.dinner_icon),
                 label = "Recipes",
                 onClick = {
-                    navController.navigate(Screens.FoodScreen.route)
+                    navController.navigate(Screens.RecipesScreen.route)
                 },
                 modifier = Modifier.weight(1f)
             )

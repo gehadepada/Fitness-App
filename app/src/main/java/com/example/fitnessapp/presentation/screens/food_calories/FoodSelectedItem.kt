@@ -1,7 +1,5 @@
 package com.example.fitnessapp.presentation.screens.food_calories
 
-import android.app.AlertDialog
-import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -37,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.fitnessapp.data.datasources.local.FoodAndCalories
+import com.example.fitnessapp.data.datasources.local.FoodAndCaloriesLocalModel
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.components.SuccessDialog
 import com.example.fitnessapp.presentation.viewModels.foodAndCalories_viewModel.FoodAndCaloriesState
@@ -53,7 +51,7 @@ fun FoodSelectedItem(foodName: String, calories: String) {
     val foodAndCalorieViewModel = hiltViewModel<FoodAndCaloriesViewModel>()
     val foodAndCaloriesState =
         foodAndCalorieViewModel.foodAndCaloriesState.collectAsStateWithLifecycle()
-    var foodInsert by remember { mutableStateOf<FoodAndCalories?>(null) }
+    var foodInsert by remember { mutableStateOf<FoodAndCaloriesLocalModel?>(null) }
     var loadTrigger by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(true) }
 
@@ -163,7 +161,7 @@ fun FoodSelectedItem(foodName: String, calories: String) {
 
                 Button(
                     onClick = {
-                        foodInsert = FoodAndCalories(
+                        foodInsert = FoodAndCaloriesLocalModel(
                             foodName = foodName,
                             calories = totalCalories,
                             totalAmount = quantity
