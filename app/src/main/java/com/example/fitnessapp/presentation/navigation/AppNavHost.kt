@@ -39,7 +39,7 @@ import com.example.fitnessapp.presentation.screens.food_calories.FoodSelectedIte
 import com.example.fitnessapp.presentation.screens.food_calories.SearchFoodScreen
 import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.RecipeDetailScreen
 import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.RecipesScreen
-import com.example.fitnessapp.presentation.screens.today_plan_screen.TodayPlanScreen
+import com.example.fitnessapp.presentation.screens.food_history_screen.FoodHistoryScreen
 import com.example.fitnessapp.presentation.screens.waterScreen.WaterTrackerScreen
 import com.google.firebase.auth.FirebaseAuth
 
@@ -348,7 +348,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
             composable(Screens.TodayPlanScreen.route) {
                 topBar.value = "todayPlan"
-                TodayPlanScreen()
+                FoodHistoryScreen()
             }
         }
     }

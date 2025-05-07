@@ -1,4 +1,4 @@
-package com.example.fitnessapp.presentation.screens.today_plan_screen
+package com.example.fitnessapp.presentation.screens.food_history_screen
 
 import android.app.DatePickerDialog
 import androidx.compose.foundation.layout.Arrangement
@@ -43,7 +43,7 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun TodayPlanScreen() {
+fun FoodHistoryScreen() {
     val context = LocalContext.current
     val currentDate = LocalDate.now()
 

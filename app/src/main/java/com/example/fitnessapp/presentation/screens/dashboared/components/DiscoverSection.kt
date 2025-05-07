@@ -90,8 +90,8 @@ fun DiscoverSection(navController: NavController) {
                 modifier = Modifier.weight(1f)
             )
             DiscoverButton(
-                icon = painterResource(id = R.drawable.moon_svgrepo_com),
-                label = "Today's Plan",
+                icon = painterResource(id = R.drawable.food_package),
+                label = "Food History",
                 onClick = {
                     navController.navigate(Screens.TodayPlanScreen.route)
                 },
