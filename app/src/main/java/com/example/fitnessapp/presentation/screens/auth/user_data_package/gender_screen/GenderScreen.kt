@@ -181,7 +181,7 @@ fun GenderScreen(onGender: () -> Unit) {
                 message = isGenderSelected.value
             )
 
-            BackButton(enabled = false)
+            BackButton(enabled = false, onclick = {})
         }
     }
 }

@@ -1,9 +1,7 @@
 
 package com.example.fitnessapp.presentation.screens.auth.user_data_package.height_select
 
-import android.R.id.message
 import android.annotation.SuppressLint
-import com.example.fitnessapp.presentation.components.BackButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
@@ -31,7 +29,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,7 +37,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.components.BottomButtonsSection
-import com.example.fitnessapp.presentation.components.DefaultButton
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.viewModels.userData_viewModel.UserDataState
 import com.example.fitnessapp.presentation.viewModels.userData_viewModel.UserDataViewModel
@@ -216,7 +212,6 @@ fun NumberPickerDemo(
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            // ✅ عنوان ثابت خارج Scroll
             Text(
                 text = "What is your Height?",
                 style = MaterialTheme.typography.headlineMedium,

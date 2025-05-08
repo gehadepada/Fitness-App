@@ -21,11 +21,8 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.fitnessapp.presentation.components.BackButton
-import com.example.fitnessapp.presentation.components.DefaultButton
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.viewModels.userData_viewModel.UserDataState
 import com.example.fitnessapp.presentation.viewModels.userData_viewModel.UserDataViewModel
@@ -89,7 +86,6 @@ fun WeightScreen(
                 .fillMaxSize()
                 .padding(horizontal = maxWidth * 0.05f)
         ) {
-            // العنوان
             Spacer(modifier = Modifier.height(maxHeight * 0.05f))
             Text(
                 text = "What is your weight?",
@@ -100,7 +96,6 @@ fun WeightScreen(
                     .padding(bottom = maxHeight * 0.02f)
             )
 
-            // المحتوى القابل للتمرير
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -149,7 +144,6 @@ fun WeightScreen(
                 )
             }
 
-            // الأزرار في الأسفل بشكل موحد
             BottomButtonsSection(
                 onContinueClick = { loadTrigger = true },
                 onBackClick = onBack

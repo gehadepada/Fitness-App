@@ -17,7 +17,6 @@ fun BottomButtonsSection(
     modifier: Modifier = Modifier
         .fillMaxWidth()
         .padding(PaddingValues(start = 24.dp, end = 24.dp, bottom = 48.dp))
-    // نفس الشكل في الصفحات
 ) {
     Column(
         modifier = modifier,
