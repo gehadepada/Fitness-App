@@ -1,5 +1,7 @@
 
 package com.example.fitnessapp.presentation.screens.auth.user_data_package.height_select
+
+import android.R.id.message
 import android.annotation.SuppressLint
 import com.example.fitnessapp.presentation.components.BackButton
 import androidx.compose.foundation.Image
@@ -37,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.fitnessapp.R
+import com.example.fitnessapp.presentation.components.BottomButtonsSection
 import com.example.fitnessapp.presentation.components.DefaultButton
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.viewModels.userData_viewModel.UserDataState
@@ -154,7 +157,10 @@ private fun pixelsToDp(pixels: Int) = with(LocalDensity.current) { pixels.toDp()
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
-fun NumberPickerDemo(onHeight: () -> Unit = {}, onBack: () -> Unit = {}) {
+fun NumberPickerDemo(
+    onHeight: () -> Unit = {},
+    onBack: () -> Unit = {}
+) {
     val values = remember { (140..210).map { it.toString() } }
     val valuesPickerState = rememberPickerState()
 
@@ -175,6 +181,7 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}, onBack: () -> Unit = {}) {
     when (userDataState.value) {
         is UserDataState.Error -> {
             FailedLoadingScreen()
+            return
         }
 
         UserDataState.Loading -> {
@@ -185,11 +192,13 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}, onBack: () -> Unit = {}) {
             ) {
                 CircularProgressIndicator()
             }
+            return
         }
 
-        UserDataState.Success -> {
+        is UserDataState.Success -> {
             LaunchedEffect(Unit) {
                 onHeight()
+                userDataViewModel.resetUserDataState()
             }
         }
 
@@ -205,67 +214,74 @@ fun NumberPickerDemo(onHeight: () -> Unit = {}, onBack: () -> Unit = {}) {
         val screenWidth = maxWidth
 
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = screenWidth * 0.05f, vertical = screenHeight * 0.05f),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top
+            modifier = Modifier.fillMaxSize()
         ) {
-            Spacer(modifier = Modifier.height(screenHeight * 0.05f))
+            // ✅ عنوان ثابت خارج Scroll
             Text(
                 text = "What is your Height?",
-                textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier
+                    .padding(
+                        top = screenHeight * 0.06f,
+                        start = screenWidth * 0.07f,
+                        end = screenWidth * 0.07f,
+                        bottom = screenHeight * 0.02f
+                    )
             )
 
-            Row(
+            // ✅ Scrollable Content
+            Column(
                 modifier = Modifier
-                    .padding(vertical = screenHeight * 0.02f),
-                verticalAlignment = Alignment.CenterVertically,
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = screenWidth * 0.07f),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = valuesPickerState.selectedItem,
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.displayLarge,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.padding(end = screenWidth * 0.02f)
-                )
-                Text(
-                    text = "Cm",
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onBackground,
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = valuesPickerState.selectedItem,
+                        style = MaterialTheme.typography.displayLarge,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.padding(end = screenWidth * 0.02f)
+                    )
+                    Text(
+                        text = "Cm",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                }
+
+                Picker(
+                    state = valuesPickerState,
+                    items = values,
+                    visibleItemsCount = 5,
+                    modifier = Modifier
+                        .fillMaxWidth(0.5f)
+                        .height(screenHeight * 0.35f)
+                        .align(Alignment.CenterHorizontally),
+                    textModifier = Modifier.padding(10.dp),
+                    textStyle = TextStyle(
+                        fontSize = screenHeight.value.sp * 0.04f,
+                        color = MaterialTheme.colorScheme.onBackground
+                    ),
                 )
             }
 
-            Picker(
-                state = valuesPickerState,
-                items = values,
-                visibleItemsCount = 5,
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .height(screenHeight * 0.35f),
-                textModifier = Modifier.padding(10.dp),
-                textStyle = TextStyle(fontSize = screenHeight.value.sp * 0.04f, color = Color.White),
-            )
-
-            Spacer(modifier = Modifier.height(screenHeight * 0.05f))
-
-            DefaultButton(
-                onClick = {
-                    loadTrigger = true
+            BottomButtonsSection(
+                onContinueClick = {
+                        loadTrigger = true
                 },
-            )
-
-            BackButton(
-                text = "Back",
-                onclick = onBack
+                onBackClick = onBack,
             )
         }
+        }
     }
-}
+
 
 @Preview
 @Composable

@@ -1,5 +1,6 @@
 package com.example.fitnessapp.presentation.screens.auth.user_data_package.weight
 
+import android.annotation.SuppressLint
 import android.graphics.Paint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -32,14 +33,15 @@ import com.example.fitnessapp.theme.FitnessAppTheme
 import java.lang.Math.toRadians
 import kotlin.math.cos
 import kotlin.math.sin
+import com.example.fitnessapp.presentation.components.BottomButtonsSection
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun WeightScreen(
     onWeight: () -> Unit = {},
     onBack: () -> Unit = {}
 ) {
     var weight by remember { mutableFloatStateOf(70f) }
-
     var loadTrigger by remember { mutableStateOf(false) }
 
     val userDataViewModel = hiltViewModel<UserDataViewModel>()
@@ -47,18 +49,13 @@ fun WeightScreen(
 
     if (loadTrigger) {
         LaunchedEffect(Unit) {
-            userDataViewModel.saveDataToFirestore(
-                mapOf("weight" to weight.toInt())
-            )
+            userDataViewModel.saveDataToFirestore(mapOf("weight" to weight.toInt()))
             loadTrigger = false
         }
     }
 
     when (userDataState.value) {
-        is UserDataState.Error -> {
-            FailedLoadingScreen()
-        }
-
+        is UserDataState.Error -> FailedLoadingScreen()
         UserDataState.Loading -> {
             Column(
                 modifier = Modifier.fillMaxSize(),
@@ -67,129 +64,152 @@ fun WeightScreen(
             ) {
                 CircularProgressIndicator()
             }
+            return
         }
-
         UserDataState.Success -> {
             LaunchedEffect(Unit) {
                 onWeight()
                 userDataViewModel.resetUserDataState()
             }
         }
-
         else -> Unit
     }
 
-    // Main UI wrapped in scrollable column
-    Column(
+    BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp, vertical = 24.dp), // general padding
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            "What is your weight?",
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.padding(top=20.dp,bottom = 20.dp)
-        )
+        val maxHeight = maxHeight
+        val maxWidth = maxWidth
+        val scrollState = rememberScrollState()
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(bottom = 24.dp)
-        ) {
-            Text(
-                text = "${weight.toInt()}",
-                style = MaterialTheme.typography.displayLarge,
-                color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.padding(end = 10.dp)
-            )
-            Text(
-                text = "Kg",
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onBackground,
-            )
-        }
-
-        Box(
+        Column(
             modifier = Modifier
-                .fillMaxWidth(0.8f)
-                .aspectRatio(1f)
-                .padding(vertical = 16.dp)
+                .fillMaxSize()
+                .padding(horizontal = maxWidth * 0.05f)
         ) {
-            Canvas(modifier = Modifier.fillMaxSize()) {
-                drawCircularDial(20, 180)
-                drawPointer(weight, 20, 180)
+            // العنوان
+            Spacer(modifier = Modifier.height(maxHeight * 0.05f))
+            Text(
+                text = "What is your weight?",
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(bottom = maxHeight * 0.02f)
+            )
+
+            // المحتوى القابل للتمرير
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .verticalScroll(scrollState),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(bottom = maxHeight * 0.02f)
+                ) {
+                    Text(
+                        text = "${weight.toInt()}",
+                        style = MaterialTheme.typography.displayLarge,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.padding(end = maxWidth * 0.02f)
+                    )
+                    Text(
+                        text = "Kg",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.8f)
+                        .aspectRatio(1f)
+                        .padding(vertical = maxHeight * 0.02f)
+                ) {
+                    Canvas(modifier = Modifier.fillMaxSize()) {
+                        drawCircularDial(20, 180)
+                        drawPointer(weight, 20, 180)
+                    }
+                }
+
+                Slider(
+                    value = weight,
+                    onValueChange = { weight = it },
+                    valueRange = 20f..180f,
+                    steps = 160,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = SliderDefaults.colors(
+                        thumbColor = Color.Green,
+                        activeTrackColor = Color.Green
+                    )
+                )
             }
-        }
 
-        Slider(
-            value = weight,
-            onValueChange = { weight = it },
-            valueRange = 20f..180f,
-            steps = 160,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            colors = SliderDefaults.colors(
-                thumbColor = Color.Green,
-                activeTrackColor = Color.Green
+            // الأزرار في الأسفل بشكل موحد
+            BottomButtonsSection(
+                onContinueClick = { loadTrigger = true },
+                onBackClick = onBack
             )
-        )
 
-        Spacer(modifier = Modifier.height(24.dp))
-
-        DefaultButton(onClick = { loadTrigger = true })
-        BackButton(onclick = onBack)
+        }
     }
 }
+
+
+
+
+
+
 
 fun DrawScope.drawCircularDial(minWeight: Int, maxWeight: Int) {
-    drawCircle(
-        color = Color.Green,
-        style = Stroke(width = 8f)
-    )
+        drawCircle(
+            color = Color.Green,
+            style = Stroke(width = 8f)
+        )
 
-    val radius = size.minDimension / 2
-    val totalSteps = maxWeight - minWeight
-    val stepAngle = 360f / totalSteps
+        val radius = size.minDimension / 2
+        val totalSteps = maxWeight - minWeight
+        val stepAngle = 360f / totalSteps
 
-    for (i in 0..totalSteps step 10) {
-        val weightValue = minWeight + i
-        val angle = i * stepAngle - 90f
-        val x = (radius * cos(toRadians(angle.toDouble()))).toFloat() + center.x
-        val y = (radius * sin(toRadians(angle.toDouble()))).toFloat() + center.y
+        for (i in 0..totalSteps step 10) {
+            val weightValue = minWeight + i
+            val angle = i * stepAngle - 90f
+            val x = (radius * cos(toRadians(angle.toDouble()))).toFloat() + center.x
+            val y = (radius * sin(toRadians(angle.toDouble()))).toFloat() + center.y
 
-        drawContext.canvas.nativeCanvas.drawText(
-            weightValue.toString(),
-            x,
-            y,
-            Paint().apply {
-                textSize = 40f
-                textAlign = Paint.Align.CENTER
-            }
+            drawContext.canvas.nativeCanvas.drawText(
+                weightValue.toString(),
+                x,
+                y,
+                Paint().apply {
+                    textSize = 40f
+                    textAlign = Paint.Align.CENTER
+                }
+            )
+        }
+    }
+
+    fun DrawScope.drawPointer(weight: Float, minWeight: Int, maxWeight: Int) {
+        val totalSteps = maxWeight - minWeight
+        val stepAngle = 360f / totalSteps
+        val angle = (weight - minWeight) * stepAngle - 90f
+
+        val radius = size.minDimension / 2
+        val pointerLength = radius * 0.6f
+        val x = (pointerLength * cos(toRadians(angle.toDouble()))).toFloat() + center.x
+        val y = (pointerLength * sin(toRadians(angle.toDouble()))).toFloat() + center.y
+
+        drawLine(
+            color = Color.Green,
+            start = center,
+            end = Offset(x, y),
+            strokeWidth = 8f
         )
     }
-}
-
-fun DrawScope.drawPointer(weight: Float, minWeight: Int, maxWeight: Int) {
-    val totalSteps = maxWeight - minWeight
-    val stepAngle = 360f / totalSteps
-    val angle = (weight - minWeight) * stepAngle - 90f
-
-    val radius = size.minDimension / 2
-    val pointerLength = radius * 0.6f
-    val x = (pointerLength * cos(toRadians(angle.toDouble()))).toFloat() + center.x
-    val y = (pointerLength * sin(toRadians(angle.toDouble()))).toFloat() + center.y
-
-    drawLine(
-        color = Color.Green,
-        start = center,
-        end = Offset(x, y),
-        strokeWidth = 8f
-    )
-}
 
 
 
