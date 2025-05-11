@@ -37,8 +37,8 @@ import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.components.BackButton
 import com.example.fitnessapp.presentation.components.DefaultButton
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
-import com.example.fitnessapp.presentation.viewModels.userData_viewModel.UserDataState
-import com.example.fitnessapp.presentation.viewModels.userData_viewModel.UserDataViewModel
+import com.example.fitnessapp.presentation.viewModels.save_userData_viewModel.SaveUserDataState
+import com.example.fitnessapp.presentation.viewModels.save_userData_viewModel.SaveUserDataViewModel
 import androidx.compose.foundation.rememberScrollState
 
 
@@ -52,14 +52,14 @@ fun GenderScreen(onGender: () -> Unit) {
     val selectedIndex = remember { mutableIntStateOf(-1) }
     var showError by remember { mutableStateOf(false) }
 
-    val userDataViewModel = hiltViewModel<UserDataViewModel>()
-    val userDataState = userDataViewModel.userDataState.collectAsStateWithLifecycle()
+    val saveUserDataViewModel = hiltViewModel<SaveUserDataViewModel>()
+    val userDataState = saveUserDataViewModel.userDataState.collectAsStateWithLifecycle()
 
     var loadTrigger by remember { mutableStateOf(false) }
 
     if (loadTrigger) {
         LaunchedEffect(Unit) {
-            userDataViewModel.saveDataToFirestore(
+            saveUserDataViewModel.saveDataToFirestore(
                 mapOf("gender" to gender[selectedIndex.intValue])
             )
             loadTrigger = false
@@ -67,12 +67,12 @@ fun GenderScreen(onGender: () -> Unit) {
     }
 
     when (userDataState.value) {
-        is UserDataState.Error -> {
+        is SaveUserDataState.Error -> {
             FailedLoadingScreen()
             return
         }
 
-        UserDataState.Loading -> {
+        SaveUserDataState.Loading -> {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -83,10 +83,10 @@ fun GenderScreen(onGender: () -> Unit) {
             return
         }
 
-        UserDataState.Success -> {
+        SaveUserDataState.Success -> {
             LaunchedEffect(Unit) {
                 onGender()
-                userDataViewModel.resetUserDataState()
+                saveUserDataViewModel.resetUserDataState()
             }
         }
 

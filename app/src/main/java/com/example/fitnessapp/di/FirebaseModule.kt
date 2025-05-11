@@ -17,14 +17,15 @@ object FirebaseModule {
 
     @Provides
     @Singleton
-    fun provideFirestoreDatabase(): FirebaseFirestore {
-        return FirebaseFirestore.getInstance()
+    fun provideFirebaseAuth(): FirebaseAuth {
+        return FirebaseAuth.getInstance()
     }
+
 
     @Provides
     @Singleton
-    fun getCurrentUserId(): String? {
-        return FirebaseAuth.getInstance().currentUser?.uid
+    fun provideFirestoreDatabase(): FirebaseFirestore {
+        return FirebaseFirestore.getInstance()
     }
 }
 

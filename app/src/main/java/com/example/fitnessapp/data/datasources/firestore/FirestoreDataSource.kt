@@ -1,9 +1,11 @@
 package com.example.fitnessapp.data.datasources.firestore
 
+import android.util.Log
 import com.example.fitnessapp.data.datasources.firestore.model.FoodCaloriesModel
 import com.example.fitnessapp.data.datasources.firestore.model.Muscles
+import com.example.fitnessapp.data.datasources.firestore.model.UserInfoDataModel
 import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.model.RecipesModel
-import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.SetOptions
@@ -11,7 +13,21 @@ import com.google.firebase.firestore.Source
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-class FirestoreDataSource @Inject constructor(private val firestore: FirebaseFirestore, private val userId: String?) {
+class FirestoreDataSource @Inject constructor(
+    private val firestore: FirebaseFirestore,
+    private val auth: FirebaseAuth
+) {
+
+    private val userId: String?
+        get() = auth.currentUser?.uid
+
+    suspend fun createUserEmailAndPassword(email: String, password: String) {
+        try {
+            auth.createUserWithEmailAndPassword(email, password).await()
+        } catch (e: Exception) {
+            throw e
+        }
+    }
 
     suspend fun getAllMuscles(): List<Muscles> {
         return try {
@@ -42,8 +58,9 @@ class FirestoreDataSource @Inject constructor(private val firestore: FirebaseFir
         userData: Map<String, Any>
     ) {
         if (userId == null) return
+        Log.d("Al-qiran", "$userData")
         try {
-            firestore.collection("Users").document(userId)
+            firestore.collection("Users").document(userId!!)
                 .set(userData, SetOptions.merge())
                 .addOnFailureListener {
                     throw NoSuchElementException("Sorry we can't add the User")
@@ -51,20 +68,20 @@ class FirestoreDataSource @Inject constructor(private val firestore: FirebaseFir
                 .addOnSuccessListener {
                 }
         } catch (e: Exception) {
+            Log.d("Al-qiran", "Error from firestore${e.message}")
             throw e
         }
     }
 
-    fun getUserDataFires(
-        onSuccess: (DocumentSnapshot) -> Unit,
-        onFailure: (Exception) -> Unit = {}
-    ) {
-        if (userId == null) return
-
-        firestore.collection("Users").document(userId)
-            .get()
-            .addOnSuccessListener { onSuccess(it) }
-            .addOnFailureListener { onFailure(it) }
+    suspend fun getUserDataFires(): UserInfoDataModel? {
+        return try {
+            val snapshot = firestore.collection("Users").document(userId!!)
+                .get()
+                .await()
+            snapshot.toObject(UserInfoDataModel::class.java)
+        } catch (e: Exception) {
+            throw e
+        }
     }
 
 

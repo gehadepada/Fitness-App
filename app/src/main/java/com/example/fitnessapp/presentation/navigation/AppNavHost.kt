@@ -1,6 +1,6 @@
 package com.example.fitnessapp.presentation.navigation
 
-import UserProfileScreen
+import UserProfileInfoScreen
 import com.example.fitnessapp.presentation.screens.auth.user_data_package.gender_screen.GenderScreen
 import com.example.fitnessapp.presentation.screens.health_connect_screen.HealthConnectScreen
 import android.content.Context
@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -29,9 +30,9 @@ import com.example.fitnessapp.presentation.screens.add_food_package.add_food_way
 import com.example.fitnessapp.presentation.screens.add_food_package.scan_meal_screen.ScanFood
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExerciseDetailScreen
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExercisesScreen
-import com.example.fitnessapp.presentation.screens.profile_screen.AboutAppScreen
-import com.example.fitnessapp.presentation.screens.profile_screen.AppPermissionsScreen
-import com.example.fitnessapp.presentation.screens.profile_screen.ProfileScreen
+import com.example.fitnessapp.presentation.screens.profile_screen_package.AboutAppScreen
+import com.example.fitnessapp.presentation.screens.profile_screen_package.AppPermissionsScreen
+import com.example.fitnessapp.presentation.screens.profile_screen_package.ProfileScreen
 import com.example.fitnessapp.presentation.screens.auth.user_data_package.set_goals_screen.SetGoalsScreen
 import com.example.fitnessapp.presentation.screens.splash_screen.SplashScreen
 import com.example.fitnessapp.presentation.screens.auth.user_data_package.weight.WeightScreen
@@ -41,6 +42,7 @@ import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.Recipe
 import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.RecipesScreen
 import com.example.fitnessapp.presentation.screens.food_history_screen.FoodHistoryScreen
 import com.example.fitnessapp.presentation.screens.waterScreen.WaterTrackerScreen
+import com.example.fitnessapp.presentation.viewModels.auth_viewModel.AuthViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 /**
@@ -57,7 +59,9 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
     val topBar = remember { mutableStateOf("") }
     var selectedIndex by remember { mutableIntStateOf(-1) }
 
-    val currentUser = FirebaseAuth.getInstance().currentUser
+
+    val authViewModel = hiltViewModel<AuthViewModel>()
+    val currentUser = authViewModel.currentUser
 
     Scaffold(
         topBar = {
@@ -123,15 +127,21 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
         NavHost(
             navController = navController,
-            startDestination = if (currentUser != null) Screens.DashBoardScreen.route else Screens.SplashScreen.route,
+            startDestination = Screens.SplashScreen.route,
             modifier = modifier.padding(paddingValues)
         ) {
 
             composable(Screens.SplashScreen.route) {
                 if (selectedIndex != -1) selectedIndex = -1
                 SplashScreen {
-                    navController.navigate(Screens.LogInScreen.route) {
-                        popUpTo(Screens.SplashScreen.route) { inclusive = true }
+                    if (currentUser != null) {
+                        navController.navigate(Screens.DashBoardScreen.route) {
+                            popUpTo(Screens.SplashScreen.route) { inclusive = true }
+                        }
+                    } else {
+                        navController.navigate(Screens.LogInScreen.route) {
+                            popUpTo(Screens.SplashScreen.route) { inclusive = true }
+                        }
                     }
                 }
             }
@@ -269,11 +279,11 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 })
             }
 
-
-
             composable(Screens.HealthScreen.route) {
                 topBar.value = "Health"
-                HealthConnectScreen()
+                HealthConnectScreen(onBack = {
+                    navController.popBackStack()
+                })
             }
 
 
@@ -310,20 +320,23 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 ProfileScreen(
                     onUser = { navController.navigate(Screens.UserProfileScreen.route) },
                     onPermissions = { navController.navigate(Screens.AppPermissionsScreen.route) },
-                    onAbout = { navController.navigate(Screens.AboutAppScreen.route) }
+                    onAbout = { navController.navigate(Screens.AboutAppScreen.route) },
+                    onLogout = {
+                        authViewModel.signOut()
+                        navController.navigate(Screens.LogInScreen.route) {
+                            popUpTo(0) { inclusive = true }
+                        }
+                    }
                 )
             }
 
             composable(Screens.UserProfileScreen.route) {
                 topBar.value = "userProfile"
-                UserProfileScreen(
-                    onLogoutClick = {
-                        navController.navigate(Screens.LogInScreen.route) {
-                            popUpTo(Screens.DashBoardScreen.route)
-                        }
-                    },
+                UserProfileInfoScreen(
                     onEditProfileClick = {
-
+                        navController.navigate(Screens.GenderScreen.route) {
+                            popUpTo(0) { inclusive = true }
+                        }
                     })
             }
             composable(Screens.AppPermissionsScreen.route) {

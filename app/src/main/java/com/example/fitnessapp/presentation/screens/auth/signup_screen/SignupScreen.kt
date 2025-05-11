@@ -1,5 +1,6 @@
 package com.example.fitnessapp.presentation.screens.auth.signup_screen
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -13,9 +14,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fitnessapp.presentation.components.DefaultButton
+import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.screens.auth.components.CustomOutlinedTextField
 import com.example.fitnessapp.presentation.screens.auth.signup_screen.viewModel.SignUpState
 import com.example.fitnessapp.presentation.screens.auth.signup_screen.viewModel.SignUpViewModel
@@ -27,7 +29,7 @@ fun SignUpScreen(
     onSignUp: () -> Unit,
     goToLogin: () -> Unit = {}
 ) {
-    val signUpViewModel: SignUpViewModel = viewModel()
+    val signUpViewModel = hiltViewModel<SignUpViewModel>()
     val state by signUpViewModel.state.collectAsStateWithLifecycle()
 
     val errorMessages by signUpViewModel.invalidElements.collectAsStateWithLifecycle()

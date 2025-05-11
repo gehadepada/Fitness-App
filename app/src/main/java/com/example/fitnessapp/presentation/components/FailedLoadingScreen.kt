@@ -77,7 +77,7 @@ fun FailedLoadingScreen(onFailed: () -> Unit = {}, errorMessage: String = "Unkno
         ) {
             Text(
                 modifier = Modifier.padding(5.dp),
-                text = "Something Went Wrong..",
+                text = "Retry",
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onPrimary
             )

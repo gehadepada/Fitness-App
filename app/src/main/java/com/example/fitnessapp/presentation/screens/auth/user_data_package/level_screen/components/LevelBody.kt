@@ -45,8 +45,8 @@ import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.components.BottomButtonsSection
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.screens.auth.user_data_package.level_screen.models.LevelList
-import com.example.fitnessapp.presentation.viewModels.userData_viewModel.UserDataState
-import com.example.fitnessapp.presentation.viewModels.userData_viewModel.UserDataViewModel
+import com.example.fitnessapp.presentation.viewModels.save_userData_viewModel.SaveUserDataState
+import com.example.fitnessapp.presentation.viewModels.save_userData_viewModel.SaveUserDataViewModel
 import com.example.fitnessapp.theme.FitnessAppTheme
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
@@ -60,12 +60,12 @@ fun LevelContent(
     val isLevelSelected = remember { mutableStateOf("") }
     var loadTrigger by remember { mutableStateOf(false) }
 
-    val userDataViewModel = hiltViewModel<UserDataViewModel>()
-    val userDataState = userDataViewModel.userDataState.collectAsStateWithLifecycle()
+    val saveUserDataViewModel = hiltViewModel<SaveUserDataViewModel>()
+    val userDataState = saveUserDataViewModel.userDataState.collectAsStateWithLifecycle()
 
     if (loadTrigger) {
         LaunchedEffect(Unit) {
-            userDataViewModel.saveDataToFirestore(
+            saveUserDataViewModel.saveDataToFirestore(
                 mapOf("level" to personLevel.value)
             )
             loadTrigger = false
@@ -73,8 +73,8 @@ fun LevelContent(
     }
 
     when (userDataState.value) {
-        is UserDataState.Error -> FailedLoadingScreen()
-        UserDataState.Loading -> {
+        is SaveUserDataState.Error -> FailedLoadingScreen()
+        SaveUserDataState.Loading -> {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -84,10 +84,10 @@ fun LevelContent(
             }
         }
 
-        UserDataState.Success -> {
+        SaveUserDataState.Success -> {
             LaunchedEffect(Unit) {
                 onPersonLevel()
-                userDataViewModel.resetUserDataState()
+                saveUserDataViewModel.resetUserDataState()
             }
         }
 

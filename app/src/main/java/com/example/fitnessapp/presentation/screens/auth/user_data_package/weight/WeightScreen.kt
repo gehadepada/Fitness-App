@@ -24,8 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
-import com.example.fitnessapp.presentation.viewModels.userData_viewModel.UserDataState
-import com.example.fitnessapp.presentation.viewModels.userData_viewModel.UserDataViewModel
+import com.example.fitnessapp.presentation.viewModels.save_userData_viewModel.SaveUserDataState
+import com.example.fitnessapp.presentation.viewModels.save_userData_viewModel.SaveUserDataViewModel
 import com.example.fitnessapp.theme.FitnessAppTheme
 import java.lang.Math.toRadians
 import kotlin.math.cos
@@ -41,19 +41,19 @@ fun WeightScreen(
     var weight by remember { mutableFloatStateOf(70f) }
     var loadTrigger by remember { mutableStateOf(false) }
 
-    val userDataViewModel = hiltViewModel<UserDataViewModel>()
-    val userDataState = userDataViewModel.userDataState.collectAsStateWithLifecycle()
+    val saveUserDataViewModel = hiltViewModel<SaveUserDataViewModel>()
+    val userDataState = saveUserDataViewModel.userDataState.collectAsStateWithLifecycle()
 
     if (loadTrigger) {
         LaunchedEffect(Unit) {
-            userDataViewModel.saveDataToFirestore(mapOf("weight" to weight.toInt()))
+            saveUserDataViewModel.saveDataToFirestore(mapOf("weight" to weight.toInt()))
             loadTrigger = false
         }
     }
 
     when (userDataState.value) {
-        is UserDataState.Error -> FailedLoadingScreen()
-        UserDataState.Loading -> {
+        is SaveUserDataState.Error -> FailedLoadingScreen()
+        SaveUserDataState.Loading -> {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -63,10 +63,10 @@ fun WeightScreen(
             }
             return
         }
-        UserDataState.Success -> {
+        SaveUserDataState.Success -> {
             LaunchedEffect(Unit) {
                 onWeight()
-                userDataViewModel.resetUserDataState()
+                saveUserDataViewModel.resetUserDataState()
             }
         }
         else -> Unit

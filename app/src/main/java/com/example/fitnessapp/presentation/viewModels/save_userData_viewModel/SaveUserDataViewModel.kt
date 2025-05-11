@@ -1,4 +1,4 @@
-package com.example.fitnessapp.presentation.viewModels.userData_viewModel
+package com.example.fitnessapp.presentation.viewModels.save_userData_viewModel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -12,31 +12,31 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UserDataViewModel @Inject constructor(
+class SaveUserDataViewModel @Inject constructor(
     private val firebaseRepository: FirebaseRepository
 ) : ViewModel() {
 
-    private val _userDataState = MutableStateFlow<UserDataState>(UserDataState.None)
-    val userDataState = _userDataState.asStateFlow()
+    private val _saveUserDataState = MutableStateFlow<SaveUserDataState>(SaveUserDataState.None)
+    val userDataState = _saveUserDataState.asStateFlow()
 
     fun saveDataToFirestore(
         data: Map<String, Any>
     ) {
-        _userDataState.value = UserDataState.Loading
+        _saveUserDataState.value = SaveUserDataState.Loading
         try {
             viewModelScope.launch(Dispatchers.IO) {
                 firebaseRepository.saveUserData(data)
-                _userDataState.value = UserDataState.Success
+                _saveUserDataState.value = SaveUserDataState.Success
                 Log.d("Al-qiran", "Data saved Successfully from viewModel")
             }
         } catch (e: Exception) {
             Log.d("Al-qiran", "Failed from viewModel")
-            _userDataState.value = UserDataState.Error(e.message.toString())
+            _saveUserDataState.value = SaveUserDataState.Error(e.message.toString())
         }
     }
 
     fun resetUserDataState() {
-        _userDataState.value = UserDataState.None
+        _saveUserDataState.value = SaveUserDataState.None
     }
 
 }

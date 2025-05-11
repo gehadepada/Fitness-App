@@ -1,7 +1,6 @@
 package com.example.fitnessapp.presentation.screens.auth.user_data_package.set_goals_screen
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -16,13 +15,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,7 +33,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -45,8 +41,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.components.BottomButtonsSection
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
-import com.example.fitnessapp.presentation.viewModels.userData_viewModel.UserDataState
-import com.example.fitnessapp.presentation.viewModels.userData_viewModel.UserDataViewModel
+import com.example.fitnessapp.presentation.viewModels.save_userData_viewModel.SaveUserDataState
+import com.example.fitnessapp.presentation.viewModels.save_userData_viewModel.SaveUserDataViewModel
 import com.example.fitnessapp.theme.FitnessAppTheme
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
@@ -59,12 +55,12 @@ fun SetGoalsScreen(
     val isGoalSelected = remember { mutableStateOf("") }
     var loadTrigger by remember { mutableStateOf(false) }
 
-    val userDataViewModel = hiltViewModel<UserDataViewModel>()
-    val userDataState = userDataViewModel.userDataState.collectAsStateWithLifecycle()
+    val saveUserDataViewModel = hiltViewModel<SaveUserDataViewModel>()
+    val userDataState = saveUserDataViewModel.userDataState.collectAsStateWithLifecycle()
 
     if (loadTrigger) {
         LaunchedEffect(Unit) {
-            userDataViewModel.saveDataToFirestore(
+            saveUserDataViewModel.saveDataToFirestore(
                 mapOf("goal" to personGoals.value)
             )
             loadTrigger = false
@@ -72,8 +68,8 @@ fun SetGoalsScreen(
     }
 
     when (userDataState.value) {
-        is UserDataState.Error -> FailedLoadingScreen()
-        UserDataState.Loading -> {
+        is SaveUserDataState.Error -> FailedLoadingScreen()
+        SaveUserDataState.Loading -> {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -83,10 +79,10 @@ fun SetGoalsScreen(
             }
             return
         }
-        UserDataState.Success -> {
+        SaveUserDataState.Success -> {
             LaunchedEffect(Unit) {
                 onSetGoals()
-                userDataViewModel.resetUserDataState()
+                saveUserDataViewModel.resetUserDataState()
             }
         }
         else -> Unit

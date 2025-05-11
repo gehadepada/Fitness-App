@@ -2,17 +2,23 @@ package com.example.fitnessapp.presentation.screens.auth.signup_screen.viewModel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.google.firebase.auth.FirebaseAuth
+import androidx.lifecycle.viewModelScope
+import com.example.fitnessapp.domain.repo.FirebaseRepository
+import com.example.fitnessapp.presentation.screens.muscle_screen.viewModel.MuscleState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SignUpViewModel : ViewModel() {
 
-    val auth: FirebaseAuth = FirebaseAuth.getInstance()
+@HiltViewModel
+class SignUpViewModel @Inject constructor(
+    private val firebaseRepository: FirebaseRepository
+) : ViewModel() {
 
     private val _state = MutableStateFlow<SignUpState>(SignUpState.UnAuthenticated)
     val state = _state.asStateFlow()
-
     // for invalid inputs
     private val _invalidElements = MutableStateFlow<Map<String, String>>(emptyMap())
     val invalidElements = _invalidElements.asStateFlow()
@@ -43,29 +49,33 @@ class SignUpViewModel : ViewModel() {
         }
 
         if (errors.isEmpty()) {
-            _invalidElements.value = errors
-            _state.value = SignUpState.InvalidInput(errors)
-            uploadUserInfo(_email.value, _password.value, _userName.value)
+            _invalidElements.value = emptyMap()
+
+            viewModelScope.launch {
+                _state.value = SignUpState.Loading
+
+                try {
+                    firebaseRepository.createUserEmailAndPassword(_email.value, _password.value,)
+                    firebaseRepository.saveUserData(mapOf("email" to _email.value, "userName" to _userName.value))
+
+                    _state.value = SignUpState.Authenticated
+                    Log.d("Al-qiran", "From block")
+
+                } catch (e: Exception) {
+                    _state.value = SignUpState.Error(e.message.toString())
+                    if (e is java.net.UnknownHostException ||
+                        e is java.net.SocketTimeoutException ||
+                        e is java.io.IOException) {
+                        _state.value = SignUpState.Error("Network error. Please check your internet connection.")
+
+                    } else {
+                        _state.value = SignUpState.Error("Invalid email or password.")
+                    }
+                }
+            }
         } else {
             _invalidElements.value = errors
             _state.value = SignUpState.InvalidInput(errors)
-        }
-    }
-
-
-    private fun uploadUserInfo(email: String, password: String, userName: String) {
-
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-            _state.value = SignUpState.Loading
-
-            if (task.isSuccessful) {
-                Log.d("TAG", "createUserWithEmail:success")
-                val user = auth.currentUser
-                _state.value = SignUpState.Authenticated
-            } else {
-                Log.w("TAG", "createUserWithEmail:failure", task.exception)
-                _state.value = SignUpState.Error(task.exception.toString())
-            }
         }
     }
 

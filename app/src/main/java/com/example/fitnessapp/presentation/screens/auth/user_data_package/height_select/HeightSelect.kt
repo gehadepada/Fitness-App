@@ -38,8 +38,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.components.BottomButtonsSection
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
-import com.example.fitnessapp.presentation.viewModels.userData_viewModel.UserDataState
-import com.example.fitnessapp.presentation.viewModels.userData_viewModel.UserDataViewModel
+import com.example.fitnessapp.presentation.viewModels.save_userData_viewModel.SaveUserDataState
+import com.example.fitnessapp.presentation.viewModels.save_userData_viewModel.SaveUserDataViewModel
 import com.example.fitnessapp.theme.FitnessAppTheme
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -160,14 +160,14 @@ fun NumberPickerDemo(
     val values = remember { (140..210).map { it.toString() } }
     val valuesPickerState = rememberPickerState()
 
-    val userDataViewModel = hiltViewModel<UserDataViewModel>()
-    val userDataState = userDataViewModel.userDataState.collectAsStateWithLifecycle()
+    val saveUserDataViewModel = hiltViewModel<SaveUserDataViewModel>()
+    val userDataState = saveUserDataViewModel.userDataState.collectAsStateWithLifecycle()
 
     var loadTrigger by remember { mutableStateOf(false) }
 
     if (loadTrigger) {
         LaunchedEffect(Unit) {
-            userDataViewModel.saveDataToFirestore(
+            saveUserDataViewModel.saveDataToFirestore(
                 mapOf("height" to valuesPickerState.selectedItem)
             )
             loadTrigger = false
@@ -175,12 +175,12 @@ fun NumberPickerDemo(
     }
 
     when (userDataState.value) {
-        is UserDataState.Error -> {
+        is SaveUserDataState.Error -> {
             FailedLoadingScreen()
             return
         }
 
-        UserDataState.Loading -> {
+        SaveUserDataState.Loading -> {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -191,10 +191,10 @@ fun NumberPickerDemo(
             return
         }
 
-        is UserDataState.Success -> {
+        is SaveUserDataState.Success -> {
             LaunchedEffect(Unit) {
                 onHeight()
-                userDataViewModel.resetUserDataState()
+                saveUserDataViewModel.resetUserDataState()
             }
         }
 
