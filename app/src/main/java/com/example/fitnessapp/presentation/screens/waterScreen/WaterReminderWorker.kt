@@ -20,8 +20,8 @@ class WaterReminderWorker(context: Context, workerParams: WorkerParameters) : Wo
         notificationManager?.let {
             val builder = NotificationCompat.Builder(context, "water_reminder_channel")
                 .setSmallIcon(R.drawable.app_logo)
-                .setContentTitle("تذكير شرب الماء 💧")
-                .setContentText("حان وقت شرب الماء! لا تنسى صحتك 💙")
+                .setContentTitle("Water Reminder 💧")
+                .setContentText("It's time to drink Water! Don't forget your health! 💙")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
 
             it.notify(1, builder.build())

@@ -65,4 +65,8 @@ class FoodAndCaloriesViewModel @Inject constructor(private val dao: FoodAndCalor
         }
     }
 
+    fun resetState() {
+        _foodAndCaloriesState.value = FoodAndCaloriesState.None
+    }
+
 }

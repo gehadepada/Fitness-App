@@ -71,6 +71,7 @@ fun ScanFood() {
             if (showDialog) {
                 SuccessDialog(onDismiss = {
                     showDialog = false
+                    foodAndCalorieViewModel.resetState()
                 })
             }
         }

@@ -73,8 +73,8 @@ fun FoodHistoryScreen() {
             val datePicker = DatePickerDialog(
                 context,
                 { _, year, month, day ->
-                    val formattedMonth = String.format("%02d", month + 1)
-                    val formattedDay = String.format("%02d", day)
+                    val formattedMonth = String.format(Locale.ENGLISH, "%02d", month + 1)
+                    val formattedDay = String.format(Locale.ENGLISH, "%02d", day)
                     val selectedDate = "$year-$formattedMonth-$formattedDay 23:59:59.999"
                     endDate.value = selectedDate
                 },

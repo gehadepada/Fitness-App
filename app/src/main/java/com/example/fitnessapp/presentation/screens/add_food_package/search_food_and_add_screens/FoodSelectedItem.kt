@@ -75,6 +75,7 @@ fun FoodSelectedItem(foodName: String, calories: String) {
             if (showDialog) {
                 SuccessDialog(onDismiss = {
                     showDialog = false
+                    foodAndCalorieViewModel.resetState()
                 })
             }
         }

@@ -13,6 +13,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.fitnessapp.presentation.components.FailedLoadingScreen
+import com.example.fitnessapp.presentation.viewModels.get_userData_viewModel.GetUserDataState
+import com.example.fitnessapp.presentation.viewModels.get_userData_viewModel.GetUserDataViewModel
 
 @Composable
 fun ProfileScreen(
@@ -23,78 +28,102 @@ fun ProfileScreen(
 ) {
     val items = listOf(
         ProfileItem("App Setting", Icons.Default.Settings, onClick = {}),
-        ProfileItem("Edit Your Details", Icons.Default.Edit, onClick = {onUser()}),
+        ProfileItem("Edit Your Details", Icons.Default.Edit, onClick = { onUser() }),
         ProfileItem("Third-party data", Icons.Default.SyncAlt, onClick = { }),
-        ProfileItem("App Permissions", Icons.Default.Interests, onClick = {onPermissions() }),
+        ProfileItem("App Permissions", Icons.Default.Interests, onClick = { onPermissions() }),
         ProfileItem("Sync Data Now", Icons.Default.ChangeCircle, onClick = { }),
-        ProfileItem("About App", Icons.Default.Info, onClick = {onAbout()}),
-        ProfileItem("Logout", Icons.Default.Logout, onClick = {onLogout()}),
+        ProfileItem("About App", Icons.Default.Info, onClick = { onAbout() }),
+        ProfileItem("Logout", Icons.Default.Logout, onClick = { onLogout() }),
     )
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(horizontal = 16.dp)
-    ) {
-        Spacer(modifier = Modifier.height(24.dp))
-        Surface(
-            shape = RoundedCornerShape(20.dp),
-            color = Color.DarkGray,
-            modifier = Modifier
-                .fillMaxWidth(),
-            tonalElevation = 2.dp
-        ){
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.AccountCircle,
-                contentDescription = null,
-                tint = Color.Gray,
-                modifier = Modifier.size(64.dp)
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            Column {
-                Text(
-                    text = "6635477650",
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    style = MaterialTheme.typography.labelLarge
-                )
-                Text(
-                    text = "Male  •  170cm  •  20",
-                    color = Color.Gray,
-                    fontSize = 14.sp,
-                    style = MaterialTheme.typography.labelLarge
-                )
+    val getUserDataViewModel = hiltViewModel<GetUserDataViewModel>()
+    val getUserDataState by getUserDataViewModel.getUserDataState.collectAsStateWithLifecycle()
+
+    when (getUserDataState) {
+        is GetUserDataState.Error -> {
+            FailedLoadingScreen(
+                errorMessage = (getUserDataState as GetUserDataState.Error).error,
+                onFailed = { getUserDataViewModel.getUserData() })
+        }
+
+        GetUserDataState.Loading -> {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator()
             }
-            Spacer(modifier = Modifier.weight(1f))
-        }
-        Spacer(modifier = Modifier.height(24.dp))
         }
 
+        GetUserDataState.None -> Unit
+        is GetUserDataState.Success -> {
+            val userInfo = (getUserDataState as GetUserDataState.Success).userInfo
 
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-            shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onSecondary)
-        ) {
-        }
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(horizontal = 16.dp)
+            ) {
+                Spacer(modifier = Modifier.height(24.dp))
+                Surface(
+                    shape = RoundedCornerShape(20.dp),
+                    color = Color.DarkGray,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    tonalElevation = 2.dp
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(10.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.AccountCircle,
+                            contentDescription = null,
+                            tint = Color.Gray,
+                            modifier = Modifier.size(64.dp)
+                        )
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Column {
+                            Text(
+                                text = userInfo.userName,
+                                color = Color.White,
+                                fontSize = 20.sp,
+                                style = MaterialTheme.typography.labelLarge
+                            )
+                            Text(
+                                text = "${userInfo.gender}  •  ${userInfo.height}cm  •  ${userInfo.weight}kg",
+                                color = Color.Gray,
+                                fontSize = 14.sp,
+                                style = MaterialTheme.typography.labelLarge
+                            )
+                        }
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
 
-        items.forEach { item ->
-            ProfileListItem(title = item.title, icon = item.icon, item.onClick)
+
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onSecondary)
+                ) {
+                }
+
+                items.forEach { item ->
+                    ProfileListItem(title = item.title, icon = item.icon, item.onClick)
+                }
+            }
         }
     }
-  }
-
-
+}
 
 data class ProfileItem(val title: String, val icon: ImageVector, val onClick: () -> Unit = {})
 
