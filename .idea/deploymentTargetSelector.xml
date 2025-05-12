@@ -4,17 +4,14 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-05-02T06:58:00.474710400Z">
+        <DropdownSelection timestamp="2025-05-04T10:03:13.210292900Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="PhysicalDevice" identifier="serial=RK8XC02EZDT" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\nagyo\.android\avd\Pixel_9_API_28_6.24_.avd" />
             </handle>
           </Target>
         </DropdownSelection>
         <DialogSelection />
-      </SelectionState>
-      <SelectionState runConfigName="Fitness_App.app">
-        <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
   </component>
