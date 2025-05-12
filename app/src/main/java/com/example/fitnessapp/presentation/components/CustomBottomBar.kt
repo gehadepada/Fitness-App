@@ -1,5 +1,5 @@
 package com.example.fitnessapp.presentation.components
-import androidx.annotation.DrawableRes
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -18,7 +18,7 @@ import com.example.fitnessapp.R
 
 sealed class BottomBarItem(open val label: String) {
     data class VectorIcon(val icon: ImageVector, override val label: String) : BottomBarItem(label)
-    data class DrawableIcon(@DrawableRes val iconRes: Int, override var label: String) : BottomBarItem(label)
+    data class DrawableIcon(@DrawableRes val iconRes: Int, override val label: String) : BottomBarItem(label)
 }
 
 @Composable
@@ -29,7 +29,7 @@ fun CustomBottomBar(
     val items = listOf(
         BottomBarItem.VectorIcon(Icons.Default.Home, "Home"),
         BottomBarItem.VectorIcon(Icons.Default.FitnessCenter, "Workout"),
-        BottomBarItem.DrawableIcon(R.drawable.add_icon, "Add",),
+        BottomBarItem.DrawableIcon(R.drawable.add_icon, "Add"),
         BottomBarItem.VectorIcon(Icons.Default.Person, "Profile")
     )
 
@@ -90,5 +90,7 @@ fun CustomBottomBar(
 @Preview(showBackground = true)
 @Composable
 fun FitnessAppTheme() {
-    CustomBottomBar(0, onItemSelected = {})
+    MaterialTheme {
+        CustomBottomBar(selectedIndex = 0, onItemSelected = {})
+    }
 }
