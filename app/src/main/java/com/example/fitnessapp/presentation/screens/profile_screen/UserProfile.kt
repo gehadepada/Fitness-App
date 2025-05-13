@@ -29,7 +29,7 @@ fun UserProfileScreen(
     userEmail: String = "nagy@gmail.com",
     weight: String = "58 KG",
     height: String = "170cm",
-    gender: String = "Female",
+    gender: String = "male",
     onLogoutClick: () -> Unit,
     onEditProfileClick: () -> Unit,
 

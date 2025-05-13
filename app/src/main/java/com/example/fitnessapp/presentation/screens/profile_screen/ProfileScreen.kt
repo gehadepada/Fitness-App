@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fitnessapp.theme.FitnessAppTheme
@@ -24,9 +25,7 @@ fun ProfileScreen(
     val items = listOf(
         ProfileItem("App Setting", Icons.Default.Settings, onClick = {}),
         ProfileItem("Edit Your Details", Icons.Default.Edit, onClick = {onUser()}),
-        ProfileItem("Third-party data", Icons.Default.SyncAlt, onClick = { }),
         ProfileItem("App Permissions", Icons.Default.Interests, onClick = {onPermissions() }),
-        ProfileItem("Sync Data Now", Icons.Default.ChangeCircle, onClick = { }),
         ProfileItem("About App", Icons.Default.Info, onClick = {onAbout()}),
         ProfileItem("Logout", Icons.Default.Logout, onClick = {}),
     )
@@ -124,5 +123,12 @@ fun ProfileListItem(title: String, icon: ImageVector, onClick: () -> Unit = {}) 
             Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.onSecondary)
             Spacer(modifier = Modifier.width(16.dp))
         }
+    }
+}
+@Composable
+@Preview(showBackground = true, showSystemUi = true)
+fun ProfileScreenPreview() {
+    FitnessAppTheme {
+        ProfileScreen(onUser = {}, onPermissions = {}, onAbout = {})
     }
 }

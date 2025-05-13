@@ -31,6 +31,7 @@ fun CustomBottomBar(
         BottomBarItem.VectorIcon(Icons.Default.Home, "Home"),
         BottomBarItem.VectorIcon(Icons.Default.FitnessCenter, "Workout"),
         BottomBarItem.DrawableIcon(R.drawable.add_icon, "Add"),
+        BottomBarItem.VectorIcon(Icons.Default.CalendarMonth, "data"),
         BottomBarItem.VectorIcon(Icons.Default.Person, "Profile")
     )
 
