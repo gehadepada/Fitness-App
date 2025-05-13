@@ -13,19 +13,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.navigation.Screens
-import com.google.firebase.auth.FirebaseAuth
 
 @Composable
-fun DiscoverSection(navController: NavController) {
+fun DiscoverSection(
+    onRecipes: () -> Unit,
+    onWorkouts: () -> Unit,
+    onFoodHistory: () -> Unit,
+    onSearch: () -> Unit,
+    onHealth: () -> Unit,
+    onProfile: () -> Unit
+) {
 
-    val auth = FirebaseAuth.getInstance()
 
     Column(
         modifier = Modifier
@@ -46,17 +50,12 @@ fun DiscoverSection(navController: NavController) {
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
-            DiscoverButton(
-                icon = painterResource(id = R.drawable.moon_svgrepo_com),
-                label = "Profile",
-                onClick = { navController.navigate(Screens.ProfileScreen.route) },
-                modifier = Modifier.weight(1f)
-            )
+
             DiscoverButton(
                 icon = painterResource(id = R.drawable.dinner_icon),
                 label = "Recipes",
                 onClick = {
-                    navController.navigate(Screens.RecipesScreen.route)
+                    onRecipes()
                 },
                 modifier = Modifier.weight(1f)
             )
@@ -64,7 +63,15 @@ fun DiscoverSection(navController: NavController) {
                 icon = painterResource(id = R.drawable.baseline_fitness_center_24),
                 label = "Workouts",
                 onClick = {
-                    navController.navigate(Screens.ExerciseScreen.route)
+                    onWorkouts()
+                },
+                modifier = Modifier.weight(1f)
+            )
+            DiscoverButton(
+                icon = painterResource(id = R.drawable.food_package),
+                label = "Food History",
+                onClick = {
+                    onFoodHistory()
                 },
                 modifier = Modifier.weight(1f)
             )
@@ -80,21 +87,19 @@ fun DiscoverSection(navController: NavController) {
             DiscoverButton(
                 icon = painterResource(id = android.R.drawable.ic_menu_search),
                 label = "Search",
-                onClick = { navController.navigate(Screens.SearchBtnScreen.route) },
+                onClick = { onSearch() },
                 modifier = Modifier.weight(1f)
             )
             DiscoverButton(
                 icon = painterResource(id = R.drawable.heart_pulse_solid),
                 label = "Health",
-                onClick = { navController.navigate(Screens.HealthScreen.route) },
+                onClick = { onHealth() },
                 modifier = Modifier.weight(1f)
             )
             DiscoverButton(
-                icon = painterResource(id = R.drawable.food_package),
-                label = "Food History",
-                onClick = {
-                    navController.navigate(Screens.TodayPlanScreen.route)
-                },
+                icon = painterResource(id = R.drawable.moon_svgrepo_com),
+                label = "Profile",
+                onClick = { onProfile() },
                 modifier = Modifier.weight(1f)
             )
         }

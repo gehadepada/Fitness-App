@@ -27,7 +27,7 @@ import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.navigation.Screens
 
 @Composable
-fun AddWaterSection(navController: NavController) {
+fun AddWaterSection(onWater:()->Unit) {
     val context= LocalContext.current
     val sharedPreferences= context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
     val dailyGoal= remember {
@@ -44,7 +44,7 @@ fun AddWaterSection(navController: NavController) {
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(21.dp))
             .clickable {
-                navController.navigate(Screens.WaterScreen.route)
+                onWater()
             }
             .padding(16.dp)
 

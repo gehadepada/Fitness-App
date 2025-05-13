@@ -27,11 +27,10 @@ fun ProfileScreen(
     onLogout: () -> Unit,
 ) {
     val items = listOf(
-        ProfileItem("App Setting", Icons.Default.Settings, onClick = {}),
+        ProfileItem("Change Theme", Icons.Default.Settings, onClick = {}),
         ProfileItem("Edit Your Details", Icons.Default.Edit, onClick = { onUser() }),
         ProfileItem("Third-party data", Icons.Default.SyncAlt, onClick = { }),
         ProfileItem("App Permissions", Icons.Default.Interests, onClick = { onPermissions() }),
-        ProfileItem("Sync Data Now", Icons.Default.ChangeCircle, onClick = { }),
         ProfileItem("About App", Icons.Default.Info, onClick = { onAbout() }),
         ProfileItem("Logout", Icons.Default.Logout, onClick = { onLogout() }),
     )

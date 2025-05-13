@@ -43,13 +43,7 @@ import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.Recipe
 import com.example.fitnessapp.presentation.screens.food_history_screen.FoodHistoryScreen
 import com.example.fitnessapp.presentation.screens.waterScreen.WaterTrackerScreen
 import com.example.fitnessapp.presentation.viewModels.auth_viewModel.AuthViewModel
-import com.google.firebase.auth.FirebaseAuth
 
-/**
- * the Navigation Graph
- * SignUp -> Gender -> Height -> Level -> Weight -> SetGoal -> DashBoard
- * Login -> DashBoard
- */
 
 @Composable
 fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
@@ -186,7 +180,13 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 topBar.value = "profile"
                 if (selectedIndex != 0) selectedIndex = 0
                 DashboardScreen(
-                    navController
+                    onRecipes = { navController.navigate(Screens.RecipesScreen.route) },
+                    onWorkouts = { navController.navigate(Screens.ExerciseScreen.route) },
+                    onFoodHistory = { navController.navigate(Screens.FoodHistoryScreen.route) },
+                    onSearch = { navController.navigate(Screens.SearchBtnScreen.route) },
+                    onHealth = { navController.navigate(Screens.HealthConnectScreen.route) },
+                    onProfile = { navController.navigate(Screens.ProfileScreen.route) },
+                    onWater = { navController.navigate(Screens.WaterScreen.route) },
                 )
             }
 
@@ -351,7 +351,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
             // For Recipes
             composable(Screens.RecipesScreen.route) {
-                topBar.value = "Recipes"
+                topBar.value = "recipes"
                 RecipesScreen(onClick = { id ->
                     navController.navigate(Screens.RecipesDetailsScreen.passId(id))
                 })
@@ -363,7 +363,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
 
 
-            composable(Screens.TodayPlanScreen.route) {
+            composable(Screens.FoodHistoryScreen.route) {
                 topBar.value = "foodHistory"
                 FoodHistoryScreen()
             }

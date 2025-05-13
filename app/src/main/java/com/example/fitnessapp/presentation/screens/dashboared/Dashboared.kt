@@ -10,14 +10,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.screens.dashboared.components.AddWaterSection
 import com.example.fitnessapp.presentation.screens.dashboared.components.CircularProgressIndicator
@@ -26,13 +23,21 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
 @Composable
-fun DashboardScreen(navController: NavController) {
+fun DashboardScreen(
+    onRecipes: () -> Unit,
+    onWorkouts: () -> Unit,
+    onFoodHistory: () -> Unit,
+    onSearch: () -> Unit,
+    onHealth: () -> Unit,
+    onProfile: () -> Unit,
+    onWater: () -> Unit
+) {
     val database = FirebaseDatabase.getInstance()
     val userId = FirebaseAuth.getInstance().currentUser?.uid
 
-    var goalCalories by remember { mutableStateOf(3000) }
-    var consumedCalories by remember { mutableStateOf(2000) }
-    var exerciseCalories by remember { mutableStateOf(500) }
+    var goalCalories by remember { mutableIntStateOf(3000) }
+    var consumedCalories by remember { mutableIntStateOf(2000) }
+    var exerciseCalories by remember { mutableIntStateOf(500) }
 
     // Fetch user data from Firebase
     LaunchedEffect(Unit) {
@@ -73,17 +78,6 @@ fun DashboardScreen(navController: NavController) {
                 style = MaterialTheme.typography.headlineLarge,
                 color = MaterialTheme.colorScheme.onBackground
             )
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
-                    .padding(horizontal = 5.dp, vertical = 3.dp)
-            ) {
-                Text(
-                    text = "Edit",
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.headlineMedium,
-                )
-            }
         }
 
         Column(
@@ -132,10 +126,19 @@ fun DashboardScreen(navController: NavController) {
             }
         }
 
-        Spacer(modifier = Modifier.height(50.dp))
+        Spacer(modifier = Modifier.height(25.dp))
 
-        AddWaterSection(navController)
-        DiscoverSection(navController)
+        AddWaterSection(
+            onWater
+        )
+        DiscoverSection(
+            onRecipes,
+            onWorkouts,
+            onFoodHistory,
+            onSearch,
+            onHealth,
+            onProfile,
+        )
     }
 }
 
@@ -174,5 +177,13 @@ fun BaseFoodExercise(
 @Preview(showBackground = true)
 @Composable
 fun PreviewAll() {
-    DashboardScreen(navController = rememberNavController())
+    DashboardScreen(
+        onRecipes = {},
+        onWorkouts = {},
+        onFoodHistory = {},
+        onSearch = {},
+        onHealth = {},
+        onProfile = {},
+        onWater = {},
+    )
 }
