@@ -82,12 +82,6 @@ fun ExerciseDetails(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = "${"muscle".replaceFirstChar { it.uppercase() }} Exercises",
-            color = Color.White,
-            fontSize = 24.sp,
-            modifier = Modifier.padding(bottom = 10.dp)
-        )
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             itemsIndexed(musclesData.exercises) { index, exercise ->
                 ExerciseDetailItem(

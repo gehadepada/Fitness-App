@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
+import com.example.fitnessapp.presentation.components.LogoutConfirmationDialog
 import com.example.fitnessapp.presentation.viewModels.get_userData_viewModel.GetUserDataState
 import com.example.fitnessapp.presentation.viewModels.get_userData_viewModel.GetUserDataViewModel
 
@@ -26,14 +27,23 @@ fun ProfileScreen(
     onAbout: () -> Unit,
     onLogout: () -> Unit,
 ) {
+
+    var showDialog by remember { mutableStateOf(false) }
+
     val items = listOf(
         ProfileItem("Change Theme", Icons.Default.Settings, onClick = {}),
         ProfileItem("Edit Your Details", Icons.Default.Edit, onClick = { onUser() }),
         ProfileItem("Third-party data", Icons.Default.SyncAlt, onClick = { }),
         ProfileItem("App Permissions", Icons.Default.Interests, onClick = { onPermissions() }),
         ProfileItem("About App", Icons.Default.Info, onClick = { onAbout() }),
-        ProfileItem("Logout", Icons.Default.Logout, onClick = { onLogout() }),
+        ProfileItem("Logout", Icons.Default.Logout, onClick = {
+            showDialog = true
+        }),
     )
+
+    if (showDialog) {
+        LogoutConfirmationDialog(onConfirm = { onLogout() }, onDismiss = { showDialog = false })
+    }
 
     val getUserDataViewModel = hiltViewModel<GetUserDataViewModel>()
     val getUserDataState by getUserDataViewModel.getUserDataState.collectAsStateWithLifecycle()

@@ -16,9 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.fitnessapp.R
-import com.example.fitnessapp.presentation.navigation.Screens
 
 @Composable
 fun DiscoverSection(

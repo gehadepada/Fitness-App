@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.provider.MediaStore
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -54,7 +53,6 @@ fun ScanFood() {
 
     if (loadTrigger) {
         LaunchedEffect(foodInsert) {
-            Log.d("Al-qiran from viewModel", "$foodInsert")
             foodAndCalorieViewModel.insertFoodAndCalories(foodInsert!!)
             loadTrigger = false
             showDialog = true
@@ -85,7 +83,7 @@ fun ScanFood() {
     var errorText by remember { mutableStateOf<String?>(null) }
 
     var detectedFoodItems by remember { mutableStateOf<List<String>>(emptyList()) }
-    var detectedCalories by remember { mutableStateOf(0) }
+    var detectedCalories by remember { mutableIntStateOf(0) }
 
     val scope = rememberCoroutineScope()
 
@@ -137,7 +135,7 @@ fun ScanFood() {
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            val bitmap = result.data?.extras?.get("data") as? Bitmap
+            @Suppress("DEPRECATION") val bitmap = result.data?.extras?.get("data") as? Bitmap
             bitmap?.let {
                 resultText = null
                 errorText = null
@@ -273,7 +271,7 @@ fun ScanFood() {
                         Button(
                             onClick = {
                                 foodInsert = FoodAndCaloriesLocalModel(
-                                    foodName = detectedFoodItems.toString(),
+                                    foodName = detectedFoodItems.joinToString(),
                                     calories = detectedCalories.toDouble(),
                                     totalAmount = 1
                                 )

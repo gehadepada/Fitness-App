@@ -18,6 +18,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.fitnessapp.presentation.components.CustomBottomBar
+import com.example.fitnessapp.presentation.components.LogoutConfirmationDialog
 import com.example.fitnessapp.presentation.components.TopBar
 import com.example.fitnessapp.presentation.components.TopBarWithLogo
 import com.example.fitnessapp.presentation.screens.dashboared.DashboardScreen
@@ -70,6 +71,10 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
                 "recipes" -> {
                     TopBar("Recipes") { navController.popBackStack() }
+                }
+
+                "muscle_exercises" -> {
+                    TopBar("Muscle Exercises") { navController.popBackStack() }
                 }
 
                 "exercises" -> {
@@ -259,7 +264,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 })
             }
             composable(Screens.ExercisesDetails.route) { backStackEntry ->
-                topBar.value = ""
+                topBar.value = "muscle_exercises"
                 val id = backStackEntry.arguments?.getString("id")?.toIntOrNull() ?: 5
                 ExerciseDetailScreen(id = id)
             }
