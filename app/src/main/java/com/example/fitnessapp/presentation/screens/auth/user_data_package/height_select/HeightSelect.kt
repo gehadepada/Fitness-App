@@ -6,9 +6,11 @@ import android.annotation.SuppressLint
 import com.example.fitnessapp.presentation.components.BackButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -45,15 +47,17 @@ import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.viewModels.userData_viewModel.UserDataState
 import com.example.fitnessapp.presentation.viewModels.userData_viewModel.UserDataViewModel
 import com.example.fitnessapp.theme.FitnessAppTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 @Composable
 fun rememberPickerState() = remember { PickerState() }
 class PickerState {
     var selectedItem by mutableStateOf("")
 }
-
 @Composable
 fun Picker(
     modifier: Modifier = Modifier,
@@ -88,61 +92,41 @@ fun Picker(
             .distinctUntilChanged()
             .collect { item -> state.selectedItem = item }
     }
-    Row(
+    Box(
         modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
+        contentAlignment = Alignment.Center
     ) {
-        Box(modifier = Modifier.weight(1f)) {
-            LazyColumn(
-                state = listState,
-                flingBehavior = flingBehavior,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .width(100.dp)
-                    .height(itemHeightDp * visibleItemsCount)
-                    .fadingEdge(fadingEdgeGradient)
-            ) {
-                items(listScrollCount) { index ->
-                    val item = getItem(index)
-                    val isSelected = item == state.selectedItem
-                    Text(
-                        text = item,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        style = if (isSelected) {
-                            textStyle.copy(
-                                fontWeight = FontWeight.Bold
-                            )
-                        } else {
-                            textStyle
-                        },
-                        color = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier
-                            .onSizeChanged { size -> itemHeightPixels.intValue = size.height }
-                            .then(textModifier)
-                    )
-                }
-            }
-
-        }
-
-        Column(
+        LazyColumn(
+            state = listState,
+            flingBehavior = flingBehavior,
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .padding(start = 6.dp)
                 .width(100.dp)
-                .size(400.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .height(itemHeightDp * visibleItemsCount)
+                .fadingEdge(fadingEdgeGradient)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ruler),
-                contentDescription = "Ruler",
-                modifier = Modifier.size(350.dp)
-            )
+            items(listScrollCount) { index ->
+                val item = getItem(index)
+                val isSelected = item == state.selectedItem
+                Text(
+                    text = item,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    style = if (isSelected) {
+                        textStyle.copy(
+                            fontWeight = FontWeight.Bold
+                        )
+                    } else {
+                        textStyle
+                    },
+                    color = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier
+                        .onSizeChanged { size -> itemHeightPixels.intValue = size.height }
+                        .then(textModifier)
+                )
+            }
         }
     }
-
-
 }
 
 fun Modifier.fadingEdge(brush: Brush) = this
@@ -216,7 +200,6 @@ fun NumberPickerDemo(
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            // ✅ عنوان ثابت خارج Scroll
             Text(
                 text = "What is your Height?",
                 style = MaterialTheme.typography.headlineMedium,
@@ -228,60 +211,65 @@ fun NumberPickerDemo(
                         end = screenWidth * 0.07f,
                         bottom = screenHeight * 0.02f
                     )
+                    .align(Alignment.CenterHorizontally)
             )
 
-            // ✅ Scrollable Content
-            Column(
+            Box(
                 modifier = Modifier
                     .weight(1f)
-                    .verticalScroll(rememberScrollState())
-                    .padding(horizontal = screenWidth * 0.07f),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier.fillMaxWidth()
+                Column(
+                    modifier = Modifier
+                        .verticalScroll(rememberScrollState())
+                        .padding(horizontal = screenWidth * 0.07f),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(
-                        text = valuesPickerState.selectedItem,
-                        style = MaterialTheme.typography.displayLarge,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.padding(end = screenWidth * 0.02f)
-                    )
-                    Text(
-                        text = "Cm",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onBackground
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = valuesPickerState.selectedItem,
+                            style = MaterialTheme.typography.displayLarge,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            modifier = Modifier.padding(end = screenWidth * 0.02f)
+                        )
+                        Text(
+                            text = "Cm",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
+
+                    Picker(
+                        state = valuesPickerState,
+                        items = values,
+                        visibleItemsCount = 5,
+                        modifier = Modifier
+                            .fillMaxWidth(0.5f)
+                            .height(screenHeight * 0.35f)
+                            .align(Alignment.CenterHorizontally),
+                        textModifier = Modifier.padding(10.dp),
+                        textStyle = TextStyle(
+                            fontSize = screenHeight.value.sp * 0.04f,
+                            color = MaterialTheme.colorScheme.onBackground
+                        ),
                     )
                 }
-
-                Picker(
-                    state = valuesPickerState,
-                    items = values,
-                    visibleItemsCount = 5,
-                    modifier = Modifier
-                        .fillMaxWidth(0.5f)
-                        .height(screenHeight * 0.35f)
-                        .align(Alignment.CenterHorizontally),
-                    textModifier = Modifier.padding(10.dp),
-                    textStyle = TextStyle(
-                        fontSize = screenHeight.value.sp * 0.04f,
-                        color = MaterialTheme.colorScheme.onBackground
-                    ),
-                )
             }
 
             BottomButtonsSection(
                 onContinueClick = {
-                        loadTrigger = true
+                    loadTrigger = true
                 },
                 onBackClick = onBack,
             )
         }
-        }
     }
-
+}
 
 @Preview
 @Composable
