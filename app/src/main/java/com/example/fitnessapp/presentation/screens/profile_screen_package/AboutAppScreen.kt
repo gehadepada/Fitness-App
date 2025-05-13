@@ -1,4 +1,4 @@
-package com.example.fitnessapp.presentation.screens.profile_screen_package
+package com.example.fitnessapp.presentation.screens.profile_screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,8 +23,8 @@ fun AboutAppScreen() {
     // Retrieve version name and code, e.g., from BuildConfig
     // Example: val appVersion = BuildConfig.VERSION_NAME
     // Example: val buildNumber = BuildConfig.VERSION_CODE.toString()
-    val appVersion = "3.37.2" // Example version, replace with dynamic retrieval if possible
-    val buildNumber = "1024" // Example build number
+    val appVersion = "3.37.2"
+    val buildNumber = "1024"
 
         Column(
             modifier = Modifier
@@ -62,20 +62,12 @@ fun AboutAppScreen() {
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center
             )
-            Spacer(modifier = Modifier.height(16.dp))
 
-
-            TextButton(onClick = {  }) {
-                Text("Privacy Policy")
-            }
-            TextButton(onClick = { }) {
-                Text("Terms of Service")
-            }
 
             Spacer(modifier = Modifier.weight(1f))
 
             Text(
-                text = "© ${Calendar.getInstance().get(Calendar.YEAR)} Your Company or Developer Nagy Osman. All rights reserved.",
+                text = "© ${Calendar.getInstance().get(Calendar.YEAR)}  Developer Nagy Osman. All rights reserved.",
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center
