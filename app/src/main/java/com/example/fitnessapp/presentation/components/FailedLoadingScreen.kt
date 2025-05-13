@@ -29,7 +29,7 @@ import com.example.fitnessapp.theme.FitnessAppTheme
 fun FailedLoadingScreen(onFailed: () -> Unit = {}, errorMessage: String = "Unknown Error...") {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.no_internet_animation))
 
-    val progress by animateLottieCompositionAsState(
+    val animationState = animateLottieCompositionAsState(
         composition = composition,
         iterations = LottieConstants.IterateForever
     )
@@ -40,10 +40,10 @@ fun FailedLoadingScreen(onFailed: () -> Unit = {}, errorMessage: String = "Unkno
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        @Suppress("DEPRECATION")
+
         LottieAnimation(
             composition = composition,
-            progress = progress,
+            progress = { animationState.progress },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)

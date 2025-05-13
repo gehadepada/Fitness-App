@@ -1,6 +1,7 @@
 package com.example.fitnessapp.presentation.screens.food_history_screen
 
 import android.app.DatePickerDialog
+import androidx.compose.foundation.gestures.snapping.SnapPosition
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,15 +23,23 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
+import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.mapper.toFoodAndCaloriesLocalModel
 import com.example.fitnessapp.presentation.model.FoodAndCaloriesUIModel
@@ -50,9 +59,17 @@ fun FoodHistoryScreen() {
     val coroutineScope = rememberCoroutineScope()
 
     val foodAndCaloriesViewModel = hiltViewModel<FoodAndCaloriesViewModel>()
-    val foodAndCaloriesState = foodAndCaloriesViewModel.foodAndCaloriesState.collectAsStateWithLifecycle()
+    val foodAndCaloriesState =
+        foodAndCaloriesViewModel.foodAndCaloriesState.collectAsStateWithLifecycle()
 
-    val endDate = remember { mutableStateOf(SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.ENGLISH).format(Date())) }
+    val endDate = remember {
+        mutableStateOf(
+            SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss.SSS",
+                Locale.ENGLISH
+            ).format(Date())
+        )
+    }
     val startDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.ENGLISH).format(Date())
 
     val deleteFood: (FoodAndCaloriesUIModel) -> Unit = { food ->
@@ -105,11 +122,11 @@ fun FoodHistoryScreen() {
 
             is FoodAndCaloriesState.SuccessWithData -> {
                 Column(modifier = Modifier.padding(12.dp)) {
-                    if (startDate.substring(0,10) == endDate.value.substring(0,10)) {
+                    if (startDate.substring(0, 10) == endDate.value.substring(0, 10)) {
                         Text("Date: Today", style = MaterialTheme.typography.titleSmall)
                     } else {
                         Text(
-                            "from Today to ${endDate.value.substring(0,10)}",
+                            "from Today to ${endDate.value.substring(0, 10)}",
                             style = MaterialTheme.typography.titleSmall
                         )
                     }
@@ -117,9 +134,37 @@ fun FoodHistoryScreen() {
 
                     val foods =
                         (foodAndCaloriesState.value as FoodAndCaloriesState.SuccessWithData).foodAndCaloriesUIModel
-                    LazyColumn {
-                        items(foods) { food ->
-                            FoodItem(food, onDelete = deleteFood)
+
+                    if (foods.isEmpty()) {
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            val composition by rememberLottieComposition(
+                                LottieCompositionSpec.RawRes(
+                                    R.raw.no_food_data
+                                )
+                            )
+                            val animationState = animateLottieCompositionAsState(
+                                composition = composition,
+                                iterations = LottieConstants.IterateForever
+                            )
+
+                            LottieAnimation(
+                                composition = composition,
+                                progress = { animationState.progress },
+                            )
+                            Text(
+                                text = "There is no Data!",
+                                style = MaterialTheme.typography.titleLarge
+                            )
+                        }
+                    } else {
+                        LazyColumn {
+                            items(foods) { food ->
+                                FoodItem(food, onDelete = deleteFood)
+                            }
                         }
                     }
                 }

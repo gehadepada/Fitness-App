@@ -85,7 +85,7 @@ fun DiscoverSection(
             modifier = Modifier.fillMaxWidth()
         ) {
             DiscoverButton(
-                icon = painterResource(id = android.R.drawable.ic_menu_search),
+                icon = painterResource(id = android.R.drawable.ic_search_category_default),
                 label = "Search",
                 onClick = { onSearch() },
                 modifier = Modifier.weight(1f)
