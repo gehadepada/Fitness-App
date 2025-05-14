@@ -32,7 +32,7 @@ fun CustomBottomBar(
         BottomBarItem.VectorIcon(Icons.Default.Home, "Home"),
         BottomBarItem.VectorIcon(Icons.Default.FitnessCenter, "Workout"),
         BottomBarItem.DrawableIcon(R.drawable.add_icon, "Add"),
-        BottomBarItem.VectorIcon(Icons.Default.CalendarMonth, "data"),
+        BottomBarItem.DrawableIcon(R.drawable.food_package, "history"),
         BottomBarItem.VectorIcon(Icons.Default.Person, "Profile")
     )
 
@@ -40,23 +40,22 @@ fun CustomBottomBar(
         modifier = Modifier
             .fillMaxWidth()
             .navigationBarsPadding()
-            .padding(16.dp),
+            .padding(horizontal = 4.dp),
         shape = RoundedCornerShape(32.dp),
         color = MaterialTheme.colorScheme.surface,
         shadowElevation = 8.dp
     ) {
         Row(
             modifier = Modifier
-                .padding(vertical = 16.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
+                .padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             items.forEachIndexed { index, item ->
                 IconButton(
                     modifier = Modifier
-                        .height(48.dp)
-                        .width(80.dp),
+                        .height(55.dp)
+                        .weight(1f),
                     onClick = { onItemSelected(index) }
                 ) {
                     Column(

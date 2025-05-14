@@ -40,7 +40,7 @@ import com.example.fitnessapp.presentation.screens.add_food_package.search_food_
 import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.RecipeDetailScreen
 import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.RecipesScreen
 import com.example.fitnessapp.presentation.screens.food_history_screen.FoodHistoryScreen
-import com.example.fitnessapp.presentation.screens.profile_screen.AboutAppScreen
+import com.example.fitnessapp.presentation.screens.profile_screen_package.AboutAppScreen
 import com.example.fitnessapp.presentation.screens.waterScreen.WaterTrackerScreen
 import com.example.fitnessapp.presentation.viewModels.auth_viewModel.AuthViewModel
 
@@ -64,8 +64,12 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                     TopBarWithLogo()
                 }
 
-                "profile" -> {
+                "dashboard" -> {
                     ProfileTopBar()
+                }
+
+                "profile" -> {
+                    TopBar("Profile") { navController.popBackStack() }
                 }
 
                 "recipes" -> {
@@ -115,7 +119,10 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                         selectedIndex = it
                         when (selectedIndex) {
                             0 -> navController.navigate(Screens.DashBoardScreen.route)
-                            3 -> navController.navigate(Screens.ProfileScreen.route)
+                            1 -> navController.navigate(Screens.ExerciseScreen.route)
+                            2 -> navController.navigate(Screens.FoodSearchScreen.route)
+                            3 -> navController.navigate(Screens.FoodHistoryScreen.route)
+                            4 -> navController.navigate(Screens.ProfileScreen.route)
                         }
                     }
                 )
@@ -181,8 +188,8 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
             }
 
             composable(Screens.DashBoardScreen.route) {
-                topBar.value = "profile"
-                if (selectedIndex != 0) selectedIndex = 0
+                topBar.value = "dashboard"
+                selectedIndex = 0
                 DashboardScreen(
                     onRecipes = { navController.navigate(Screens.RecipesScreen.route) },
                     onWorkouts = { navController.navigate(Screens.ExerciseScreen.route) },
@@ -258,6 +265,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
             composable(Screens.ExerciseScreen.route) {
                 topBar.value = "exercises"
+                selectedIndex = 1
                 ExercisesScreen(onExercise = { id ->
                     navController.navigate(Screens.ExercisesDetails.passId(id))
                 })
@@ -299,7 +307,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
             // Search and search components
             composable(Screens.FoodSearchScreen.route) {
-
+                selectedIndex = 2
                 SearchFoodScreen(onSearchFood = { foodName, calories ->
                     navController.navigate(
                         Screens.FoodSelectItemScreen.passFoodNameAndCalories(
@@ -320,7 +328,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
             // profile and profile components
             composable(Screens.ProfileScreen.route) {
                 topBar.value = "profile"
-                selectedIndex = 3
+                selectedIndex = 4
                 ProfileScreen(
                     onUser = { navController.navigate(Screens.UserProfileScreen.route) },
                     onPermissions = { navController.navigate(Screens.AppPermissionsScreen.route) },
@@ -369,6 +377,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
             composable(Screens.FoodHistoryScreen.route) {
                 topBar.value = "foodHistory"
+                selectedIndex = 3
                 FoodHistoryScreen()
             }
         }

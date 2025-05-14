@@ -1,4 +1,4 @@
-package com.example.fitnessapp.presentation.screens.profile_screen
+package com.example.fitnessapp.presentation.screens.profile_screen_package
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

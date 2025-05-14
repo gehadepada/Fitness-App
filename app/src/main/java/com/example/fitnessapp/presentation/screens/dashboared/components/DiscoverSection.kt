@@ -50,18 +50,16 @@ fun DiscoverSection(
         ) {
 
             DiscoverButton(
+                icon = painterResource(id = R.drawable.add_food),
+                label = "Add Foods",
+                onClick = { onSearch() },
+                modifier = Modifier.weight(1f)
+            )
+            DiscoverButton(
                 icon = painterResource(id = R.drawable.dinner_icon),
                 label = "Recipes",
                 onClick = {
                     onRecipes()
-                },
-                modifier = Modifier.weight(1f)
-            )
-            DiscoverButton(
-                icon = painterResource(id = R.drawable.baseline_fitness_center_24),
-                label = "Workouts",
-                onClick = {
-                    onWorkouts()
                 },
                 modifier = Modifier.weight(1f)
             )
@@ -83,9 +81,11 @@ fun DiscoverSection(
             modifier = Modifier.fillMaxWidth()
         ) {
             DiscoverButton(
-                icon = painterResource(id = android.R.drawable.ic_search_category_default),
-                label = "Search",
-                onClick = { onSearch() },
+                icon = painterResource(id = R.drawable.baseline_fitness_center_24),
+                label = "Workouts",
+                onClick = {
+                    onWorkouts()
+                },
                 modifier = Modifier.weight(1f)
             )
             DiscoverButton(
