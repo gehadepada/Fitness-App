@@ -137,7 +137,7 @@ fun SetGoalsScreen(
                     ) {
                         Box(
                             modifier = Modifier
-                                .fillMaxWidth(0.35f)
+                                .height(maxHeight * 0.15f)
                                 .aspectRatio(1f)
                                 .clip(RoundedCornerShape(16.dp))
                                 .border(
@@ -160,7 +160,7 @@ fun SetGoalsScreen(
                                 modifier = Modifier
                                     .padding(maxWidth * 0.04f)
                                     .fillMaxSize(),
-                                contentScale = ContentScale.Crop
+                                contentScale = ContentScale.Fit
                             )
                         }
 

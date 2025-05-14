@@ -133,7 +133,7 @@ fun NumberPickerDemo(
     onHeight: () -> Unit = {},
     onBack: () -> Unit = {}
 ) {
-    val values = remember { (140..210).map { it.toString() } }
+    val values = remember { (120..210).map { it.toString() } }
     val valuesPickerState = rememberPickerState()
 
     val saveUserDataViewModel = hiltViewModel<SaveUserDataViewModel>()
@@ -234,10 +234,10 @@ fun NumberPickerDemo(
                     Picker(
                         state = valuesPickerState,
                         items = values,
-                        visibleItemsCount = 5,
+                        visibleItemsCount = 7,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(screenHeight * 0.35f)
+                            .height(screenHeight * 0.5f)
                             .align(Alignment.CenterHorizontally),
                         textModifier = Modifier.padding(10.dp),
                         textStyle = TextStyle(

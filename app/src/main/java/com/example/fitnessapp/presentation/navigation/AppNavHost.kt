@@ -206,7 +206,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
                 PhysicalActivityLevel(
                     onPersonLevel = {
-                        navController.navigate(Screens.WeightScreen.route)
+                        navController.navigate(Screens.SetGoalsScreen.route)
                     },
                     onBack = { navController.popBackStack() }
                 )
@@ -225,7 +225,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
                 WeightScreen(
                     onWeight = {
-                        navController.navigate(Screens.SetGoalsScreen.route)
+                        navController.navigate(Screens.LevelScreen.route)
                     },
                     onBack = { navController.popBackStack() }
                 )
@@ -250,7 +250,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 topBar.value = "TopBarWithLogo"
                 NumberPickerDemo(
                     onHeight = {
-                        navController.navigate(Screens.LevelScreen.route)
+                        navController.navigate(Screens.WeightScreen.route)
                     },
                     onBack = {
                         navController.popBackStack()
