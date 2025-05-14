@@ -25,7 +25,6 @@ fun BackButton(
     text: String = "Back",
     enabled: Boolean = true,
     color: ButtonColors = ButtonDefaults.buttonColors(containerColor = colorScheme.surface),
-    message: String = "",
     modifier: Modifier = Modifier.padding(bottom = 24.dp),
 ) {
     Column(

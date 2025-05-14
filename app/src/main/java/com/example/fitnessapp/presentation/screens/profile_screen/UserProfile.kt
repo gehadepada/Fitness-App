@@ -129,7 +129,7 @@ fun UserProfileScreen(
                 .height(50.dp),
             shape = RoundedCornerShape(25.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.secondary,
+                containerColor = MaterialTheme.colorScheme.error,
                 contentColor = Color.White
             )
         ) {

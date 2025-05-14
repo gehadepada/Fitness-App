@@ -214,10 +214,10 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
             composable(Screens.GenderScreen.route) {
                 topBar.value = "TopBarWithLogo"
-
-                GenderScreen {
+                selectedIndex = -1
+                GenderScreen(onGender = {
                     navController.navigate(Screens.HeightScreen.route)
-                }
+                })
             }
 
             composable(Screens.WeightScreen.route) {

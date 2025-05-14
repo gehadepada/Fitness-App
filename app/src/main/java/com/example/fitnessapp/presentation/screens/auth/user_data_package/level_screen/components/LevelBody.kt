@@ -152,6 +152,7 @@ fun LevelContent(
 
 
             BottomButtonsSection(
+                errorMessage = isLevelSelected.value,
                 onContinueClick = {
                     if (personLevel.value.isEmpty()) {
                         isLevelSelected.value = "Please select your level"
@@ -160,7 +161,6 @@ fun LevelContent(
                     }
                 },
                 onBackClick = onBack,
-                continueMessage = isLevelSelected.value
             )
         }
     }

@@ -26,19 +26,13 @@ fun DefaultButton(
     text: String = "Continue",
     enabled: Boolean = true,
     color: ButtonColors = ButtonDefaults.buttonColors(containerColor = colorScheme.primary),
-    message: String = "",
-    modifier: Modifier = Modifier.padding(bottom = 12.dp),
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Text(
-            text = message,
-            color = Color.Red,
-            fontSize = 12.sp,
-        )
         Button(
             modifier = Modifier
                 .width(250.dp)

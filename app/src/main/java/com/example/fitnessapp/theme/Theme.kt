@@ -18,7 +18,7 @@ private val DarkColorScheme = darkColorScheme(
     surface = DarkGreySurface,
     onSurface = Color.White,
     onSecondary = LightGreySurface,
-    secondary = Color.Red
+    error = Color.Red
 )
 
 private val LightColorScheme = lightColorScheme(

@@ -172,15 +172,6 @@ fun SetGoalsScreen(
                         )
                     }
                 }
-
-                if (isGoalSelected.value.isNotEmpty()) {
-                    Text(
-                        text = isGoalSelected.value,
-                        color = Color.Red,
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier.padding(top = 4.dp)
-                    )
-                }
             }
 
 
@@ -193,7 +184,7 @@ fun SetGoalsScreen(
                         }
                     },
                     onBackClick = onBack,
-                    continueMessage = isGoalSelected.value
+                    errorMessage = isGoalSelected.value
                 )
 
 
