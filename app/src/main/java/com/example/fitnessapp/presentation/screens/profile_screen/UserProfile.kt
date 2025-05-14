@@ -32,7 +32,6 @@ fun UserProfileScreen(
     gender: String = "male",
     onLogoutClick: () -> Unit,
     onEditProfileClick: () -> Unit,
-
     ) {
     Column(
         modifier = Modifier
@@ -137,40 +136,41 @@ fun UserProfileScreen(
             Text("Logout", fontSize = 18.sp, fontWeight = FontWeight.Bold)
         }
     }
-}
 
-@Composable
-fun InfoItem(icon: ImageVector, value: String, label: String) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = label,
-            tint = Color.White,
-            modifier = Modifier.size(28.dp)
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = value,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onBackground
-        )
-        Spacer(modifier = Modifier.height(2.dp))
-        Text(text = label, fontSize = 12.sp, color = Color.Gray)
+
+    @Composable
+    fun InfoItem(icon: ImageVector, value: String, label: String) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = label,
+                tint = Color.White,
+                modifier = Modifier.size(28.dp)
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = value,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(text = label, fontSize = 12.sp, color = Color.Gray)
+        }
     }
-}
 
-@Preview
-@Composable
-fun UserProfileScreenPreview() {
-    FitnessAppTheme {
-        UserProfileScreen(
-            onLogoutClick = {},
-            onEditProfileClick = {},
 
-        )
+    @Composable
+    fun UserProfileScreenPreview() {
+        FitnessAppTheme {
+            UserProfileScreen(
+                onLogoutClick = {},
+                onEditProfileClick = {},
+
+                )
+        }
     }
 }

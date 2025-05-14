@@ -23,12 +23,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.fitnessapp.R
-import com.example.fitnessapp.domain.repo.FirebaseRepository
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.viewModels.get_userData_viewModel.GetUserDataState
 import com.example.fitnessapp.presentation.viewModels.get_userData_viewModel.GetUserDataViewModel
 import com.example.fitnessapp.theme.FitnessAppTheme
-import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun UserProfileInfoScreen(

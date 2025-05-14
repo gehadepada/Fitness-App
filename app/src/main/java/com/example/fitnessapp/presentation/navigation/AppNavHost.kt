@@ -18,7 +18,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.fitnessapp.presentation.components.CustomBottomBar
-import com.example.fitnessapp.presentation.components.LogoutConfirmationDialog
 import com.example.fitnessapp.presentation.components.TopBar
 import com.example.fitnessapp.presentation.components.TopBarWithLogo
 import com.example.fitnessapp.presentation.screens.dashboared.DashboardScreen
@@ -31,7 +30,6 @@ import com.example.fitnessapp.presentation.screens.add_food_package.add_food_way
 import com.example.fitnessapp.presentation.screens.add_food_package.scan_meal_screen.ScanFood
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExerciseDetailScreen
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExercisesScreen
-import com.example.fitnessapp.presentation.screens.profile_screen_package.AboutAppScreen
 import com.example.fitnessapp.presentation.screens.profile_screen_package.AppPermissionsScreen
 import com.example.fitnessapp.presentation.screens.profile_screen_package.ProfileScreen
 import com.example.fitnessapp.presentation.screens.auth.user_data_package.set_goals_screen.SetGoalsScreen
@@ -42,6 +40,7 @@ import com.example.fitnessapp.presentation.screens.add_food_package.search_food_
 import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.RecipeDetailScreen
 import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.RecipesScreen
 import com.example.fitnessapp.presentation.screens.food_history_screen.FoodHistoryScreen
+import com.example.fitnessapp.presentation.screens.profile_screen.AboutAppScreen
 import com.example.fitnessapp.presentation.screens.waterScreen.WaterTrackerScreen
 import com.example.fitnessapp.presentation.viewModels.auth_viewModel.AuthViewModel
 
