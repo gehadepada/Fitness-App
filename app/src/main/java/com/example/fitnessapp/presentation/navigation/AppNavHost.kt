@@ -1,6 +1,6 @@
 package com.example.fitnessapp.presentation.navigation
 
-import UserProfileInfoScreen
+import com.example.fitnessapp.presentation.screens.profile_screen_package.user_info.UserProfileInfoScreen
 import com.example.fitnessapp.presentation.screens.auth.user_data_package.gender_screen.GenderScreen
 import com.example.fitnessapp.presentation.screens.health_connect_screen.HealthConnectScreen
 import android.content.Context
