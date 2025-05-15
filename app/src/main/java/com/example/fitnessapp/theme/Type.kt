@@ -24,7 +24,7 @@ val Typography = Typography(
     displaySmall = TextStyle(
         fontFamily = FontFamily(Font(R.font.poppins_medium)),
         fontWeight = FontWeight.Medium,
-        fontSize = 28.sp
+        fontSize = 24.sp
     ),
     headlineLarge = TextStyle(
         fontFamily = FontFamily(Font(R.font.montserrat_bold)),

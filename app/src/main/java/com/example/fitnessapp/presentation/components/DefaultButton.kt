@@ -1,6 +1,7 @@
 package com.example.fitnessapp.presentation.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -25,36 +26,32 @@ fun DefaultButton(
     onClick: () -> Unit = {},
     text: String = "Continue",
     enabled: Boolean = true,
-    color: ButtonColors = ButtonDefaults.buttonColors(containerColor = colorScheme.primary),
-    modifier: Modifier = Modifier,
+    border: Color = colorScheme.surface,
+    buttonColor: ButtonColors = ButtonDefaults.buttonColors(containerColor = colorScheme.primary),
+    modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
 
-        Button(
-            modifier = Modifier
-                .width(250.dp)
-                .height(60.dp)
-                .padding(top = 8.dp),
-            border = BorderStroke(2.dp, colorScheme.primary),
-            colors = color,
-            onClick = {
+    Button(
+        modifier = modifier
+            .width(220.dp),
+        border = BorderStroke(2.dp, border),
+        colors = buttonColor,
+        onClick = {
+            if (enabled)
                 onClick()
-            },
-            enabled = enabled,
-        ) {
-            Text(
-                text = text,
-                style = MaterialTheme.typography.displaySmall,
-                color = colorScheme.onBackground,
-            )
-        }
-
-
+        },
+        enabled = enabled,
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.displaySmall,
+            color = colorScheme.onBackground,
+        )
     }
+
+
 }
+
 
 @Preview
 @Composable

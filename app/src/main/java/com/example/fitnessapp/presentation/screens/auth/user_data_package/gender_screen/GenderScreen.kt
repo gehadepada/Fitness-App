@@ -186,7 +186,7 @@ fun GenderScreen(onGender: () -> Unit = {}) {
                     }
                 },
                 onBackClick = { },
-                modifierHide = Modifier.alpha(0f),
+                modifier = Modifier.alpha(0f),
                 backEnabled = false
             )
         }
