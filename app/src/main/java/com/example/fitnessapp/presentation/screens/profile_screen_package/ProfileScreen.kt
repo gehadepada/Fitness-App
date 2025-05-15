@@ -1,5 +1,6 @@
 package com.example.fitnessapp.presentation.screens.profile_screen_package
 
+import ThemeViewModel
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,7 +10,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -22,28 +22,15 @@ import com.example.fitnessapp.presentation.viewModels.get_userData_viewModel.Get
 
 @Composable
 fun ProfileScreen(
+    themeViewModel: ThemeViewModel,
     onUser: () -> Unit,
     onPermissions: () -> Unit,
     onAbout: () -> Unit,
     onLogout: () -> Unit,
 ) {
-
     var showDialog by remember { mutableStateOf(false) }
 
-    val items = listOf(
-        ProfileItem("Change Theme", Icons.Default.Settings, onClick = {}),
-        ProfileItem("Edit Your Details", Icons.Default.Edit, onClick = { onUser() }),
-        ProfileItem("Third-party data", Icons.Default.SyncAlt, onClick = { }),
-        ProfileItem("App Permissions", Icons.Default.Interests, onClick = { onPermissions() }),
-        ProfileItem("About App", Icons.Default.Info, onClick = { onAbout() }),
-        ProfileItem("Logout", Icons.Default.Logout, onClick = {
-            showDialog = true
-        }),
-    )
-
-    if (showDialog) {
-        LogoutConfirmationDialog(onConfirm = { onLogout() }, onDismiss = { showDialog = false })
-    }
+    val isDarkTheme by themeViewModel.isDarkTheme.collectAsState()
 
     val getUserDataViewModel = hiltViewModel<GetUserDataViewModel>()
     val getUserDataState by getUserDataViewModel.getUserDataState.collectAsStateWithLifecycle()
@@ -52,7 +39,8 @@ fun ProfileScreen(
         is GetUserDataState.Error -> {
             FailedLoadingScreen(
                 errorMessage = (getUserDataState as GetUserDataState.Error).error,
-                onFailed = { getUserDataViewModel.getUserData() })
+                onFailed = { getUserDataViewModel.getUserData() }
+            )
         }
 
         GetUserDataState.Loading -> {
@@ -66,6 +54,7 @@ fun ProfileScreen(
         }
 
         GetUserDataState.None -> Unit
+
         is GetUserDataState.Success -> {
             val userInfo = (getUserDataState as GetUserDataState.Success).userInfo
 
@@ -76,11 +65,11 @@ fun ProfileScreen(
                     .padding(horizontal = 16.dp)
             ) {
                 Spacer(modifier = Modifier.height(24.dp))
+
                 Surface(
                     shape = RoundedCornerShape(20.dp),
-                    color = Color.DarkGray,
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.surface,
+                    modifier = Modifier.fillMaxWidth(),
                     tonalElevation = 2.dp
                 ) {
                     Row(
@@ -92,56 +81,88 @@ fun ProfileScreen(
                         Icon(
                             imageVector = Icons.Default.AccountCircle,
                             contentDescription = null,
-                            tint = Color.Gray,
+                            tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(64.dp)
                         )
                         Spacer(modifier = Modifier.width(16.dp))
                         Column {
                             Text(
                                 text = userInfo.userName,
-                                color = Color.White,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 fontSize = 20.sp,
                                 style = MaterialTheme.typography.labelLarge
                             )
                             Text(
                                 text = "${userInfo.gender}  •  ${userInfo.height}cm  •  ${userInfo.weight}kg",
-                                color = Color.Gray,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 fontSize = 14.sp,
                                 style = MaterialTheme.typography.labelLarge
                             )
                         }
                         Spacer(modifier = Modifier.weight(1f))
                     }
-                    Spacer(modifier = Modifier.height(24.dp))
                 }
 
+                Spacer(modifier = Modifier.height(24.dp))
 
-                Card(
+                Surface(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 16.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onSecondary)
+                        .padding(vertical = 6.dp),
+                    shape = RoundedCornerShape(20.dp),
+                    color = MaterialTheme.colorScheme.surface,
+                    tonalElevation = 2.dp
                 ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(15.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Change Theme",
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = MaterialTheme.typography.labelMedium
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+                        Switch(
+                            checked = isDarkTheme,
+                            onCheckedChange = { isChecked ->
+                                themeViewModel.toggleTheme(isChecked)
+                            },
+                            colors = SwitchDefaults.colors(
+                                checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
+                                checkedTrackColor = MaterialTheme.colorScheme.primary,
+                                uncheckedThumbColor = MaterialTheme.colorScheme.outline,
+                                uncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant
+                            )
+                        )
+                    }
                 }
 
-                items.forEach { item ->
-                    ProfileListItem(title = item.title, icon = item.icon, item.onClick)
+                ProfileListItem("Edit Your Details", Icons.Default.Edit, onUser)
+                ProfileListItem("Third-party data", Icons.Default.SyncAlt)
+                ProfileListItem("App Permissions", Icons.Default.Interests, onPermissions)
+                ProfileListItem("About App", Icons.Default.Info, onAbout)
+                ProfileListItem("Logout", Icons.Default.Logout, onClick = { showDialog = true })
+
+                if (showDialog) {
+                    LogoutConfirmationDialog(
+                        onConfirm = { onLogout() },
+                        onDismiss = { showDialog = false }
+                    )
                 }
             }
         }
     }
 }
 
-data class ProfileItem(val title: String, val icon: ImageVector, val onClick: () -> Unit = {})
-
 @Composable
 fun ProfileListItem(title: String, icon: ImageVector, onClick: () -> Unit = {}) {
     Surface(
         onClick = onClick,
         shape = RoundedCornerShape(20.dp),
-        color = Color.DarkGray,
+        color = MaterialTheme.colorScheme.surface,
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 6.dp),
@@ -156,7 +177,7 @@ fun ProfileListItem(title: String, icon: ImageVector, onClick: () -> Unit = {}) 
             Text(
                 text = title,
                 style = MaterialTheme.typography.labelMedium,
-                color = Color.White
+                color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.weight(1f))
             Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.onSecondary)

@@ -1,5 +1,6 @@
 package com.example.fitnessapp.presentation.navigation
 
+import ThemeViewModel
 import com.example.fitnessapp.presentation.screens.profile_screen_package.user_info.UserProfileInfoScreen
 import com.example.fitnessapp.presentation.screens.auth.user_data_package.gender_screen.GenderScreen
 import com.example.fitnessapp.presentation.screens.health_connect_screen.HealthConnectScreen
@@ -47,7 +48,8 @@ import com.example.fitnessapp.presentation.viewModels.auth_viewModel.AuthViewMod
 
 
 @Composable
-fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
+fun MyAppNavigation(context: Context, modifier: Modifier = Modifier)
+ {
 
     val navController = rememberNavController()
 
@@ -56,6 +58,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
 
     val authViewModel = hiltViewModel<AuthViewModel>()
+    val themeViewModel = hiltViewModel<ThemeViewModel>()
     val currentUser = authViewModel.currentUser
 
     Scaffold(
@@ -125,7 +128,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                             3 -> navController.navigate(Screens.FoodHistoryScreen.route)
                             4 -> navController.navigate(Screens.ProfileScreen.route)
                         }
-                    }
+                    },
                 )
             }
         }
@@ -356,6 +359,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 topBar.value = "profile"
                 selectedIndex = 4
                 ProfileScreen(
+                    themeViewModel = themeViewModel,
                     onUser = { navController.navigate(Screens.UserProfileScreen.route) },
                     onPermissions = { navController.navigate(Screens.AppPermissionsScreen.route) },
                     onAbout = { navController.navigate(Screens.AboutAppScreen.route) },

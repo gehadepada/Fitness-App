@@ -1,10 +1,13 @@
 package com.example.fitnessapp
-
+import ThemeViewModel
+import androidx.activity.compose.setContent
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -20,7 +23,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-        FitnessAppTheme {
+            val themeViewModel: ThemeViewModel = hiltViewModel()
+            val isDarkTheme by themeViewModel.isDarkTheme.collectAsState()
+
+            FitnessAppTheme (darkTheme = isDarkTheme){
                 MyAppNavigation(this)
 
                 val sharedPreferences = getSharedPreferences("WaterReminderPrefs", MODE_PRIVATE)
