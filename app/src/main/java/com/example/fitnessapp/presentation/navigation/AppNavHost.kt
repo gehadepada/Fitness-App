@@ -37,6 +37,7 @@ import com.example.fitnessapp.presentation.screens.splash_screen.SplashScreen
 import com.example.fitnessapp.presentation.screens.auth.user_data_package.weight.WeightScreen
 import com.example.fitnessapp.presentation.screens.add_food_package.search_food_and_add_screens.FoodSelectedItem
 import com.example.fitnessapp.presentation.screens.add_food_package.search_food_and_add_screens.SearchFoodScreen
+import com.example.fitnessapp.presentation.screens.auth.user_data_package.age_screen.AgeSelectScreen
 import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.RecipeDetailScreen
 import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.RecipesScreen
 import com.example.fitnessapp.presentation.screens.food_history_screen.FoodHistoryScreen
@@ -136,6 +137,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
             modifier = modifier.padding(paddingValues)
         ) {
 
+            // Splash
             composable(Screens.SplashScreen.route) {
                 if (selectedIndex != -1) selectedIndex = -1
                 SplashScreen {
@@ -151,6 +153,8 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 }
             }
 
+
+            // Login and Signup
             composable(Screens.LogInScreen.route) {
                 if (selectedIndex != -1) selectedIndex = -1
                 topBar.value = "TopBarWithLogo"
@@ -187,62 +191,25 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 )
             }
 
-            composable(Screens.DashBoardScreen.route) {
-                topBar.value = "dashboard"
-                selectedIndex = 0
-                DashboardScreen(
-                    onRecipes = { navController.navigate(Screens.RecipesScreen.route) },
-                    onWorkouts = { navController.navigate(Screens.ExerciseScreen.route) },
-                    onFoodHistory = { navController.navigate(Screens.FoodHistoryScreen.route) },
-                    onSearch = { navController.navigate(Screens.SearchBtnScreen.route) },
-                    onHealth = { navController.navigate(Screens.HealthConnectScreen.route) },
-                    onProfile = { navController.navigate(Screens.ProfileScreen.route) },
-                    onWater = { navController.navigate(Screens.WaterScreen.route) },
-                )
-            }
 
-            composable(Screens.LevelScreen.route) {
-                topBar.value = "TopBarWithLogo"
-
-                PhysicalActivityLevel(
-                    onPersonLevel = {
-                        navController.navigate(Screens.SetGoalsScreen.route)
-                    },
-                    onBack = { navController.popBackStack() }
-                )
-            }
-
+            // User Info
             composable(Screens.GenderScreen.route) {
                 topBar.value = "TopBarWithLogo"
                 selectedIndex = -1
                 GenderScreen(onGender = {
-                    navController.navigate(Screens.HeightScreen.route)
+                    navController.navigate(Screens.AgeScreen.route)
                 })
             }
 
-            composable(Screens.WeightScreen.route) {
+            composable(Screens.AgeScreen.route) {
                 topBar.value = "TopBarWithLogo"
-
-                WeightScreen(
-                    onWeight = {
-                        navController.navigate(Screens.LevelScreen.route)
+                AgeSelectScreen(
+                    onHeight = {
+                        navController.navigate(Screens.HeightScreen.route)
                     },
-                    onBack = { navController.popBackStack() }
-                )
-            }
-
-            composable(Screens.SetGoalsScreen.route) {
-                topBar.value = "TopBarWithLogo"
-
-                SetGoalsScreen(
-                    onSetGoals = {
-                        navController.navigate(Screens.DashBoardScreen.route) {
-                            popUpTo(0) {
-                                inclusive = true
-                            }
-                        }
-                    },
-                    onBack = { navController.popBackStack() }
+                    onBack = {
+                        navController.popBackStack()
+                    }
                 )
             }
 
@@ -257,6 +224,64 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                     }
                 )
             }
+
+            composable(Screens.WeightScreen.route) {
+                topBar.value = "TopBarWithLogo"
+                WeightScreen(
+                    onWeight = {
+                        navController.navigate(Screens.LevelScreen.route)
+                    },
+                    onBack = { navController.popBackStack() }
+                )
+            }
+
+            composable(Screens.LevelScreen.route) {
+                topBar.value = "TopBarWithLogo"
+                PhysicalActivityLevel(
+                    onPersonLevel = {
+                        navController.navigate(Screens.SetGoalsScreen.route)
+                    },
+                    onBack = { navController.popBackStack() }
+                )
+            }
+
+            composable(Screens.SetGoalsScreen.route) {
+                topBar.value = "TopBarWithLogo"
+                SetGoalsScreen(
+                    onSetGoals = {
+                        navController.navigate(Screens.DashBoardScreen.route) {
+                            popUpTo(0) {
+                                inclusive = true
+                            }
+                        }
+                    },
+                    onBack = { navController.popBackStack() }
+                )
+            }
+
+
+            // Dashboard
+            composable(Screens.DashBoardScreen.route) {
+                topBar.value = "dashboard"
+                selectedIndex = 0
+                DashboardScreen(
+                    onRecipes = { navController.navigate(Screens.RecipesScreen.route) },
+                    onWorkouts = { navController.navigate(Screens.ExerciseScreen.route) },
+                    onFoodHistory = { navController.navigate(Screens.FoodHistoryScreen.route) },
+                    onSearch = { navController.navigate(Screens.SearchBtnScreen.route) },
+                    onHealth = { navController.navigate(Screens.HealthConnectScreen.route) },
+                    onProfile = { navController.navigate(Screens.ProfileScreen.route) },
+                    onWater = { navController.navigate(Screens.WaterScreen.route) },
+                )
+            }
+
+
+
+
+
+
+
+
 
             composable(Screens.WaterScreen.route) {
                 topBar.value = "water"

@@ -96,6 +96,7 @@ fun UserProfileInfoScreen(
                         horizontalArrangement = Arrangement.SpaceAround,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
+                        InfoItem(icon = Icons.Default.Boy, value = userInfo.age, label = "Age")
                         InfoItem(
                             icon = Icons.Default.FitnessCenter,
                             value = userInfo.weight,
