@@ -26,15 +26,19 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.fitnessapp.R
+import com.example.fitnessapp.data.datasources.firestore.model.Exercises
 import com.example.fitnessapp.data.datasources.firestore.model.Muscles
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.screens.muscle_screen.viewModel.ExercisesViewModel
 import com.example.fitnessapp.presentation.screens.muscle_screen.viewModel.MuscleState
+import com.example.fitnessapp.theme.FitnessAppTheme
+import com.google.firebase.database.MutableData
 
 
 @Composable
@@ -78,7 +82,7 @@ fun ExerciseDetails(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF0C0C0C))
+            .background(MaterialTheme.colorScheme.background)
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -109,14 +113,13 @@ fun ExerciseDetailItem(
     isFirstItem: Boolean
 ) {
     if (!isFirstItem) {
-        HorizontalDivider(thickness = 1.dp, color = Color(0x2DFFFFFF))
+        HorizontalDivider(thickness = 1.dp, color = MaterialTheme.colorScheme.surface)
     }
 
     Row(
         modifier = Modifier
             .padding(vertical = 20.dp, horizontal = 7.dp)
             .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
             modifier = Modifier
@@ -125,26 +128,31 @@ fun ExerciseDetailItem(
         ) {
             Text(
                 text = name,
-                color = Color.White,
-                fontSize = 19.sp,
-                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.labelMedium,
                 modifier = Modifier
                     .padding(vertical = 7.dp)
             )
             Text(
-                text = description, color = Color.LightGray, fontSize = 14.sp,
+                text = description,
+                style = MaterialTheme.typography.labelSmall,
+                color = Color.Gray,
                 modifier = Modifier
                     .padding(vertical = 1.dp)
             )
 
             Text(
-                text = sets, color = Color.LightGray, fontSize = 17.sp,
+                text = sets,
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.labelMedium,
                 modifier = Modifier
                     .padding(vertical = 5.dp)
             )
 
             Text(
-                text = reps, color = Color.LightGray, fontSize = 17.sp,
+                text = reps,
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.labelMedium,
                 modifier = Modifier
                     .padding(vertical = 5.dp)
             )
@@ -218,6 +226,39 @@ fun AnimatedImage(image1: String, image2: String, imageSize: Dp) {
                 .size(30.dp)
                 .align(Alignment.BottomStart)
                 .padding(5.dp, 0.dp, 0.dp, 0.dp)
+        )
+    }
+}
+
+
+@Preview
+@Composable
+private fun Prev() {
+    FitnessAppTheme {
+        ExerciseDetails(
+            musclesData = Muscles(
+                id = 10,
+                muscle = "Back",
+                exercises = listOf(
+                    Exercises(
+                        name = "Single Arm Row",
+                        sets = "4 sets",
+                        reps = "10 reps",
+                        description = "Builds lets and rhomboids",
+                        image1 = "",
+                        image2 = ""
+                    ),
+                    Exercises(
+                        name = "Single Arm Row",
+                        sets = "4 sets",
+                        reps = "10 reps",
+                        description = "Builds lets and rhomboids",
+                        image1 = "",
+                        image2 = ""
+                    ),
+
+                )
+            )
         )
     }
 }
