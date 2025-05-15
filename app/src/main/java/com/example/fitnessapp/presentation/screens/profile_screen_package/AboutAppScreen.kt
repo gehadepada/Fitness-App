@@ -67,7 +67,7 @@ fun AboutAppScreen() {
             Spacer(modifier = Modifier.weight(1f))
 
             Text(
-                text = "© ${Calendar.getInstance().get(Calendar.YEAR)}  Developer Nagy Osman. All rights reserved.",
+                text = "© ${Calendar.getInstance().get(Calendar.YEAR)}  Developers Turbo Fit Team. All rights reserved.",
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center
