@@ -285,12 +285,6 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 })
             }
 
-            composable(Screens.HealthConnectScreen.route) {
-                HealthConnectScreen(onBack = {
-                    navController.popBackStack()
-                })
-            }
-
             composable(Screens.HealthScreen.route) {
                 topBar.value = "Health"
                 HealthConnectScreen(onBack = {
@@ -322,6 +316,13 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 val foodName = backStackEntry.arguments?.getString("foodName") ?: ""
                 val calories = backStackEntry.arguments?.getString("calories") ?: ""
                 FoodSelectedItem(foodName = foodName, calories = calories)
+            }
+
+            // health connect
+            composable(Screens.HealthConnectScreen.route) {
+                HealthConnectScreen(onBack = {
+                    navController.popBackStack()
+                })
             }
 
 

@@ -32,7 +32,6 @@ import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.example.fitnessapp.data.datasources.local.FoodAndCaloriesLocalModel
-import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.components.SuccessDialog
 import com.example.fitnessapp.presentation.viewModels.foodAndCalories_viewModel.FoodAndCaloriesState
 import com.example.fitnessapp.presentation.viewModels.foodAndCalories_viewModel.FoodAndCaloriesViewModel
@@ -45,11 +44,14 @@ fun ScanFood() {
 
     // For View Model
     val foodAndCalorieViewModel = hiltViewModel<FoodAndCaloriesViewModel>()
-    val foodAndCaloriesState =
+    val foodAndCaloriesState by
         foodAndCalorieViewModel.foodAndCaloriesState.collectAsStateWithLifecycle()
     var foodInsert by remember { mutableStateOf<FoodAndCaloriesLocalModel?>(null) }
     var loadTrigger by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(true) }
+
+    val context = LocalContext.current
+
 
     if (loadTrigger) {
         LaunchedEffect(foodInsert) {
@@ -58,11 +60,10 @@ fun ScanFood() {
             showDialog = true
         }
     }
-    when(foodAndCaloriesState.value) {
+    when(foodAndCaloriesState) {
         is FoodAndCaloriesState.Error -> {
-            FailedLoadingScreen(onFailed = {
-                foodAndCalorieViewModel.insertFoodAndCalories(foodInsert!!)
-            }, errorMessage = "Failed Saving to database")
+            Toast.makeText(context,
+                (foodAndCaloriesState as FoodAndCaloriesState.Error).error, Toast.LENGTH_SHORT).show()
         }
         FoodAndCaloriesState.Loading -> CircularProgressIndicator()
         FoodAndCaloriesState.Success -> {
@@ -76,7 +77,6 @@ fun ScanFood() {
         else -> {}
     }
 
-    val context = LocalContext.current
     var imageBitmap by remember { mutableStateOf<Bitmap?>(null) }
     var isLoading by remember { mutableStateOf(false) }
     var resultText by remember { mutableStateOf<String?>(null) }
@@ -276,11 +276,6 @@ fun ScanFood() {
                                     totalAmount = 1
                                 )
                                 loadTrigger = true
-                                Toast.makeText(
-                                    context,
-                                    "Data ready to be passed: $detectedFoodItems, $detectedCalories kcal",
-                                    Toast.LENGTH_SHORT
-                                ).show()
                             },
                             modifier = Modifier.fillMaxWidth()
                         ) {
