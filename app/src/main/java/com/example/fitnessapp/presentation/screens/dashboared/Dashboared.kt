@@ -126,8 +126,6 @@ fun DashboardScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(25.dp))
-
         AddWaterSection(
             onWater
         )
