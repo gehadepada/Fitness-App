@@ -1,7 +1,6 @@
 package com.example.fitnessapp.presentation.screens.food_history_screen
 
 import android.app.DatePickerDialog
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -184,10 +183,9 @@ fun FoodHistoryScreen() {
 fun FoodItem(food: FoodAndCaloriesUIModel, onDelete: (FoodAndCaloriesUIModel) -> Unit) {
     Card(
         modifier = Modifier
-            .background(MaterialTheme.colorScheme.surface)
             .padding(vertical = 4.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
+            containerColor = MaterialTheme.colorScheme.surface,
         )
     ) {
         Column(modifier = Modifier.padding(16.dp)) {

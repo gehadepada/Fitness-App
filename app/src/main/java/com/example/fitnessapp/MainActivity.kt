@@ -1,5 +1,5 @@
 package com.example.fitnessapp
-import ThemeViewModel
+import com.example.fitnessapp.presentation.viewModels.themeView.ThemeViewModel
 import androidx.activity.compose.setContent
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.runtime.collectAsState

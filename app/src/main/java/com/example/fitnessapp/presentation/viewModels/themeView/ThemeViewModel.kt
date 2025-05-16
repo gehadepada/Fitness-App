@@ -1,3 +1,5 @@
+package com.example.fitnessapp.presentation.viewModels.themeView
+
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

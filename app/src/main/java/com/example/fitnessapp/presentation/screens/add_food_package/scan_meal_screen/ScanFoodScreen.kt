@@ -250,7 +250,8 @@ fun ScanFood() {
                                                     horizontal = 12.dp,
                                                     vertical = 6.dp
                                                 ),
-                                            fontSize = 14.sp
+                                            style = MaterialTheme.typography.titleSmall,
+                                            color = MaterialTheme.colorScheme.onSurface
                                         )
                                     }
                                 }

@@ -1,6 +1,5 @@
 package com.example.fitnessapp.presentation.screens.profile_screen_package
 
-import ThemeViewModel
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,6 +18,7 @@ import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.components.LogoutConfirmationDialog
 import com.example.fitnessapp.presentation.viewModels.get_userData_viewModel.GetUserDataState
 import com.example.fitnessapp.presentation.viewModels.get_userData_viewModel.GetUserDataViewModel
+import com.example.fitnessapp.presentation.viewModels.themeView.ThemeViewModel
 
 @Composable
 fun ProfileScreen(
