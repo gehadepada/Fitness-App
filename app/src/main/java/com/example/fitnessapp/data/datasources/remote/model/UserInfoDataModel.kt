@@ -1,4 +1,4 @@
-package com.example.fitnessapp.data.datasources.firestore.model
+package com.example.fitnessapp.data.datasources.remote.model
 
     data class UserInfoDataModel(
     val email: String = "",

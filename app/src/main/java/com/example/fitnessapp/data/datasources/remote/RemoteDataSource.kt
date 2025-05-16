@@ -1,9 +1,8 @@
-package com.example.fitnessapp.data.datasources.firestore
+package com.example.fitnessapp.data.datasources.remote
 
-import android.util.Log
-import com.example.fitnessapp.data.datasources.firestore.model.FoodCaloriesModel
-import com.example.fitnessapp.data.datasources.firestore.model.Muscles
-import com.example.fitnessapp.data.datasources.firestore.model.UserInfoDataModel
+import com.example.fitnessapp.data.datasources.remote.model.FoodCaloriesModel
+import com.example.fitnessapp.data.datasources.remote.model.Muscles
+import com.example.fitnessapp.data.datasources.remote.model.UserInfoDataModel
 import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.model.RecipesModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -13,7 +12,7 @@ import com.google.firebase.firestore.Source
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-class FirestoreDataSource @Inject constructor(
+class RemoteDataSource @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val auth: FirebaseAuth
 ) {
@@ -58,7 +57,6 @@ class FirestoreDataSource @Inject constructor(
         userData: Map<String, Any>
     ) {
         if (userId == null) return
-        Log.d("Al-qiran", "$userData")
         try {
             firestore.collection("Users").document(userId!!)
                 .set(userData, SetOptions.merge())
@@ -68,7 +66,6 @@ class FirestoreDataSource @Inject constructor(
                 .addOnSuccessListener {
                 }
         } catch (e: Exception) {
-            Log.d("Al-qiran", "Error from firestore${e.message}")
             throw e
         }
     }

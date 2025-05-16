@@ -1,8 +1,8 @@
 package com.example.fitnessapp.domain.repo
 
-import com.example.fitnessapp.data.datasources.firestore.model.FoodCaloriesModel
-import com.example.fitnessapp.data.datasources.firestore.model.Muscles
-import com.example.fitnessapp.data.datasources.firestore.model.UserInfoDataModel
+import com.example.fitnessapp.data.datasources.remote.model.FoodCaloriesModel
+import com.example.fitnessapp.data.datasources.remote.model.Muscles
+import com.example.fitnessapp.data.datasources.remote.model.UserInfoDataModel
 import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.model.RecipesModel
 
 interface FirebaseRepository {

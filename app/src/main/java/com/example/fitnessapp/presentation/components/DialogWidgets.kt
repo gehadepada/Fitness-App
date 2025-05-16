@@ -11,7 +11,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.fitnessapp.theme.FitnessAppTheme
 
 @Composable
 fun SuccessDialog(
@@ -56,12 +58,22 @@ fun LogoutConfirmationDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(text = "No")
+                Text(text = "No", color = MaterialTheme.colorScheme.onSurface)
             }
         },
-        title = { Text(text = "Logout Confirmation") },
-        text = { Text(text = "Do you really want to log out?") },
+        title = { Text(text = "Logout Confirmation", color = MaterialTheme.colorScheme.primary ) },
+        text = { Text(text = "Do you really want to log out?", color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.labelMedium) },
         containerColor = MaterialTheme.colorScheme.surface,
         shape = RoundedCornerShape(16.dp)
     )
+}
+
+@Preview
+@Composable
+private fun Prev() {
+    FitnessAppTheme {
+        LogoutConfirmationDialog(onConfirm = { }) {
+            
+        }
+    }
 }

@@ -1,6 +1,6 @@
 package com.example.fitnessapp.di
 
-import com.example.fitnessapp.data.datasources.firestore.repository.FirebaseRepoImp
+import com.example.fitnessapp.data.datasources.remote.repository.RemoteRepoImp
 import com.example.fitnessapp.domain.repo.FirebaseRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -33,5 +33,5 @@ object FirebaseModule {
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
     @Binds
-    abstract fun bindMusclesRepository(impl: FirebaseRepoImp): FirebaseRepository
+    abstract fun bindMusclesRepository(impl: RemoteRepoImp): FirebaseRepository
 }

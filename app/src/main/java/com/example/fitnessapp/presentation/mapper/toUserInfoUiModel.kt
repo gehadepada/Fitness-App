@@ -1,6 +1,6 @@
 package com.example.fitnessapp.presentation.mapper
 
-import com.example.fitnessapp.data.datasources.firestore.model.UserInfoDataModel
+import com.example.fitnessapp.data.datasources.remote.model.UserInfoDataModel
 import com.example.fitnessapp.presentation.model.UserInfoUIModel
 
 fun UserInfoDataModel.toUserInfoUiModel(): UserInfoUIModel {

@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.fitnessapp.data.datasources.firestore.model.FoodCaloriesModel
+import com.example.fitnessapp.data.datasources.remote.model.FoodCaloriesModel
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.screens.add_food_package.search_food_and_add_screens.viewModel.FoodSearchState
 import com.example.fitnessapp.presentation.screens.add_food_package.search_food_and_add_screens.viewModel.FoodSearchViewModel

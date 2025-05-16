@@ -1,6 +1,6 @@
 package com.example.fitnessapp.presentation.screens.muscle_screen.viewModel
 
-import com.example.fitnessapp.data.datasources.firestore.model.Muscles
+import com.example.fitnessapp.data.datasources.remote.model.Muscles
 
 sealed class MuscleState {
     data object Loading: MuscleState()

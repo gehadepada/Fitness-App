@@ -46,7 +46,6 @@ class FoodAndCaloriesViewModel @Inject constructor(private val dao: FoodAndCalor
             try {
                 val data = dao.getFoodAndCaloriesByDate(startDate, date)
                     .map { it.toFoodAndCaloriesUIModel() }
-                Log.d("Al-qiran", dao.getFoodAndCaloriesByDate(startDate, date).toString())
                 _foodAndCaloriesState.value = FoodAndCaloriesState.SuccessWithData(data)
             } catch (e: Exception) {
                 _foodAndCaloriesState.value =

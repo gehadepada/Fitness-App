@@ -211,7 +211,7 @@ fun ScanFood() {
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.surfaceVariant
+                                containerColor = MaterialTheme.colorScheme.surface
                             ),
                             elevation = CardDefaults.cardElevation(4.dp)
                         ) {
@@ -221,8 +221,8 @@ fun ScanFood() {
                             ) {
                                 Text(
                                     text = "Detected Food Items",
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 18.sp
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    style = MaterialTheme.typography.bodyMedium
                                 )
 
                                 Spacer(modifier = Modifier.height(12.dp))
