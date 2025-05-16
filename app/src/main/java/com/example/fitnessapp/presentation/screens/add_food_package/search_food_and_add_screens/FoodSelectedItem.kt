@@ -1,6 +1,5 @@
 package com.example.fitnessapp.presentation.screens.add_food_package.search_food_and_add_screens
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -57,7 +56,6 @@ fun FoodSelectedItem(foodName: String, calories: String) {
 
     if (loadTrigger) {
         LaunchedEffect(foodInsert) {
-            Log.d("Al-qiran from viewModel", "$foodInsert")
             foodAndCalorieViewModel.insertFoodAndCalories(foodInsert!!)
             loadTrigger = false
             showDialog = true

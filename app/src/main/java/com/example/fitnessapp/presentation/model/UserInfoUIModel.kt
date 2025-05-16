@@ -7,5 +7,6 @@ data class UserInfoUIModel(
     val height: String,
     val level: String,
     val userName: String,
+    val age: String ="",
     val weight: String
 )

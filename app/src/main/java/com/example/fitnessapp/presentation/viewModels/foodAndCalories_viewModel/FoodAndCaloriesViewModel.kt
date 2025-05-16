@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.Int
 import kotlin.String
 
 @HiltViewModel
@@ -27,8 +26,13 @@ class FoodAndCaloriesViewModel @Inject constructor(private val dao: FoodAndCalor
         viewModelScope.launch(Dispatchers.IO) {
             _foodAndCaloriesState.value = FoodAndCaloriesState.Loading
             try {
-                dao.insertFoodAndCalories(foodAndCaloriesLocalModel)
-                _foodAndCaloriesState.value = FoodAndCaloriesState.Success
+                if (foodAndCaloriesLocalModel.foodName.isEmpty()) {
+                    _foodAndCaloriesState.value = FoodAndCaloriesState.Error("There is no data to save")
+                }
+                else {
+                    dao.insertFoodAndCalories(foodAndCaloriesLocalModel)
+                    _foodAndCaloriesState.value = FoodAndCaloriesState.Success
+                }
             } catch (e: Exception) {
                 _foodAndCaloriesState.value =
                     FoodAndCaloriesState.Error(e.suppressedExceptions.toString())

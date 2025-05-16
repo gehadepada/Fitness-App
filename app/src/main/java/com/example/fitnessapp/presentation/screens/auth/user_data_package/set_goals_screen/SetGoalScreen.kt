@@ -1,6 +1,5 @@
 package com.example.fitnessapp.presentation.screens.auth.user_data_package.set_goals_screen
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -44,9 +43,8 @@ import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.viewModels.save_userData_viewModel.SaveUserDataState
 import com.example.fitnessapp.presentation.viewModels.save_userData_viewModel.SaveUserDataViewModel
 import com.example.fitnessapp.theme.FitnessAppTheme
-@SuppressLint("UnusedBoxWithConstraintsScope")
-@Composable
 
+@Composable
 fun SetGoalsScreen(
     onSetGoals: () -> Unit = {},
     onBack: () -> Unit = {}
@@ -137,7 +135,7 @@ fun SetGoalsScreen(
                     ) {
                         Box(
                             modifier = Modifier
-                                .fillMaxWidth(0.35f)
+                                .height(maxHeight * 0.15f)
                                 .aspectRatio(1f)
                                 .clip(RoundedCornerShape(16.dp))
                                 .border(
@@ -160,7 +158,7 @@ fun SetGoalsScreen(
                                 modifier = Modifier
                                     .padding(maxWidth * 0.04f)
                                     .fillMaxSize(),
-                                contentScale = ContentScale.Crop
+                                contentScale = ContentScale.Fit
                             )
                         }
 
@@ -171,15 +169,6 @@ fun SetGoalsScreen(
                             color = MaterialTheme.colorScheme.onBackground
                         )
                     }
-                }
-
-                if (isGoalSelected.value.isNotEmpty()) {
-                    Text(
-                        text = isGoalSelected.value,
-                        color = Color.Red,
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier.padding(top = 4.dp)
-                    )
                 }
             }
 
@@ -193,7 +182,7 @@ fun SetGoalsScreen(
                         }
                     },
                     onBackClick = onBack,
-                    continueMessage = isGoalSelected.value
+                    errorMessage = isGoalSelected.value
                 )
 
 

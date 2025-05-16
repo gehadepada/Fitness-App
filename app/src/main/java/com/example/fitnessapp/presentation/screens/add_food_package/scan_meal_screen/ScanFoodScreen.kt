@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.provider.MediaStore
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -33,7 +32,6 @@ import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.example.fitnessapp.data.datasources.local.FoodAndCaloriesLocalModel
-import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.components.SuccessDialog
 import com.example.fitnessapp.presentation.viewModels.foodAndCalories_viewModel.FoodAndCaloriesState
 import com.example.fitnessapp.presentation.viewModels.foodAndCalories_viewModel.FoodAndCaloriesViewModel
@@ -46,25 +44,26 @@ fun ScanFood() {
 
     // For View Model
     val foodAndCalorieViewModel = hiltViewModel<FoodAndCaloriesViewModel>()
-    val foodAndCaloriesState =
+    val foodAndCaloriesState by
         foodAndCalorieViewModel.foodAndCaloriesState.collectAsStateWithLifecycle()
     var foodInsert by remember { mutableStateOf<FoodAndCaloriesLocalModel?>(null) }
     var loadTrigger by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(true) }
 
+    val context = LocalContext.current
+
+
     if (loadTrigger) {
         LaunchedEffect(foodInsert) {
-            Log.d("Al-qiran from viewModel", "$foodInsert")
             foodAndCalorieViewModel.insertFoodAndCalories(foodInsert!!)
             loadTrigger = false
             showDialog = true
         }
     }
-    when(foodAndCaloriesState.value) {
+    when(foodAndCaloriesState) {
         is FoodAndCaloriesState.Error -> {
-            FailedLoadingScreen(onFailed = {
-                foodAndCalorieViewModel.insertFoodAndCalories(foodInsert!!)
-            }, errorMessage = "Failed Saving to database")
+            Toast.makeText(context,
+                (foodAndCaloriesState as FoodAndCaloriesState.Error).error, Toast.LENGTH_SHORT).show()
         }
         FoodAndCaloriesState.Loading -> CircularProgressIndicator()
         FoodAndCaloriesState.Success -> {
@@ -78,14 +77,13 @@ fun ScanFood() {
         else -> {}
     }
 
-    val context = LocalContext.current
     var imageBitmap by remember { mutableStateOf<Bitmap?>(null) }
     var isLoading by remember { mutableStateOf(false) }
     var resultText by remember { mutableStateOf<String?>(null) }
     var errorText by remember { mutableStateOf<String?>(null) }
 
     var detectedFoodItems by remember { mutableStateOf<List<String>>(emptyList()) }
-    var detectedCalories by remember { mutableStateOf(0) }
+    var detectedCalories by remember { mutableIntStateOf(0) }
 
     val scope = rememberCoroutineScope()
 
@@ -137,7 +135,7 @@ fun ScanFood() {
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            val bitmap = result.data?.extras?.get("data") as? Bitmap
+            @Suppress("DEPRECATION") val bitmap = result.data?.extras?.get("data") as? Bitmap
             bitmap?.let {
                 resultText = null
                 errorText = null
@@ -273,16 +271,11 @@ fun ScanFood() {
                         Button(
                             onClick = {
                                 foodInsert = FoodAndCaloriesLocalModel(
-                                    foodName = detectedFoodItems.toString(),
+                                    foodName = detectedFoodItems.joinToString(),
                                     calories = detectedCalories.toDouble(),
                                     totalAmount = 1
                                 )
                                 loadTrigger = true
-                                Toast.makeText(
-                                    context,
-                                    "Data ready to be passed: $detectedFoodItems, $detectedCalories kcal",
-                                    Toast.LENGTH_SHORT
-                                ).show()
                             },
                             modifier = Modifier.fillMaxWidth()
                         ) {

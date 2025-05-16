@@ -7,5 +7,6 @@ package com.example.fitnessapp.data.datasources.firestore.model
     val height: String = "",
     val level: String = "",
     val userName: String = "",
-    val weight: Int = 0
+    val age: String ="",
+    val weight: Int = 0,
 )

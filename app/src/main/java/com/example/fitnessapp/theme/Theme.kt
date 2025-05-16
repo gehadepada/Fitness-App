@@ -17,21 +17,25 @@ private val DarkColorScheme = darkColorScheme(
     // for bar color
     surface = DarkGreySurface,
     onSurface = Color.White,
+    secondary = Color.Gray,
     onSecondary = LightGreySurface,
-    secondary = Color.Red
-)
+    error = Color.Red,
 
+)
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Color.Red,
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
+    primary = Color(0xFF2FC94C),
     onPrimary = Color.White,
-    onSecondary = Color(0xFFCCC7C7),
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
+
+    background = Color(0xFFFDFDFD),
+    onBackground = Color.Black,
+
+    surface = Color(0xFFF0F0F0),
+    onSurface = Color.Black,
+
+    secondary = Color(0xFF9E9E9E),
+    onSecondary = Color(0xFF2C2C2C),
+
+    error = Color(0xFFD32F2F)
 )
 
 @Composable
@@ -41,17 +45,17 @@ fun FitnessAppTheme(
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-//    val colorScheme = when {
+    val colorScheme = when {
 //        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
 //            val context = LocalContext.current
 //            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
 //        }
-//
-//        darkTheme -> DarkColorScheme
-//        else -> LightColorScheme
-//    }
 
-    val colorScheme = DarkColorScheme
+        darkTheme -> DarkColorScheme
+        else -> LightColorScheme
+    }
+
+//    val colorScheme = DarkColorScheme
 
     MaterialTheme(
         colorScheme = colorScheme,

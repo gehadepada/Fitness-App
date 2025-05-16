@@ -1,5 +1,5 @@
 [versions]
-agp = "8.5.2"
+agp = "8.7.3"
 kotlin = "1.9.0"
 coreKtx = "1.15.0"
 junit = "4.13.2"
@@ -13,6 +13,8 @@ roomExternalAntlr = "2.7.0"
 storage = "1.5.0"
 places = "4.2.0"
 firebaseDataconnect = "16.0.1"
+benchmarkMacro = "1.3.4"
+runtimeAndroid = "1.8.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -34,6 +36,8 @@ androidx-room-external-antlr = { group = "androidx.room", name = "room-external-
 androidx-storage = { group = "androidx.test.services", name = "storage", version.ref = "storage" }
 places = { group = "com.google.android.libraries.places", name = "places", version.ref = "places" }
 firebase-dataconnect = { group = "com.google.firebase", name = "firebase-dataconnect", version.ref = "firebaseDataconnect" }
+androidx-benchmark-macro = { group = "androidx.benchmark", name = "benchmark-macro", version.ref = "benchmarkMacro" }
+androidx-runtime-android = { group = "androidx.compose.runtime", name = "runtime-android", version.ref = "runtimeAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

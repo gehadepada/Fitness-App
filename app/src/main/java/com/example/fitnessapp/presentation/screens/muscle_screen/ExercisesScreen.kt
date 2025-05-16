@@ -10,7 +10,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -115,9 +114,6 @@ fun ExerciseItem(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .padding(8.dp)
-            .clickable {
-                onExercise(id)
-            }
     ) {
         AsyncImage(
             model = ImageRequest.Builder(context = LocalContext.current)
@@ -129,7 +125,10 @@ fun ExerciseItem(
             modifier = Modifier
                 .size(80.dp)
                 .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.surface),
+                .background(MaterialTheme.colorScheme.surface)
+                .clickable {
+                    onExercise(id)
+                },
             placeholder = painterResource(id = R.drawable.ex_exercise),
             error = painterResource(id = R.drawable.baseline_notifications_24)
         )

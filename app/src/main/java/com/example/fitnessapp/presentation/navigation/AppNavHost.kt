@@ -1,6 +1,7 @@
 package com.example.fitnessapp.presentation.navigation
 
-import UserProfileInfoScreen
+import ThemeViewModel
+import com.example.fitnessapp.presentation.screens.profile_screen_package.user_info.UserProfileInfoScreen
 import com.example.fitnessapp.presentation.screens.auth.user_data_package.gender_screen.GenderScreen
 import com.example.fitnessapp.presentation.screens.health_connect_screen.HealthConnectScreen
 import android.content.Context
@@ -30,7 +31,6 @@ import com.example.fitnessapp.presentation.screens.add_food_package.add_food_way
 import com.example.fitnessapp.presentation.screens.add_food_package.scan_meal_screen.ScanFood
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExerciseDetailScreen
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExercisesScreen
-import com.example.fitnessapp.presentation.screens.profile_screen_package.AboutAppScreen
 import com.example.fitnessapp.presentation.screens.profile_screen_package.AppPermissionsScreen
 import com.example.fitnessapp.presentation.screens.profile_screen_package.ProfileScreen
 import com.example.fitnessapp.presentation.screens.auth.user_data_package.set_goals_screen.SetGoalsScreen
@@ -38,21 +38,18 @@ import com.example.fitnessapp.presentation.screens.splash_screen.SplashScreen
 import com.example.fitnessapp.presentation.screens.auth.user_data_package.weight.WeightScreen
 import com.example.fitnessapp.presentation.screens.add_food_package.search_food_and_add_screens.FoodSelectedItem
 import com.example.fitnessapp.presentation.screens.add_food_package.search_food_and_add_screens.SearchFoodScreen
+import com.example.fitnessapp.presentation.screens.auth.user_data_package.age_screen.AgeSelectScreen
 import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.RecipeDetailScreen
 import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.RecipesScreen
 import com.example.fitnessapp.presentation.screens.food_history_screen.FoodHistoryScreen
+import com.example.fitnessapp.presentation.screens.profile_screen_package.AboutAppScreen
 import com.example.fitnessapp.presentation.screens.waterScreen.WaterTrackerScreen
 import com.example.fitnessapp.presentation.viewModels.auth_viewModel.AuthViewModel
-import com.google.firebase.auth.FirebaseAuth
 
-/**
- * the Navigation Graph
- * SignUp -> Gender -> Height -> Level -> Weight -> SetGoal -> DashBoard
- * Login -> DashBoard
- */
 
 @Composable
-fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
+fun MyAppNavigation(context: Context, modifier: Modifier = Modifier)
+ {
 
     val navController = rememberNavController()
 
@@ -61,6 +58,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
 
     val authViewModel = hiltViewModel<AuthViewModel>()
+    val themeViewModel = hiltViewModel<ThemeViewModel>()
     val currentUser = authViewModel.currentUser
 
     Scaffold(
@@ -70,12 +68,20 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                     TopBarWithLogo()
                 }
 
-                "profile" -> {
+                "dashboard" -> {
                     ProfileTopBar()
+                }
+
+                "profile" -> {
+                    TopBar("Profile") { navController.popBackStack() }
                 }
 
                 "recipes" -> {
                     TopBar("Recipes") { navController.popBackStack() }
+                }
+
+                "muscle_exercises" -> {
+                    TopBar("Muscle Exercises") { navController.popBackStack() }
                 }
 
                 "exercises" -> {
@@ -117,9 +123,12 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                         selectedIndex = it
                         when (selectedIndex) {
                             0 -> navController.navigate(Screens.DashBoardScreen.route)
-                            3 -> navController.navigate(Screens.ProfileScreen.route)
+                            1 -> navController.navigate(Screens.ExerciseScreen.route)
+                            2 -> navController.navigate(Screens.FoodSearchScreen.route)
+                            3 -> navController.navigate(Screens.FoodHistoryScreen.route)
+                            4 -> navController.navigate(Screens.ProfileScreen.route)
                         }
-                    }
+                    },
                 )
             }
         }
@@ -131,6 +140,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
             modifier = modifier.padding(paddingValues)
         ) {
 
+            // Splash
             composable(Screens.SplashScreen.route) {
                 if (selectedIndex != -1) selectedIndex = -1
                 SplashScreen {
@@ -146,6 +156,8 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 }
             }
 
+
+            // Login and Signup
             composable(Screens.LogInScreen.route) {
                 if (selectedIndex != -1) selectedIndex = -1
                 topBar.value = "TopBarWithLogo"
@@ -182,38 +194,54 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 )
             }
 
-            composable(Screens.DashBoardScreen.route) {
-                topBar.value = "profile"
-                if (selectedIndex != 0) selectedIndex = 0
-                DashboardScreen(
-                    navController
+
+            // User Info
+            composable(Screens.GenderScreen.route) {
+                topBar.value = "TopBarWithLogo"
+                selectedIndex = -1
+                GenderScreen(onGender = {
+                    navController.navigate(Screens.AgeScreen.route)
+                })
+            }
+
+            composable(Screens.AgeScreen.route) {
+                topBar.value = "TopBarWithLogo"
+                AgeSelectScreen(
+                    onHeight = {
+                        navController.navigate(Screens.HeightScreen.route)
+                    },
+                    onBack = {
+                        navController.popBackStack()
+                    }
                 )
             }
 
-            composable(Screens.LevelScreen.route) {
+            composable(Screens.HeightScreen.route) {
                 topBar.value = "TopBarWithLogo"
-
-                PhysicalActivityLevel(
-                    onPersonLevel = {
+                NumberPickerDemo(
+                    onHeight = {
                         navController.navigate(Screens.WeightScreen.route)
+                    },
+                    onBack = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+
+            composable(Screens.WeightScreen.route) {
+                topBar.value = "TopBarWithLogo"
+                WeightScreen(
+                    onWeight = {
+                        navController.navigate(Screens.LevelScreen.route)
                     },
                     onBack = { navController.popBackStack() }
                 )
             }
 
-            composable(Screens.GenderScreen.route) {
+            composable(Screens.LevelScreen.route) {
                 topBar.value = "TopBarWithLogo"
-
-                GenderScreen {
-                    navController.navigate(Screens.HeightScreen.route)
-                }
-            }
-
-            composable(Screens.WeightScreen.route) {
-                topBar.value = "TopBarWithLogo"
-
-                WeightScreen(
-                    onWeight = {
+                PhysicalActivityLevel(
+                    onPersonLevel = {
                         navController.navigate(Screens.SetGoalsScreen.route)
                     },
                     onBack = { navController.popBackStack() }
@@ -222,7 +250,6 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
             composable(Screens.SetGoalsScreen.route) {
                 topBar.value = "TopBarWithLogo"
-
                 SetGoalsScreen(
                     onSetGoals = {
                         navController.navigate(Screens.DashBoardScreen.route) {
@@ -235,17 +262,29 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 )
             }
 
-            composable(Screens.HeightScreen.route) {
-                topBar.value = "TopBarWithLogo"
-                NumberPickerDemo(
-                    onHeight = {
-                        navController.navigate(Screens.LevelScreen.route)
-                    },
-                    onBack = {
-                        navController.popBackStack()
-                    }
+
+            // Dashboard
+            composable(Screens.DashBoardScreen.route) {
+                topBar.value = "dashboard"
+                selectedIndex = 0
+                DashboardScreen(
+                    onRecipes = { navController.navigate(Screens.RecipesScreen.route) },
+                    onWorkouts = { navController.navigate(Screens.ExerciseScreen.route) },
+                    onFoodHistory = { navController.navigate(Screens.FoodHistoryScreen.route) },
+                    onSearch = { navController.navigate(Screens.SearchBtnScreen.route) },
+                    onHealth = { navController.navigate(Screens.HealthConnectScreen.route) },
+                    onProfile = { navController.navigate(Screens.ProfileScreen.route) },
+                    onWater = { navController.navigate(Screens.WaterScreen.route) },
                 )
             }
+
+
+
+
+
+
+
+
 
             composable(Screens.WaterScreen.route) {
                 topBar.value = "water"
@@ -254,12 +293,13 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
             composable(Screens.ExerciseScreen.route) {
                 topBar.value = "exercises"
+                selectedIndex = 1
                 ExercisesScreen(onExercise = { id ->
                     navController.navigate(Screens.ExercisesDetails.passId(id))
                 })
             }
             composable(Screens.ExercisesDetails.route) { backStackEntry ->
-                topBar.value = ""
+                topBar.value = "muscle_exercises"
                 val id = backStackEntry.arguments?.getString("id")?.toIntOrNull() ?: 5
                 ExerciseDetailScreen(id = id)
             }
@@ -270,12 +310,6 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                     navController.navigate(Screens.FoodSearchScreen.route)
                 }, onScanFood = {
                     navController.navigate(Screens.ScanFoodScreen.route)
-                })
-            }
-
-            composable(Screens.HealthConnectScreen.route) {
-                HealthConnectScreen(onBack = {
-                    navController.popBackStack()
                 })
             }
 
@@ -295,7 +329,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
             // Search and search components
             composable(Screens.FoodSearchScreen.route) {
-
+                selectedIndex = 2
                 SearchFoodScreen(onSearchFood = { foodName, calories ->
                     navController.navigate(
                         Screens.FoodSelectItemScreen.passFoodNameAndCalories(
@@ -312,12 +346,20 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 FoodSelectedItem(foodName = foodName, calories = calories)
             }
 
+            // health connect
+            composable(Screens.HealthConnectScreen.route) {
+                HealthConnectScreen(onBack = {
+                    navController.popBackStack()
+                })
+            }
+
 
             // profile and profile components
             composable(Screens.ProfileScreen.route) {
                 topBar.value = "profile"
-                selectedIndex = 3
+                selectedIndex = 4
                 ProfileScreen(
+                    themeViewModel = themeViewModel,
                     onUser = { navController.navigate(Screens.UserProfileScreen.route) },
                     onPermissions = { navController.navigate(Screens.AppPermissionsScreen.route) },
                     onAbout = { navController.navigate(Screens.AboutAppScreen.route) },
@@ -351,7 +393,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
             // For Recipes
             composable(Screens.RecipesScreen.route) {
-                topBar.value = "Recipes"
+                topBar.value = "recipes"
                 RecipesScreen(onClick = { id ->
                     navController.navigate(Screens.RecipesDetailsScreen.passId(id))
                 })
@@ -363,8 +405,9 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
 
 
-            composable(Screens.TodayPlanScreen.route) {
+            composable(Screens.FoodHistoryScreen.route) {
                 topBar.value = "foodHistory"
+                selectedIndex = 3
                 FoodHistoryScreen()
             }
         }

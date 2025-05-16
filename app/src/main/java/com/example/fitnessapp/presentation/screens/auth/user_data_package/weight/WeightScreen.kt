@@ -126,20 +126,18 @@ fun WeightScreen(
                         .padding(vertical = maxHeight * 0.02f)
                 ) {
                     Canvas(modifier = Modifier.fillMaxSize()) {
-                        drawCircularDial(20, 180)
-                        drawPointer(weight, 20, 180)
+                        drawCircularDial(10, 200)
+                        drawPointer(weight, 10, 200)
                     }
                 }
 
                 Slider(
                     value = weight,
                     onValueChange = { weight = it },
-                    valueRange = 20f..180f,
-                    steps = 160,
+                    valueRange = 10f..200f,
                     modifier = Modifier.fillMaxWidth(),
                     colors = SliderDefaults.colors(
-                        thumbColor = Color.Green,
-                        activeTrackColor = Color.Green
+                        activeTrackColor = MaterialTheme.colorScheme.primary
                     )
                 )
             }
@@ -162,14 +160,14 @@ fun WeightScreen(
 fun DrawScope.drawCircularDial(minWeight: Int, maxWeight: Int) {
         drawCircle(
             color = Color.Green,
-            style = Stroke(width = 8f)
+            style = Stroke(width = 60f)
         )
 
         val radius = size.minDimension / 2
-        val totalSteps = maxWeight - minWeight
+        val totalSteps = maxWeight - minWeight + 10
         val stepAngle = 360f / totalSteps
 
-        for (i in 0..totalSteps step 10) {
+        for (i in 0..<totalSteps step 10) {
             val weightValue = minWeight + i
             val angle = i * stepAngle - 90f
             val x = (radius * cos(toRadians(angle.toDouble()))).toFloat() + center.x
@@ -180,7 +178,7 @@ fun DrawScope.drawCircularDial(minWeight: Int, maxWeight: Int) {
                 x,
                 y,
                 Paint().apply {
-                    textSize = 40f
+                    textSize = 20f
                     textAlign = Paint.Align.CENTER
                 }
             )
@@ -188,7 +186,7 @@ fun DrawScope.drawCircularDial(minWeight: Int, maxWeight: Int) {
     }
 
     fun DrawScope.drawPointer(weight: Float, minWeight: Int, maxWeight: Int) {
-        val totalSteps = maxWeight - minWeight
+        val totalSteps = maxWeight - minWeight + 10
         val stepAngle = 360f / totalSteps
         val angle = (weight - minWeight) * stepAngle - 90f
 
@@ -201,7 +199,7 @@ fun DrawScope.drawCircularDial(minWeight: Int, maxWeight: Int) {
             color = Color.Green,
             start = center,
             end = Offset(x, y),
-            strokeWidth = 8f
+            strokeWidth = 10f
         )
     }
 

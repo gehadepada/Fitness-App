@@ -39,7 +39,7 @@ fun AddFoodSelectOption(onAddFood: () -> Unit, onScanFood: () -> Unit) {
     ) {
         // Add Food Button
         Button(
-            onClick = onAddFood,
+            onClick = { onAddFood() },
             modifier = Modifier
                 .width(220.dp)
                 .height(120.dp)
@@ -67,7 +67,7 @@ fun AddFoodSelectOption(onAddFood: () -> Unit, onScanFood: () -> Unit) {
 
         // Scan Food Button
         Button(
-            onClick = onScanFood,
+            onClick = { onScanFood() },
             modifier = Modifier
                 .width(220.dp)
                 .height(120.dp)
@@ -81,13 +81,13 @@ fun AddFoodSelectOption(onAddFood: () -> Unit, onScanFood: () -> Unit) {
                 Icon(
                     imageVector = Icons.Default.CameraAlt,
                     contentDescription = "Scan Food",
-                    tint = Color.White,
+                    tint = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier.size(40.dp)
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
                     text = "Scan Food",
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.bodySmall,
                 )
             }

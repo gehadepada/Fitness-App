@@ -1,5 +1,5 @@
 
-package com.example.fitnessapp.presentation.screens.auth.user_data_package.height_select
+package com.example.fitnessapp.presentation.screens.auth.user_data_package.age_screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -129,11 +129,11 @@ private fun pixelsToDp(pixels: Int) = with(LocalDensity.current) { pixels.toDp()
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
-fun NumberPickerDemo(
+fun AgeSelectScreen(
     onHeight: () -> Unit = {},
     onBack: () -> Unit = {}
 ) {
-    val values = remember { (120..210).map { it.toString() } }
+    val values = remember { (1..80).map { it.toString() } }
     val valuesPickerState = rememberPickerState()
 
     val saveUserDataViewModel = hiltViewModel<SaveUserDataViewModel>()
@@ -144,7 +144,7 @@ fun NumberPickerDemo(
     if (loadTrigger) {
         LaunchedEffect(Unit) {
             saveUserDataViewModel.saveDataToFirestore(
-                mapOf("height" to valuesPickerState.selectedItem)
+                mapOf("age" to valuesPickerState.selectedItem)
             )
             loadTrigger = false
         }
@@ -193,7 +193,7 @@ fun NumberPickerDemo(
             Spacer(modifier = Modifier.height(screenHeight * 0.05f))
 
             Text(
-                text = "Select your height",
+                text = "Enter your age",
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
@@ -225,7 +225,7 @@ fun NumberPickerDemo(
                             modifier = Modifier.padding(end = screenWidth * 0.02f)
                         )
                         Text(
-                            text = "Cm",
+                            text = "Year",
                             style = MaterialTheme.typography.labelMedium,
                             color = MaterialTheme.colorScheme.onBackground
                         )
@@ -255,13 +255,5 @@ fun NumberPickerDemo(
                 onBackClick = onBack,
             )
         }
-    }
-}
-
-@Preview
-@Composable
-private fun Prev() {
-    FitnessAppTheme {
-        NumberPickerDemo()
     }
 }

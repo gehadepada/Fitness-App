@@ -1,8 +1,8 @@
 package com.example.fitnessapp.presentation.screens.healthy_recipes_screen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -26,7 +26,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -37,7 +36,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
@@ -85,19 +83,23 @@ fun RecipeDetailScreenItem(recipe: RecipesModel) {
             .verticalScroll(rememberScrollState())
             .background(MaterialTheme.colorScheme.background)
     ) {
-        AsyncImage(
-            model = ImageRequest.Builder(context = LocalContext.current)
-                .data(recipe.imageUrl)
-                .crossfade(true)
-                .build(),
-            contentDescription = recipe.title,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(250.dp),
-            placeholder = painterResource(id = R.drawable.dinner_icon),
-            error = painterResource(id = R.drawable.baseline_notifications_24)
-        )
+        Box(
+            Modifier.background(MaterialTheme.colorScheme.surface)
+        ) {
+            AsyncImage(
+                model = ImageRequest.Builder(context = LocalContext.current)
+                    .data(recipe.imageUrl)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = recipe.title,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(250.dp),
+                placeholder = painterResource(id = R.drawable.dinner_icon),
+                error = painterResource(id = R.drawable.baseline_notifications_24)
+            )
+        }
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -107,7 +109,7 @@ fun RecipeDetailScreenItem(recipe: RecipesModel) {
 
             Text(
                 recipe.title,
-                color = MaterialTheme.colorScheme.onPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.headlineMedium.copy( lineHeight = 30.sp)
             )
 
@@ -124,12 +126,12 @@ fun RecipeDetailScreenItem(recipe: RecipesModel) {
                         Icons.Default.FitnessCenter,
                         contentDescription = "Protein",
                         modifier = Modifier.size(24.dp),
-                        tint = MaterialTheme.colorScheme.onPrimary
+                        tint = MaterialTheme.colorScheme.onSurface
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         "Protein: ${recipe.protein}g",
-                        color = MaterialTheme.colorScheme.onPrimary,
+                        color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.labelSmall
                     )
                 }
@@ -139,12 +141,12 @@ fun RecipeDetailScreenItem(recipe: RecipesModel) {
                         Icons.Default.LocalFireDepartment,
                         contentDescription = "Calories",
                         modifier = Modifier.size(24.dp),
-                        tint = MaterialTheme.colorScheme.onPrimary
+                        tint = MaterialTheme.colorScheme.onSurface
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         "Calories: ${recipe.calories} kcal",
-                        color = MaterialTheme.colorScheme.onPrimary,
+                        color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.labelSmall
                     )
                 }
@@ -155,12 +157,12 @@ fun RecipeDetailScreenItem(recipe: RecipesModel) {
                     Icons.Default.Timer,
                     contentDescription = "Time",
                     modifier = Modifier.size(24.dp),
-                    tint = MaterialTheme.colorScheme.onPrimary
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     "Time: ${recipe.preparationTime}",
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.labelSmall
                 )
             }
@@ -177,12 +179,12 @@ fun RecipeDetailScreenItem(recipe: RecipesModel) {
                     Icons.AutoMirrored.Filled.List,
                     contentDescription = "Ingredients",
                     modifier = Modifier.size(24.dp),
-                    tint = MaterialTheme.colorScheme.onPrimary
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     "Ingredients:",
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.bodySmall,
 
                     )
@@ -192,7 +194,7 @@ fun RecipeDetailScreenItem(recipe: RecipesModel) {
                 Text(
                     "- ${recipeIngredient.name}: ${recipeIngredient.quantity}",
                     modifier = Modifier.padding(start = 32.dp, bottom = 7.dp),
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.labelMedium.copy(lineHeight = 22.sp)
                 )
             }
@@ -207,17 +209,17 @@ fun RecipeDetailScreenItem(recipe: RecipesModel) {
                     Icons.Default.ShoppingBasket,
                     contentDescription = "Preparation",
                     modifier = Modifier.size(24.dp),
-                    tint = MaterialTheme.colorScheme.onPrimary
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text("Preparation:",
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.bodySmall)
             }
             Text(
                 recipe.steps,
                 modifier = Modifier.padding(start = 32.dp),
-                color = MaterialTheme.colorScheme.onPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.labelMedium.copy(lineHeight = 20.sp)
             )
             Spacer(modifier = Modifier.height(32.dp))

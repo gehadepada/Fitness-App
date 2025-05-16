@@ -11,6 +11,7 @@ fun UserInfoDataModel.toUserInfoUiModel(): UserInfoUIModel {
         height = this.height,
         level = this.level,
         userName = this.userName,
-        weight = this.weight.toString()
+        weight = this.weight.toString(),
+        age = this.age
     )
 }

@@ -1,8 +1,7 @@
-import androidx.compose.foundation.Image
+package com.example.fitnessapp.presentation.screens.profile_screen_package.user_info
+
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -11,24 +10,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.fitnessapp.R
-import com.example.fitnessapp.domain.repo.FirebaseRepository
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.viewModels.get_userData_viewModel.GetUserDataState
 import com.example.fitnessapp.presentation.viewModels.get_userData_viewModel.GetUserDataViewModel
 import com.example.fitnessapp.theme.FitnessAppTheme
-import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun UserProfileInfoScreen(
@@ -61,31 +53,15 @@ fun UserProfileInfoScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface)
+                    .background(MaterialTheme.colorScheme.background)
                     .padding(horizontal = 24.dp, vertical = 40.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(120.dp)
-                        .border(3.dp, MaterialTheme.colorScheme.primary, CircleShape)
-                        .padding(6.dp)
-                        .clip(CircleShape),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_face),
-                        contentDescription = "Profile Picture",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
-
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
                     text = userInfo.userName,
-                    fontSize = 24.sp,
+                    style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -94,14 +70,18 @@ fun UserProfileInfoScreen(
 
                 Text(
                     text = userInfo.email,
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.labelLarge,
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
 
                 TextButton(onClick = onEditProfileClick) {
-                    Text("Edit Profile", color = MaterialTheme.colorScheme.tertiary)
+                    Text(
+                        "Edit Profile",
+                        color = MaterialTheme.colorScheme.tertiary,
+                        style = MaterialTheme.typography.labelMedium
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -116,6 +96,7 @@ fun UserProfileInfoScreen(
                         horizontalArrangement = Arrangement.SpaceAround,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
+                        InfoItem(icon = Icons.Default.Boy, value = userInfo.age, label = "Age")
                         InfoItem(
                             icon = Icons.Default.FitnessCenter,
                             value = userInfo.weight,
@@ -177,7 +158,11 @@ fun InfoItem(icon: ImageVector, value: String, label: String) {
             color = MaterialTheme.colorScheme.onBackground
         )
         Spacer(modifier = Modifier.height(2.dp))
-        Text(text = label, fontSize = 12.sp, color = Color.Gray)
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.secondary
+        )
     }
 }
 

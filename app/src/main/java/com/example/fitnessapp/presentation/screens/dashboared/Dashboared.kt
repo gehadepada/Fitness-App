@@ -10,7 +10,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -28,9 +27,15 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun DashboardScreen(
-    navController: NavController,
-    viewModel: DashboardViewModel = hiltViewModel()
+    onRecipes: () -> Unit,
+    onWorkouts: () -> Unit,
+    onFoodHistory: () -> Unit,
+    onSearch: () -> Unit,
+    onHealth: () -> Unit,
+    onProfile: () -> Unit,
+    onWater: () -> Unit
 ) {
+    val database = FirebaseDatabase.getInstance()
     val userId = FirebaseAuth.getInstance().currentUser?.uid
     val coroutineScope = rememberCoroutineScope()
 
@@ -61,17 +66,6 @@ fun DashboardScreen(
                 style = MaterialTheme.typography.headlineLarge,
                 color = MaterialTheme.colorScheme.onBackground
             )
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
-                    .padding(horizontal = 5.dp, vertical = 3.dp)
-            ) {
-                Text(
-                    text = "Edit",
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.headlineMedium,
-                )
-            }
         }
 
         // Main Calories Card - The only one we'll keep
@@ -138,10 +132,17 @@ fun DashboardScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
-
-        AddWaterSection(navController)
-        DiscoverSection(navController)
+        AddWaterSection(
+            onWater
+        )
+        DiscoverSection(
+            onRecipes,
+            onWorkouts,
+            onFoodHistory,
+            onSearch,
+            onHealth,
+            onProfile,
+        )
     }
 }
 
@@ -202,5 +203,13 @@ fun String.capitalize(): String {
 @Preview(showBackground = true)
 @Composable
 fun PreviewAll() {
-    DashboardScreen(navController = rememberNavController())
+    DashboardScreen(
+        onRecipes = {},
+        onWorkouts = {},
+        onFoodHistory = {},
+        onSearch = {},
+        onHealth = {},
+        onProfile = {},
+        onWater = {},
+    )
 }
