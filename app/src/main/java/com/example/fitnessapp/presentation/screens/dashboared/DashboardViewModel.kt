@@ -2,7 +2,7 @@ package com.example.fitnessapp.presentation.screens.dashboared
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.fitnessapp.data.datasources.firestore.model.UserInfoDataModel
+import com.example.fitnessapp.data.datasources.remote.model.UserInfoDataModel
 import com.example.fitnessapp.domain.repo.FirebaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
