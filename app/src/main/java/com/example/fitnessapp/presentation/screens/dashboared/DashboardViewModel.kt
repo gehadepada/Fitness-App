@@ -41,7 +41,7 @@ class DashboardViewModel @Inject constructor(
                     val maintenance = calculateMaintenanceCalories(
                         weight = userInfo.weight.toInt() ?: 0,
                         height = userInfo.height.toInt() ?: 0,
-                        age = 20, // You might want to fetch this from user data
+                        age = userInfo.age.toInt(),
                         gender = userInfo.gender ?: "male",
                         activityLevel = userInfo.level ?: "medium"
                     )
@@ -51,7 +51,7 @@ class DashboardViewModel @Inject constructor(
                     // Calculate goal calories based on maintenance and user's goal
                     // This is where you would adjust for weight loss/gain goals
                     // For example, if the user wants to lose weight, multiply by 0.8
-                    val goal = when(userInfo.goal?.lowercase()) {
+                    val goal = when (userInfo.goal?.lowercase()) {
                         "lose" -> (maintenance * 0.8).toInt()
                         "gain" -> (maintenance * 1.15).toInt()
                         else -> maintenance // maintain weight
@@ -61,8 +61,10 @@ class DashboardViewModel @Inject constructor(
 
                     // Initialize consumed calories and exercise calories
                     // In a real app, these would come from daily tracking
-                    _consumedCalories.value =0 // Default value, should be fetched from daily tracking
-                    _exerciseCalories.value = 0  // Default value, should be fetched from daily tracking
+                    _consumedCalories.value =
+                        0 // Default value, should be fetched from daily tracking
+                    _exerciseCalories.value =
+                        0  // Default value, should be fetched from daily tracking
                 }
             } catch (e: Exception) {
                 // Handle error
