@@ -38,7 +38,6 @@ fun FitnessAppRoot(activity: ComponentActivity) {
         MyAppNavigation(activity)
 
         val sharedPreferences = activity.getSharedPreferences("WaterReminderPrefs", android.content.Context.MODE_PRIVATE)
-        val interval = sharedPreferences.getInt("interval_hours", 2)
         val isReminderEnabled = sharedPreferences.getBoolean("reminder_enabled", false)
 
         if (isReminderEnabled) {
