@@ -99,7 +99,7 @@ fun FoodHistoryScreen() {
             )
             datePicker.show()
 
-        }) {
+        },modifier = Modifier.padding(start = 16.dp)) {
             Text("Pick a Date", style = MaterialTheme.typography.titleLarge)
         }
 

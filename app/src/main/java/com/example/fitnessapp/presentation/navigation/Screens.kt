@@ -59,6 +59,7 @@ sealed class Screens(val route: String) {
 
 
     data object RecipesScreen: Screens("recipes")
+
     data object RecipesDetailsScreen: Screens("recipes_details/{id}") {
         fun passId(id: Int): String {
             return "recipes_details/$id"
