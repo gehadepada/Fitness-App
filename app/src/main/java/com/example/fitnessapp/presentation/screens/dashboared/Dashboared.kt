@@ -20,8 +20,6 @@ import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.screens.dashboared.components.AddWaterSection
 import com.example.fitnessapp.presentation.screens.dashboared.components.CircularProgressIndicator
 import com.example.fitnessapp.presentation.screens.dashboared.components.DiscoverSection
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 
 
 @Composable
@@ -34,8 +32,7 @@ fun DashboardScreen(
     onProfile: () -> Unit,
     onWater: () -> Unit
 ) {
-    val database = FirebaseDatabase.getInstance()
-    val userId = FirebaseAuth.getInstance().currentUser?.uid
+
     val coroutineScope = rememberCoroutineScope()
     val viewModel = hiltViewModel<DashboardViewModel>()
     // User calorie data from Firestore
@@ -67,7 +64,6 @@ fun DashboardScreen(
             )
         }
 
-        // Main Calories Card - The only one we'll keep
         Column(
             modifier = Modifier
                 .padding(all = 15.dp)
@@ -84,7 +80,7 @@ fun DashboardScreen(
                 fontWeight = FontWeight.Bold,
             )
             Text(
-                text = "Remaining = ${goalCalories.value} - ${consumedCalories.value} + ${exerciseCalories.value} = $remaining",
+                text = "Remaining = ${goalCalories.value} - ${consumedCalories.value}  = $remaining",
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.labelLarge,
             )
@@ -109,11 +105,9 @@ fun DashboardScreen(
                         "Food (${consumedCalories.value})",
                         ColorFilter.tint(MaterialTheme.colorScheme.primary)
                     )
-                    BaseFoodExercise(R.drawable.hot_icon, "Exercise", "Exercise (${exerciseCalories.value})")
                 }
             }
 
-            // Display user stats in the same card
             userInfoState.value?.let { userInfo ->
                 Spacer(modifier = Modifier.height(16.dp))
                 Divider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f))
@@ -126,7 +120,7 @@ fun DashboardScreen(
                     UserStatItem(label = "Weight", value = "${userInfo.weight} kg")
                     UserStatItem(label = "Height", value = "${userInfo.height} cm")
                     val activityLevel = userInfo.level?.capitalize() ?: "Medium"
-                    UserStatItem(label = "Activity", value = activityLevel)
+
                 }
             }
         }
