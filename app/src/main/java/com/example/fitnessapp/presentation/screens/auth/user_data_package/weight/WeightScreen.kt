@@ -159,7 +159,7 @@ fun WeightScreen(
 
 fun DrawScope.drawCircularDial(minWeight: Int, maxWeight: Int) {
         drawCircle(
-            color = Color.Green,
+            color = Color(0xFF29E33C),
             style = Stroke(width = 60f)
         )
 

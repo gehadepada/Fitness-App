@@ -56,7 +56,7 @@ fun AddWaterSection(onWater:()->Unit) {
         )
         Column {
             Text(
-                text = "Today's Goal:",
+                text = "Water Goal:",
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.onSurface
             )

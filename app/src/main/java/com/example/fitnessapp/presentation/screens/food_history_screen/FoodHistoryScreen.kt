@@ -1,6 +1,7 @@
 package com.example.fitnessapp.presentation.screens.food_history_screen
 
 import android.app.DatePickerDialog
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -151,7 +153,9 @@ fun FoodHistoryScreen() {
                             )
 
                             LottieAnimation(
-                                modifier = Modifier.width(200.dp).height(200.dp),
+                                modifier = Modifier
+                                    .width(200.dp)
+                                    .height(200.dp),
                                 composition = composition,
                                 progress = { animationState.progress },
                             )
@@ -180,8 +184,11 @@ fun FoodHistoryScreen() {
 fun FoodItem(food: FoodAndCaloriesUIModel, onDelete: (FoodAndCaloriesUIModel) -> Unit) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp)
+            .background(MaterialTheme.colorScheme.surface)
+            .padding(vertical = 4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        )
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(modifier = Modifier.fillMaxWidth()) {
@@ -203,7 +210,7 @@ fun FoodItem(food: FoodAndCaloriesUIModel, onDelete: (FoodAndCaloriesUIModel) ->
             }
             Text("Amount: ${food.totalAmount}", style = MaterialTheme.typography.titleSmall)
             Text("Calories: ${food.calories}", style = MaterialTheme.typography.titleSmall)
-            Text("Date: ${food.date}", style = MaterialTheme.typography.titleSmall)
+            Text("Date: ${food.date.substring(0,16)}", style = MaterialTheme.typography.titleSmall)
         }
     }
 }

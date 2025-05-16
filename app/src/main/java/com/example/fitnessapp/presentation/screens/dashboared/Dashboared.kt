@@ -20,6 +20,7 @@ import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.screens.dashboared.components.AddWaterSection
 import com.example.fitnessapp.presentation.screens.dashboared.components.CircularProgressIndicator
 import com.example.fitnessapp.presentation.screens.dashboared.components.DiscoverSection
+import com.example.fitnessapp.presentation.screens.dashboared.viewModel.DashboardViewModel
 
 
 @Composable
@@ -33,7 +34,6 @@ fun DashboardScreen(
     onWater: () -> Unit
 ) {
 
-    val coroutineScope = rememberCoroutineScope()
     val viewModel = hiltViewModel<DashboardViewModel>()
     // User calorie data from Firestore
     val userInfoState = viewModel.userInfoState.collectAsState()
@@ -119,8 +119,7 @@ fun DashboardScreen(
                 ) {
                     UserStatItem(label = "Weight", value = "${userInfo.weight} kg")
                     UserStatItem(label = "Height", value = "${userInfo.height} cm")
-                    val activityLevel = userInfo.level?.capitalize() ?: "Medium"
-
+                    UserStatItem(label = "Goal for Weight", value = userInfo.goal.substringBefore(" "))
                 }
             }
         }
@@ -146,12 +145,13 @@ fun UserStatItem(label: String, value: String) {
     ) {
         Text(
             text = label,
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
         )
         Text(
             text = value,
-            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.Bold
         )
     }
@@ -186,11 +186,6 @@ fun BaseFoodExercise(
         )
     }
     Spacer(modifier = Modifier.height(16.dp))
-}
-
-// Extension function to capitalize first letter of a string
-fun String.capitalize(): String {
-    return this.lowercase().replaceFirstChar { it.uppercase() }
 }
 
 @Preview(showBackground = true)
