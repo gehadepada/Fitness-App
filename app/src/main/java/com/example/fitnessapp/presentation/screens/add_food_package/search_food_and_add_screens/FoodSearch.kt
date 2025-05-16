@@ -1,6 +1,5 @@
 package com.example.fitnessapp.presentation.screens.add_food_package.search_food_and_add_screens
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,9 +23,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -95,6 +94,11 @@ fun AddFoodSelectOption(state: MutableState<TextFieldValue>) {
                 }
             }
         },
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = MaterialTheme.colorScheme.surface,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+            disabledContainerColor = MaterialTheme.colorScheme.surface,
+        ),
         singleLine = true,
     )
 }
@@ -115,7 +119,7 @@ fun FoodList(onSearchFood:(foodName: String, calories: String) -> Unit, state: M
         Text(
             text = "All values are per 100gm",
             modifier = Modifier.padding(start = 16.dp, top = 4.dp, bottom = 8.dp),
-            color = Color.Gray,
+            color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.labelMedium
         )
 
@@ -124,7 +128,6 @@ fun FoodList(onSearchFood:(foodName: String, calories: String) -> Unit, state: M
                 Row(
                     modifier = Modifier
                         .clickable {
-                            Log.d("Al-qiran from Main screen", "$foodName $calories")
                             onSearchFood(foodName, calories)
                         }
                         .padding(14.dp)
@@ -133,12 +136,12 @@ fun FoodList(onSearchFood:(foodName: String, calories: String) -> Unit, state: M
                     Column {
                         Text(
                             text = foodName,
-                            color = Color.White,
+                            color = MaterialTheme.colorScheme.onBackground,
                             style = MaterialTheme.typography.labelMedium
                         )
                         Text(
                             text = "Calories: $calories kcal",
-                            color = Color.Gray,
+                            color = MaterialTheme.colorScheme.secondary,
                             style = MaterialTheme.typography.labelSmall
                         )
                     }
