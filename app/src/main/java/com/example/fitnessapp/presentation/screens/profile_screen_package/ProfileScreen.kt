@@ -1,5 +1,6 @@
 package com.example.fitnessapp.presentation.screens.profile_screen_package
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,6 +21,7 @@ import com.example.fitnessapp.presentation.viewModels.get_userData_viewModel.Get
 import com.example.fitnessapp.presentation.viewModels.get_userData_viewModel.GetUserDataViewModel
 import com.example.fitnessapp.presentation.viewModels.themeView.ThemeViewModel
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ProfileScreen(
     themeViewModel: ThemeViewModel,
@@ -28,9 +30,10 @@ fun ProfileScreen(
     onAbout: () -> Unit,
     onLogout: () -> Unit,
 ) {
-    var showDialog by remember { mutableStateOf(false) }
 
     val isDarkTheme by themeViewModel.isDarkTheme.collectAsState()
+
+    var showDialog by remember { mutableStateOf(false) }
 
     val getUserDataViewModel = hiltViewModel<GetUserDataViewModel>()
     val getUserDataState by getUserDataViewModel.getUserDataState.collectAsStateWithLifecycle()
@@ -156,6 +159,7 @@ fun ProfileScreen(
         }
     }
 }
+
 
 @Composable
 fun ProfileListItem(title: String, icon: ImageVector, onClick: () -> Unit = {}) {

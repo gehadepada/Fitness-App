@@ -1,14 +1,22 @@
 package com.example.fitnessapp.presentation.viewModels.themeView
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import com.example.fitnessapp.presentation.screens.profile_screen_package.SharedPrefs
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Inject
 
-class ThemeViewModel : ViewModel() {
-   private val _isDarkTheme = MutableStateFlow(false)
+@HiltViewModel
+class ThemeViewModel @Inject constructor(application: Application) : AndroidViewModel(application) {
+
+   private val context = application.applicationContext
+   private val _isDarkTheme = MutableStateFlow(SharedPrefs.getDarkMode(context))
    val isDarkTheme: StateFlow<Boolean> = _isDarkTheme
 
    fun toggleTheme(isDark: Boolean) {
+      SharedPrefs.saveDarkMode(context, isDark)
       _isDarkTheme.value = isDark
    }
 }

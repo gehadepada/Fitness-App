@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import com.example.fitnessapp.presentation.navigation.MyAppNavigation
 import com.example.fitnessapp.presentation.screens.waterScreen.ReminderScheduler
 import android.Manifest
+import androidx.compose.runtime.Composable
 import com.example.fitnessapp.theme.FitnessAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,29 +24,36 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val themeViewModel: ThemeViewModel = hiltViewModel()
-            val isDarkTheme by themeViewModel.isDarkTheme.collectAsState()
+            FitnessAppRoot(this)
+        }
+    }
+}
 
-            FitnessAppTheme (darkTheme = isDarkTheme){
-                MyAppNavigation(this)
+@Composable
+fun FitnessAppRoot(activity: ComponentActivity) {
+    val themeViewModel: ThemeViewModel = hiltViewModel()
+    val isDarkTheme by themeViewModel.isDarkTheme.collectAsState()
 
-                val sharedPreferences = getSharedPreferences("WaterReminderPrefs", MODE_PRIVATE)
-                val interval = sharedPreferences.getInt("interval_hours", 2)
-                val isReminderEnabled = sharedPreferences.getBoolean("reminder_enabled", false)
+    FitnessAppTheme(darkTheme = isDarkTheme) {
+        MyAppNavigation(activity)
 
-                if (isReminderEnabled) {
-                    ReminderScheduler.scheduleWaterReminder(this)
-                }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
-                        != PackageManager.PERMISSION_GRANTED) {
+        val sharedPreferences = activity.getSharedPreferences("WaterReminderPrefs", android.content.Context.MODE_PRIVATE)
+        val interval = sharedPreferences.getInt("interval_hours", 2)
+        val isReminderEnabled = sharedPreferences.getBoolean("reminder_enabled", false)
 
-                        ActivityCompat.requestPermissions(this,
-                            arrayOf(Manifest.permission.POST_NOTIFICATIONS),
-                            1001
-                        )
-                    }
-                }
+        if (isReminderEnabled) {
+            ReminderScheduler.scheduleWaterReminder(activity)
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(activity, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    activity,
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    1001
+                )
             }
         }
     }
