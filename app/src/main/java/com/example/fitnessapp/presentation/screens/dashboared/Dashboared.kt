@@ -16,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.fitnessapp.R
@@ -23,38 +24,25 @@ import com.example.fitnessapp.presentation.screens.dashboared.components.AddWate
 import com.example.fitnessapp.presentation.screens.dashboared.components.CircularProgressIndicator
 import com.example.fitnessapp.presentation.screens.dashboared.components.DiscoverSection
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.launch
 
 @Composable
-fun DashboardScreen(navController: NavController) {
-    val database = FirebaseDatabase.getInstance()
+fun DashboardScreen(
+    navController: NavController,
+    viewModel: DashboardViewModel = hiltViewModel()
+) {
     val userId = FirebaseAuth.getInstance().currentUser?.uid
+    val coroutineScope = rememberCoroutineScope()
 
-    var goalCalories by remember { mutableStateOf(3000) }
-    var consumedCalories by remember { mutableStateOf(2000) }
-    var exerciseCalories by remember { mutableStateOf(500) }
+    // User calorie data from Firestore
+    val userInfoState = viewModel.userInfoState.collectAsState()
+    val goalCalories = viewModel.goalCalories.collectAsState()
+    val consumedCalories = viewModel.consumedCalories.collectAsState()
+    val exerciseCalories = viewModel.exerciseCalories.collectAsState()
 
-    // Fetch user data from Firebase
+    // Fetch user data from Firestore
     LaunchedEffect(Unit) {
-        userId?.let {
-            database.reference.child("Users").child(it)
-                .get()
-                .addOnSuccessListener { dataSnapshot ->
-                    if (dataSnapshot.exists()) {
-                        goalCalories =
-                            dataSnapshot.child("goalCalories").value?.toString()?.toLongOrNull()
-                                ?.toInt() ?: 3000
-                        consumedCalories =
-                            dataSnapshot.child("consumedCalories").value?.toString()?.toLongOrNull()
-                                ?.toInt() ?: 2000
-                        exerciseCalories =
-                            dataSnapshot.child("exerciseCalories").value?.toString()?.toLongOrNull()
-                                ?.toInt() ?: 500
-
-                    }
-                }
-                .addOnFailureListener { e -> println("Error fetching user data: $e") }
-        }
+        viewModel.getUserData()
     }
 
     Column(
@@ -86,6 +74,7 @@ fun DashboardScreen(navController: NavController) {
             }
         }
 
+        // Main Calories Card - The only one we'll keep
         Column(
             modifier = Modifier
                 .padding(all = 15.dp)
@@ -93,7 +82,7 @@ fun DashboardScreen(navController: NavController) {
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            val remainingCalories = goalCalories - consumedCalories + exerciseCalories
+            val remaining = goalCalories.value - consumedCalories.value + exerciseCalories.value
 
             Text(
                 text = "Calories",
@@ -102,7 +91,7 @@ fun DashboardScreen(navController: NavController) {
                 fontWeight = FontWeight.Bold,
             )
             Text(
-                text = "Remaining = $goalCalories - $consumedCalories + $exerciseCalories = $remainingCalories",
+                text = "Remaining = ${goalCalories.value} - ${consumedCalories.value} + ${exerciseCalories.value} = $remaining",
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.labelLarge,
             )
@@ -113,29 +102,64 @@ fun DashboardScreen(navController: NavController) {
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 CircularProgressIndicator(
-                    progress = consumedCalories.toFloat() / goalCalories,
-                    remainingText = remainingCalories.toString(),
+                    progress = if (goalCalories.value > 0) consumedCalories.value.toFloat() / goalCalories.value else 0f,
+                    remainingText = remaining.toString(),
                     modifier = Modifier.size(120.dp)
                 )
                 Spacer(modifier = Modifier.width(50.dp))
 
                 Column {
-                    BaseFoodExercise(R.drawable.baseline_flag_24, "Base Goal", "Base Goal")
+                    BaseFoodExercise(R.drawable.baseline_flag_24, "Base Goal", "Goal (${goalCalories.value})")
                     BaseFoodExercise(
                         R.drawable.dinner_icon,
                         "Food",
-                        "Food (377)",
+                        "Food (${consumedCalories.value})",
                         ColorFilter.tint(MaterialTheme.colorScheme.primary)
                     )
-                    BaseFoodExercise(R.drawable.hot_icon, "Exercise", "Exercise (20)")
+                    BaseFoodExercise(R.drawable.hot_icon, "Exercise", "Exercise (${exerciseCalories.value})")
+                }
+            }
+
+            // Display user stats in the same card
+            userInfoState.value?.let { userInfo ->
+                Spacer(modifier = Modifier.height(16.dp))
+                Divider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f))
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    UserStatItem(label = "Weight", value = "${userInfo.weight} kg")
+                    UserStatItem(label = "Height", value = "${userInfo.height} cm")
+                    val activityLevel = userInfo.level?.capitalize() ?: "Medium"
+                    UserStatItem(label = "Activity", value = activityLevel)
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(50.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
         AddWaterSection(navController)
         DiscoverSection(navController)
+    }
+}
+
+@Composable
+fun UserStatItem(label: String, value: String) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+        )
+        Text(
+            text = value,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
 
@@ -170,6 +194,10 @@ fun BaseFoodExercise(
     Spacer(modifier = Modifier.height(16.dp))
 }
 
+// Extension function to capitalize first letter of a string
+fun String.capitalize(): String {
+    return this.lowercase().replaceFirstChar { it.uppercase() }
+}
 
 @Preview(showBackground = true)
 @Composable
