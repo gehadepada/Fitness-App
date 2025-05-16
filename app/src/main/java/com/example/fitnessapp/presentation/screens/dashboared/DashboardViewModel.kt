@@ -54,20 +54,14 @@ class DashboardViewModel @Inject constructor(
                     val goal = when (userInfo.goal?.lowercase()) {
                         "lose" -> (maintenance * 0.8).toInt()
                         "gain" -> (maintenance * 1.15).toInt()
-                        else -> maintenance // maintain weight
+                        else -> maintenance
                     }
 
                     _goalCalories.value = goal
-
-                    // Initialize consumed calories and exercise calories
-                    // In a real app, these would come from daily tracking
-                    _consumedCalories.value =
-                        0 // Default value, should be fetched from daily tracking
-                    _exerciseCalories.value =
-                        0  // Default value, should be fetched from daily tracking
+                    _consumedCalories.value =0
                 }
             } catch (e: Exception) {
-                // Handle error
+
                 println("Error fetching user data: ${e.message}")
             }
         }
