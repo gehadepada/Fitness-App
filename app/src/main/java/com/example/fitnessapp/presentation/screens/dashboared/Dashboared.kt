@@ -16,14 +16,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.screens.dashboared.components.AddWaterSection
 import com.example.fitnessapp.presentation.screens.dashboared.components.CircularProgressIndicator
 import com.example.fitnessapp.presentation.screens.dashboared.components.DiscoverSection
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.launch
+import com.google.firebase.database.FirebaseDatabase
+
 
 @Composable
 fun DashboardScreen(
@@ -38,7 +37,7 @@ fun DashboardScreen(
     val database = FirebaseDatabase.getInstance()
     val userId = FirebaseAuth.getInstance().currentUser?.uid
     val coroutineScope = rememberCoroutineScope()
-
+    val viewModel = hiltViewModel<DashboardViewModel>()
     // User calorie data from Firestore
     val userInfoState = viewModel.userInfoState.collectAsState()
     val goalCalories = viewModel.goalCalories.collectAsState()
