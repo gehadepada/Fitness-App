@@ -27,6 +27,7 @@ fun ProfileScreen(
     onPermissions: () -> Unit,
     onAbout: () -> Unit,
     onLogout: () -> Unit,
+    onThirdParty:() -> Unit,
 ) {
     var showDialog by remember { mutableStateOf(false) }
 
@@ -141,7 +142,7 @@ fun ProfileScreen(
                 }
 
                 ProfileListItem("Edit Your Details", Icons.Default.Edit, onUser)
-                ProfileListItem("Third-party data", Icons.Default.SyncAlt)
+                ProfileListItem("Third-party data", Icons.Default.SyncAlt, onThirdParty)
                 ProfileListItem("App Permissions", Icons.Default.Interests, onPermissions)
                 ProfileListItem("About App", Icons.Default.Info, onAbout)
                 ProfileListItem("Logout", Icons.Default.Logout, onClick = { showDialog = true })

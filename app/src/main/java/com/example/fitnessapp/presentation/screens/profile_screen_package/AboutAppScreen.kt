@@ -16,14 +16,11 @@ import com.example.fitnessapp.R
 import com.example.fitnessapp.theme.FitnessAppTheme
 import java.util.Calendar
 
-
-@OptIn(ExperimentalMaterial3Api::class) // Required for TopAppBar
 @Composable
 fun AboutAppScreen() {
-    // Retrieve version name and code, e.g., from BuildConfig
-    // Example: val appVersion = BuildConfig.VERSION_NAME
+
     // Example: val buildNumber = BuildConfig.VERSION_CODE.toString()
-    val appVersion = "3.37.2"
+    val appVersion = "1.0.0"
     val buildNumber = "1024"
 
         Column(

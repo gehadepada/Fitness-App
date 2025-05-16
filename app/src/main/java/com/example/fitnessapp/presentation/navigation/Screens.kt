@@ -64,4 +64,8 @@ sealed class Screens(val route: String) {
             return "recipes_details/$id"
         }
     }
+
+
+    data object ThirdPartyScreen: Screens("third_party")
+
 }

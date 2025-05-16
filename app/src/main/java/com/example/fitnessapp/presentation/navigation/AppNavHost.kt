@@ -43,13 +43,13 @@ import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.Recipe
 import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.RecipesScreen
 import com.example.fitnessapp.presentation.screens.food_history_screen.FoodHistoryScreen
 import com.example.fitnessapp.presentation.screens.profile_screen_package.AboutAppScreen
+import com.example.fitnessapp.presentation.screens.profile_screen_package.HealthPermissionStatusScreen
 import com.example.fitnessapp.presentation.screens.waterScreen.WaterTrackerScreen
 import com.example.fitnessapp.presentation.viewModels.auth_viewModel.AuthViewModel
 
 
 @Composable
-fun MyAppNavigation(context: Context, modifier: Modifier = Modifier)
- {
+fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
     val navController = rememberNavController()
 
@@ -111,6 +111,11 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier)
                 "aboutApp" -> {
                     TopBar("About App") { navController.popBackStack() }
                 }
+
+                "third_party" -> {
+                    TopBar("Third-party data") { navController.popBackStack() }
+                }
+
 
                 else -> Unit
             }
@@ -368,8 +373,8 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier)
                         navController.navigate(Screens.LogInScreen.route) {
                             popUpTo(0) { inclusive = true }
                         }
-                    }
-                )
+                    },
+                    onThirdParty = { navController.navigate(Screens.ThirdPartyScreen.route) })
             }
 
             composable(Screens.UserProfileScreen.route) {
@@ -410,6 +415,13 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier)
                 selectedIndex = 3
                 FoodHistoryScreen()
             }
+
+            composable(Screens.ThirdPartyScreen.route) {
+                topBar.value = "third_party"
+                HealthPermissionStatusScreen()
+            }
+
+
         }
     }
 }

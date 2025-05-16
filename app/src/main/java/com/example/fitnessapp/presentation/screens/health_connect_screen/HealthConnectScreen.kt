@@ -98,12 +98,21 @@ fun HealthConnectScreen(onBack: () -> Unit = {}) {
 
     LaunchedEffect(true) {
         when (HealthConnectUtils.checkForHealthConnectInstalled(context)) {
-            HealthConnectClient.SDK_UNAVAILABLE -> Toast.makeText(context, "Health Connect is not available on this device", Toast.LENGTH_SHORT).show()
-            HealthConnectClient.SDK_UNAVAILABLE_PROVIDER_UPDATE_REQUIRED -> showHealthConnectInstallPopup = true
+            HealthConnectClient.SDK_UNAVAILABLE -> {
+                Toast.makeText(context, "Health Connect is not available on this device", Toast.LENGTH_SHORT).show()
+            }
+
+            HealthConnectClient.SDK_UNAVAILABLE_PROVIDER_UPDATE_REQUIRED -> {
+                showHealthConnectInstallPopup = true
+            }
+
             HealthConnectClient.SDK_AVAILABLE -> {
-                if (HealthConnectUtils.checkPermissions()) {
+                if (HealthConnectUtils.checkPermissions(context)) {
                     fetchAndSaveHealthData(context) { s, m, d, sd ->
-                        steps = s; mins = m; distance = d; sleepDuration = sd
+                        steps = s
+                        mins = m
+                        distance = d
+                        sleepDuration = sd
                     }
                 } else {
                     requestPermissions.launch(HealthConnectUtils.PERMISSIONS)
@@ -111,7 +120,6 @@ fun HealthConnectScreen(onBack: () -> Unit = {}) {
             }
         }
     }
-
 
         Surface(modifier = Modifier
             .fillMaxSize()
