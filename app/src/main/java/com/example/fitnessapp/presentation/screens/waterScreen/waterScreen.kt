@@ -58,9 +58,8 @@ fun WaterTrackerScreen(context: Context) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black)
+            .background(MaterialTheme.colorScheme.background)
             .padding(20.dp),
-       horizontalAlignment = Alignment.Start
     ) {
         Text(
             text = "Set Daily Water Habit",
