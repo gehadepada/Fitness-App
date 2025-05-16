@@ -46,6 +46,8 @@ fun WaterTrackerScreen(context: Context) {
     var interval by remember { mutableIntStateOf(sharedPreferences.getInt("interval_hours", 1)) }
     var totalVolume by remember { mutableIntStateOf(sharedPreferences.getInt("total_volume", 0)) }
 
+    val savedGoal = sharedPreferences.getInt("daily_goal",2000)
+    var dailyGoal by remember { mutableStateOf(savedGoal) }
 
     val waterOptions = listOf(
         Pair(250, R.drawable.small_bottle),
@@ -56,126 +58,169 @@ fun WaterTrackerScreen(context: Context) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black),
-       horizontalAlignment = Alignment.CenterHorizontally
+            .background(Color.Black)
+            .padding(20.dp),
+       horizontalAlignment = Alignment.Start
     ) {
         Text(
-            text = "Set Daily Water Habit.",
+            text = "Set Daily Water Habit",
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onBackground
         )
-        Spacer(modifier = Modifier.height(10.dp))
-        Button(onClick = { showTimePicker = true }) {
-            Text("Start Time: ${"%02d:%02d".format(startHour, startMinute)}", fontSize = 12.sp)
+        Spacer(modifier = Modifier.height(20.dp))
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Daily Goal:",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            OutlinedTextField(
+                value = dailyGoal.toString(),
+                onValueChange = {
+                    dailyGoal = it.toIntOrNull() ?: dailyGoal
+                    sharedPreferences.edit().putInt("daily_goal",dailyGoal).apply()
+                },
+                label = { Text("Daily Goal (ml)", fontSize = 12.sp) },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.primary),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                keyboardActions = KeyboardActions(onDone = {
+                    focusManager.clearFocus()
+                    keyboardController?.hide()
+                })
+            )
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "Interval: $interval hours",
-            color = MaterialTheme.colorScheme.onBackground,
-            fontSize = 12.sp
-        )
-        Slider(
-            value = interval.toFloat(),
-            onValueChange = { interval = it.toInt() },
-            valueRange = 1f..9f,
-            modifier = Modifier.fillMaxWidth().height(50.dp)
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Start Time:",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            Button(
+                onClick = { showTimePicker = true },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp)) {
+                Text("%02d:%02d".format(startHour, startMinute),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.background)
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Times: ",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Spacer(modifier = Modifier.width(5.dp))
+            Text(
+                text = "$interval",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            Slider(
+                value = interval.toFloat(),
+                onValueChange = { interval = it.toInt() },
+                valueRange = 1f..9f,
+                modifier = Modifier.fillMaxWidth().height(50.dp)
+            )
+        }
 
         Spacer(modifier = Modifier.height(14.dp))
-
-
-        Box {
-            Button(onClick = { expanded = true }) {
-                Text("Drinks per Day: $drinkTimes", fontSize = 12.sp)
-            }
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                (1..10).forEach { number ->
-                    DropdownMenuItem(
-                        text = { Text(text = "$number") },
-                        onClick = {
-                            drinkTimes = number
-                            expanded = false
-                        }
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Drinks per Day:",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            Box () {
+                Button(
+                    onClick = { expanded = true },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        //containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
+                ) {
+                    Text("$drinkTimes",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.background)
+                }
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    (1..10).forEach { number ->
+                        DropdownMenuItem(
+                            text = { Text(text = "$number", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.primary) },
+                            onClick = {
+                                drinkTimes = number
+                                expanded = false
+                            }
+                        )
+                    }
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-
-        val context = LocalContext.current
-        val savedGoal = sharedPreferences.getInt("daily_goal",2000)
-        var dailyGoal by remember { mutableStateOf(savedGoal) }
-
-        OutlinedTextField(
-            value = dailyGoal.toString(),
-            onValueChange = {
-                dailyGoal = it.toIntOrNull() ?: dailyGoal
-                            sharedPreferences.edit().putInt("daily_goal",dailyGoal).apply()
-                            },
-            label = { Text("Daily Goal (ml)", fontSize = 12.sp) },
-            modifier = Modifier
-                .height(75.dp).width(230.dp),
-            shape = RoundedCornerShape(16.dp),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            keyboardActions = KeyboardActions(onDone = {
-                focusManager.clearFocus()
-                keyboardController?.hide()
-            })
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Card(
-            modifier = Modifier.height(75.dp).width(230.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
-            shape = RoundedCornerShape(12.dp)
+        Row(
+            verticalAlignment = Alignment.CenterVertically
         ) {
-          Row(
-                modifier = Modifier,
-
-              horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.Top
+            Text(
+                text = "Water Volume:",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                //colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
+                shape = RoundedCornerShape(12.dp)
             ) {
-                Column(
-                    modifier = Modifier.padding(8.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = "Total Volume",
-                        color = MaterialTheme.colorScheme.onBackground,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Normal
-                    )
-
-                    Text( modifier = Modifier.padding(start = 8.dp),
-                        text = "$totalVolume ml",
-                        color = MaterialTheme.colorScheme.onBackground,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                }
-                Spacer(modifier = Modifier.width(22.dp))
-                Column(
-                    modifier = Modifier.padding(8.dp),
-                    verticalArrangement = Arrangement.Top,
-                    horizontalAlignment = Alignment.End
-
-                ) {
+                    Row {
+                        Text( modifier = Modifier.padding(start = 8.dp),
+                            text = "$totalVolume",
+                            color = MaterialTheme.colorScheme.primary,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                        Text(
+                            text = " ml",
+                            color = MaterialTheme.colorScheme.onBackground,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
                     IconButton(onClick = {
                         totalVolume = 0
                         sharedPreferences.edit().putInt("total_volume", totalVolume).apply()
                     }) {
                         Icon(imageVector = Icons.Default.Close, contentDescription = "Clear", tint = Color.White)
                     }
-
                 }
-            }}
-            Spacer(modifier = Modifier.height(16.dp))
-
+            }
+        }
+        Spacer(modifier = Modifier.height(30.dp))
             Row(
                 modifier = Modifier.padding(start = 20.dp).fillMaxWidth().height(90.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
@@ -197,37 +242,43 @@ fun WaterTrackerScreen(context: Context) {
                     }
                 }
 
-                Column() {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Image(
                         painter = painterResource(id = R.drawable.custom_bottle),
                         contentDescription = null,
-                        modifier = Modifier.clickable { showDialog = true }
+                        modifier = Modifier
+                            .size(60.dp)
+                            .clickable { showDialog = true }
                     )
                     Text(
-                        text = "Custom Amount",
+                        text = "Custom",
                         color = MaterialTheme.colorScheme.onBackground,
-                        fontSize = 8.sp
+                        fontSize = 12.sp
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
-        Button(
-            onClick = {
-                sharedPreferences.edit()
-                    .putInt("start_hour", startHour)
-                    .putInt("start_minute", startMinute)
-                    .putInt("drink_times", drinkTimes)
-                    .putInt("interval_hours", interval)
-                    .putInt("total_volume", totalVolume)
-                    .apply()
+        Spacer(modifier = Modifier.height(30.dp))
+        Row(horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth()) {
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    sharedPreferences.edit()
+                        .putInt("start_hour", startHour)
+                        .putInt("start_minute", startMinute)
+                        .putInt("drink_times", drinkTimes)
+                        .putInt("interval_hours", interval)
+                        .putInt("total_volume", totalVolume)
+                        .apply()
 
-                ReminderScheduler.scheduleWaterReminder(context)
+                    ReminderScheduler.scheduleWaterReminder(context)
 
-                Toast.makeText(context, "Saved Successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Saved Successfully", Toast.LENGTH_SHORT).show()
+                }
+            ) {
+                Text("Save", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.background)
             }
-        ) {
-            Text("Save")
         }
     }
         if (showDialog) {
