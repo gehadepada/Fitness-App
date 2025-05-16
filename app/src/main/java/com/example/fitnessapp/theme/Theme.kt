@@ -20,7 +20,6 @@ private val DarkColorScheme = darkColorScheme(
     secondary = Color.Gray,
     onSecondary = LightGreySurface,
     error = Color.Red,
-
 )
 private val LightColorScheme = lightColorScheme(
     primary = Color(0xFF2FC94C),

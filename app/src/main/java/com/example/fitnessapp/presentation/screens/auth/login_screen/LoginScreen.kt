@@ -63,7 +63,7 @@ fun LoginScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .background(MaterialTheme.colorScheme.background)
+                .background(Color.Black)
                 .padding(16.dp),
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Center

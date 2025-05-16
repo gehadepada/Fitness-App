@@ -60,12 +60,15 @@ object HealthConnectUtils {
 
 
     //Returns false when Health connect permissions are not given or returns true if permissions are already granted
-    suspend fun checkPermissions(): Boolean {
+    suspend fun checkPermissions(context: Context): Boolean {
         val granted = healthConnectClient?.permissionController?.getGrantedPermissions()
-        if (granted != null) {
-            return granted.containsAll(PERMISSIONS)
-        }
-        return false
+        val isGranted = granted?.containsAll(PERMISSIONS) == true
+
+        // Save to SharedPreferences
+        val prefs = context.getSharedPreferences("health_prefs", Context.MODE_PRIVATE)
+        prefs.edit().putBoolean("isHealthGranted", isGranted).apply()
+
+        return isGranted
     }
 
 
