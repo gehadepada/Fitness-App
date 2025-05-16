@@ -21,6 +21,7 @@ import com.example.fitnessapp.presentation.screens.dashboared.components.AddWate
 import com.example.fitnessapp.presentation.screens.dashboared.components.CircularProgressIndicator
 import com.example.fitnessapp.presentation.screens.dashboared.components.DiscoverSection
 import com.example.fitnessapp.presentation.screens.dashboared.viewModel.DashboardViewModel
+import kotlin.math.roundToInt
 
 
 @Composable
@@ -49,24 +50,30 @@ fun DashboardScreen(
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
+            .padding(
+                start = 16.dp,
+                end = 16.dp,
+                top = 0.dp,
+                bottom = 10.dp
+            )
             .fillMaxSize()
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(all = 15.dp),
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
                 text = "Today",
-                style = MaterialTheme.typography.headlineLarge,
-                color = MaterialTheme.colorScheme.onBackground
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onBackground,
+                fontWeight = FontWeight.Bold
             )
         }
+        Spacer(modifier = Modifier.height(5.dp))
 
         Column(
             modifier = Modifier
-                .padding(all = 15.dp)
                 .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(21.dp))
                 .fillMaxWidth()
                 .padding(16.dp)
@@ -75,9 +82,8 @@ fun DashboardScreen(
 
             Text(
                 text = "Calories",
-                color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.labelLarge,
             )
             Text(
                 text = "Remaining = ${goalCalories.value} - ${consumedCalories.value}  = $remaining",
@@ -91,14 +97,18 @@ fun DashboardScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 CircularProgressIndicator(
+                    strokeWidth = 20f,
                     progress = if (goalCalories.value > 0) consumedCalories.value.toFloat() / goalCalories.value else 0f,
-                    remainingText = remaining.toString(),
-                    modifier = Modifier.size(120.dp)
+                    remainingText = remaining.roundToInt().toString(),
+                    modifier = Modifier.size(100.dp)
                 )
                 Spacer(modifier = Modifier.width(50.dp))
 
                 Column {
-                    BaseFoodExercise(R.drawable.baseline_flag_24, "Base Goal", "Goal (${goalCalories.value})")
+                    BaseFoodExercise(R.drawable.baseline_flag_24,
+                        "Base Goal", "Goal (${goalCalories.value})"
+                     ,  ColorFilter.tint(MaterialTheme.colorScheme.primary)
+                    )
                     BaseFoodExercise(
                         R.drawable.dinner_icon,
                         "Food",
@@ -109,9 +119,9 @@ fun DashboardScreen(
             }
 
             userInfoState.value?.let { userInfo ->
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(10.dp))
                 Divider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f))
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -124,9 +134,12 @@ fun DashboardScreen(
             }
         }
 
+        Spacer(modifier = Modifier.height(10.dp))
+
         AddWaterSection(
             onWater
         )
+        Spacer(modifier = Modifier.height(10.dp))
         DiscoverSection(
             onRecipes,
             onWorkouts,
@@ -150,9 +163,8 @@ fun UserStatItem(label: String, value: String) {
         )
         Text(
             text = value,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.labelMedium,
-            fontWeight = FontWeight.Bold
         )
     }
 }

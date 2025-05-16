@@ -63,7 +63,7 @@ fun WaterTrackerScreen(context: Context) {
     ) {
         Text(
             text = "Set Daily Water Habit",
-            style = MaterialTheme.typography.headlineMedium,
+            style = MaterialTheme.typography.labelLarge,
             color = MaterialTheme.colorScheme.onBackground
         )
         Spacer(modifier = Modifier.height(20.dp))
