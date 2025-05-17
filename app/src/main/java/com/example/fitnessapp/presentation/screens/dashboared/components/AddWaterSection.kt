@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,10 +37,10 @@ fun AddWaterSection(onWater:()->Unit) {
     val context= LocalContext.current
     val sharedPreferences= context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
     val dailyGoal= remember {
-        mutableIntStateOf(sharedPreferences.getInt("daily_goal",2000))
+        mutableStateOf(sharedPreferences.getInt("daily_goal",2000))
     }
     LaunchedEffect(Unit) {
-        dailyGoal.intValue=sharedPreferences.getInt("daily_goal",2000)
+        dailyGoal.value=sharedPreferences.getInt("daily_goal",2000)
     }
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -76,7 +77,7 @@ fun AddWaterSection(onWater:()->Unit) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "${dailyGoal.intValue}",
+                        text = "${dailyGoal.value}",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.primary
                     )

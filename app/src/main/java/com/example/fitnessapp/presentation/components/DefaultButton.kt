@@ -1,5 +1,6 @@
 package com.example.fitnessapp.presentation.components
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button

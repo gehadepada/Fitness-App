@@ -23,12 +23,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fitnessapp.R
-import com.example.fitnessapp.presentation.screens.waterScreen.ReminderScheduler
+import com.example.fitnessapp.presentation.components.DefaultButton
 import java.util.Locale
 
 @Composable
@@ -41,7 +40,7 @@ fun WaterTrackerScreen() {
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val context = LocalContext.current
-    val sharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+    val sharedPreferences = context.getSharedPreferences("WaterReminderPrefs", Context.MODE_PRIVATE)
 
     var startHour by remember { mutableIntStateOf(sharedPreferences.getInt("start_hour", 8)) }
     var startMinute by remember { mutableIntStateOf(sharedPreferences.getInt("start_minute", 0)) }
@@ -67,159 +66,63 @@ fun WaterTrackerScreen() {
             .background(MaterialTheme.colorScheme.background)
             .padding(20.dp)
             .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = "Set Daily Water Habit",
-            style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.onBackground
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                text = "Daily Goal:",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Spacer(modifier = Modifier.width(10.dp))
-            OutlinedTextField(
-                value = dailyGoal.toString(),
-                onValueChange = {
-                    dailyGoal = it.toIntOrNull() ?: dailyGoal
-                    sharedPreferences.edit().putInt("daily_goal", dailyGoal).apply()
-                },
-                label = {
-                    Text(
-                        "Daily Goal (ml)",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = if (isFocused) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
-                    )
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .onFocusChanged { isFocused = it.isFocused },
-                shape = RoundedCornerShape(16.dp),
-                textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.primary),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                keyboardActions = KeyboardActions(onDone = {
-                    focusManager.clearFocus()
-                    keyboardController?.hide()
-                })
-            )
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Start Time Picker
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                text = "Start Time:",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Spacer(modifier = Modifier.width(10.dp))
-            Button(
-                onClick = { showStartTimePicker = true },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp)
-            ) {
-                Text(
-                    text = String.format(Locale.US, "%02d:%02d", startHour, startMinute),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.background
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // End Time Picker
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                text = "End Time:",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Spacer(modifier = Modifier.width(10.dp))
-            Button(
-                onClick = { showEndTimePicker = true },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp)
-            ) {
-                Text(
-                    text = String.format(Locale.US, "%02d:%02d", endHour, endMinute),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.background
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Interval Slider
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                text = "Interval (hours):",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Spacer(modifier = Modifier.width(10.dp))
-            Slider(
-                value = interval.toFloat(),
-                onValueChange = { interval = it.toInt() },
-                valueRange = 1f..9f,
-                modifier = Modifier.fillMaxWidth().height(50.dp)
-            )
-            Text(
-                text = "$interval",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.padding(start = 8.dp)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
         // Water Volume
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
             Text(
-                text = "Water Volume:",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
+                text = "Water Today's Volume:",
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.primary
             )
-            Spacer(modifier = Modifier.width(10.dp))
+
+            Spacer(modifier = Modifier.height(15.dp))
+
             Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp)
+                modifier = Modifier
+                    .width(170.dp)
+                    .height(90.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                ),
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Row {
-                        Text(
-                            modifier = Modifier.padding(start = 8.dp),
-                            text = "$totalVolume",
-                            color = MaterialTheme.colorScheme.primary,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Medium
-                        )
-                        Text(
-                            text = " ml",
-                            color = MaterialTheme.colorScheme.onBackground,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Medium
-                        )
-                    }
-                    IconButton(onClick = {
-                        totalVolume = 0
-                        sharedPreferences.edit().putInt("total_volume", totalVolume).apply()
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.Close,
-                            contentDescription = "Clear",
-                            tint = MaterialTheme.colorScheme.onBackground
-                        )
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(start = 8.dp),
+                                text = "$totalVolume",
+                                color = MaterialTheme.colorScheme.primary,
+                                style = MaterialTheme.typography.titleLarge
+                            )
+                            Text(
+                                text = " ml",
+                                color = MaterialTheme.colorScheme.onBackground,
+                                style = MaterialTheme.typography.labelMedium
+                            )
+                        }
+                        IconButton(onClick = {
+                            totalVolume = 0
+                            sharedPreferences.edit().putInt("total_volume", totalVolume).apply()
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "Clear",
+                                tint = MaterialTheme.colorScheme.onBackground
+                            )
+                        }
                     }
                 }
             }
@@ -269,36 +172,173 @@ fun WaterTrackerScreen() {
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        // Save Button
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()
+        DefaultButton(
+            text = "Save Water",
+            onClick = {
+                sharedPreferences.edit()
+                    .putInt("total_volume", totalVolume)
+                    .apply()
+                Toast.makeText(context, "Saved Successfully", Toast.LENGTH_SHORT).show()
+            }
+        )
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        Text(
+            text = "Set Daily Water Habit",
+            style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.primary
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
+            Text(
+                text = "Daily Goal:",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            OutlinedTextField(
+                value = dailyGoal.toString(),
+                onValueChange = {
+                    dailyGoal = it.toIntOrNull() ?: dailyGoal
+                    sharedPreferences.edit().putInt("daily_goal", dailyGoal).apply()
+                },
+                label = {
+                    Text(
+                        "Daily Goal (ml)",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = if (isFocused) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
+                    )
+                },
+                modifier = Modifier
+                    .onFocusChanged { isFocused = it.isFocused },
+                shape = RoundedCornerShape(16.dp),
+                textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.primary),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                keyboardActions = KeyboardActions(onDone = {
+                    focusManager.clearFocus()
+                    keyboardController?.hide()
+                })
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Start Time Picker
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Start Time:",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Spacer(modifier = Modifier.width(10.dp))
             Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = {
-                    sharedPreferences.edit()
-                        .putInt("start_hour", startHour)
-                        .putInt("start_minute", startMinute)
-                        .putInt("end_hour", endHour)
-                        .putInt("end_minute", endMinute)
-                        .putInt("interval_hours", interval)
-                        .putInt("total_volume", totalVolume)
-                        .putInt("daily_goal", dailyGoal)
-                        .apply()
-
-                    ReminderScheduler.scheduleWaterReminders(context)
-
-                    Toast.makeText(context, "Saved Successfully", Toast.LENGTH_SHORT).show()
-                }
+                onClick = { showStartTimePicker = true },
+                modifier = Modifier.width(150.dp),
+                shape = RoundedCornerShape(16.dp)
             ) {
                 Text(
-                    "Save",
+                    text = String.format(Locale.US, "%02d:%02d", startHour, startMinute),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.background
                 )
             }
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // End Time Picker
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "End Time:",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            Button(
+                onClick = { showEndTimePicker = true },
+                modifier = Modifier.width(150.dp),
+                shape = RoundedCornerShape(16.dp)
+            ) {
+                Text(
+                    text = String.format(Locale.US, "%02d:%02d", endHour, endMinute),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.background
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Interval Slider
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = "Every ",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Text(
+                    text = "$interval ",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Text(
+                    text = "hour notification:",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+            Slider(
+                value = interval.toFloat(),
+                onValueChange = { interval = it.toInt() },
+                valueRange = 1f..9f,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+            )
+
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+
+
+        DefaultButton(
+            text = "Save Settings",
+            onClick = {
+                sharedPreferences.edit()
+                    .putInt("start_hour", startHour)
+                    .putInt("start_minute", startMinute)
+                    .putInt("end_hour", endHour)
+                    .putInt("end_minute", endMinute)
+                    .putInt("interval_hours", interval)
+                    .putInt("total_volume", totalVolume)
+                    .putInt("daily_goal", dailyGoal)
+                    .apply()
+
+                ReminderScheduler.scheduleWaterReminders(context)
+
+                Toast.makeText(context, "Saved Successfully", Toast.LENGTH_SHORT).show()
+            }
+        )
+
     }
 
     // Custom Amount Dialog
