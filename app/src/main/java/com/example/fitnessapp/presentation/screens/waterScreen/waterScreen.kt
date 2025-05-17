@@ -330,7 +330,6 @@ fun WaterTrackerScreen() {
                     .putInt("end_minute", endMinute)
                     .putInt("interval_hours", interval)
                     .putInt("total_volume", totalVolume)
-                    .putInt("daily_goal", dailyGoal)
                     .apply()
 
                 ReminderScheduler.scheduleWaterReminders(context)
