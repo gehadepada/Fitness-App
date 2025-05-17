@@ -1,34 +1,34 @@
 package com.example.fitnessapp.presentation.screens.waterScreen
 
 import android.content.Context
+import android.app.TimePickerDialog
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.fitnessapp.R
-import android.app.TimePickerDialog
-import android.widget.Toast
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.fitnessapp.R
+import com.example.fitnessapp.presentation.screens.waterScreen.ReminderScheduler
 import java.util.Locale
 
 @Composable
@@ -36,8 +36,8 @@ fun WaterTrackerScreen() {
 
     var showDialog by remember { mutableStateOf(false) }
     var customAmount by remember { mutableStateOf("") }
-    var expanded by remember { mutableStateOf(false) }
-    var showTimePicker by remember { mutableStateOf(false) }
+    var showStartTimePicker by remember { mutableStateOf(false) }
+    var showEndTimePicker by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val context = LocalContext.current
@@ -45,8 +45,9 @@ fun WaterTrackerScreen() {
 
     var startHour by remember { mutableIntStateOf(sharedPreferences.getInt("start_hour", 8)) }
     var startMinute by remember { mutableIntStateOf(sharedPreferences.getInt("start_minute", 0)) }
-    var drinkTimes by remember { mutableIntStateOf(sharedPreferences.getInt("drink_times", 1)) }
-    var interval by remember { mutableIntStateOf(sharedPreferences.getInt("interval_hours", 1)) }
+    var endHour by remember { mutableIntStateOf(sharedPreferences.getInt("end_hour", 22)) }
+    var endMinute by remember { mutableIntStateOf(sharedPreferences.getInt("end_minute", 0)) }
+    var interval by remember { mutableIntStateOf(sharedPreferences.getInt("interval_hours", 2)) }
     var totalVolume by remember { mutableIntStateOf(sharedPreferences.getInt("total_volume", 0)) }
 
     var isFocused by remember { mutableStateOf(false) }
@@ -59,7 +60,7 @@ fun WaterTrackerScreen() {
         Pair(500, R.drawable.medium_bottle),
         Pair(1000, R.drawable.large_bottle)
     )
-    //  val drinkOptions = (3..6).toList()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -73,9 +74,7 @@ fun WaterTrackerScreen() {
             color = MaterialTheme.colorScheme.onBackground
         )
         Spacer(modifier = Modifier.height(20.dp))
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = "Daily Goal:",
                 style = MaterialTheme.typography.bodyMedium,
@@ -97,9 +96,7 @@ fun WaterTrackerScreen() {
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .onFocusChanged {
-                        isFocused = it.isFocused
-                    },
+                    .onFocusChanged { isFocused = it.isFocused },
                 shape = RoundedCornerShape(16.dp),
                 textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.primary),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -109,10 +106,11 @@ fun WaterTrackerScreen() {
                 })
             )
         }
+
         Spacer(modifier = Modifier.height(16.dp))
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+
+        // Start Time Picker
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = "Start Time:",
                 style = MaterialTheme.typography.bodyMedium,
@@ -120,7 +118,7 @@ fun WaterTrackerScreen() {
             )
             Spacer(modifier = Modifier.width(10.dp))
             Button(
-                onClick = { showTimePicker = true },
+                onClick = { showStartTimePicker = true },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp)
             ) {
@@ -131,84 +129,58 @@ fun WaterTrackerScreen() {
                 )
             }
         }
+
         Spacer(modifier = Modifier.height(16.dp))
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+
+        // End Time Picker
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
-                text = "Times: ",
+                text = "End Time:",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface
             )
-            Spacer(modifier = Modifier.width(5.dp))
+            Spacer(modifier = Modifier.width(10.dp))
+            Button(
+                onClick = { showEndTimePicker = true },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp)
+            ) {
+                Text(
+                    text = String.format(Locale.US, "%02d:%02d", endHour, endMinute),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.background
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Interval Slider
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
-                text = "$interval",
+                text = "Interval (hours):",
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.width(10.dp))
             Slider(
                 value = interval.toFloat(),
                 onValueChange = { interval = it.toInt() },
                 valueRange = 1f..9f,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
+                modifier = Modifier.fillMaxWidth().height(50.dp)
             )
-        }
-
-        Spacer(modifier = Modifier.height(14.dp))
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
             Text(
-                text = "Drinks per Day:",
+                text = "$interval",
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(start = 8.dp)
             )
-            Spacer(modifier = Modifier.width(10.dp))
-            Box {
-                Button(
-                    onClick = { expanded = true },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        //containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
-                ) {
-                    Text(
-                        "$drinkTimes",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.background
-                    )
-                }
-                DropdownMenu(
-                    expanded = expanded,
-                    onDismissRequest = { expanded = false }
-                ) {
-                    (1..10).forEach { number ->
-                        DropdownMenuItem(
-                            text = {
-                                Text(
-                                    text = "$number",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                            },
-                            onClick = {
-                                drinkTimes = number
-                                expanded = false
-                            }
-                        )
-                    }
-                }
-            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+
+        // Water Volume
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = "Water Volume:",
                 style = MaterialTheme.typography.bodyMedium,
@@ -217,7 +189,6 @@ fun WaterTrackerScreen() {
             Spacer(modifier = Modifier.width(10.dp))
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                //colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Row(
@@ -253,7 +224,10 @@ fun WaterTrackerScreen() {
                 }
             }
         }
+
         Spacer(modifier = Modifier.height(30.dp))
+
+        // Water Amount Buttons
         Row(
             modifier = Modifier
                 .padding(start = 20.dp)
@@ -277,7 +251,6 @@ fun WaterTrackerScreen() {
                     )
                 }
             }
-
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Image(
                     painter = painterResource(id = R.drawable.custom_bottle),
@@ -295,6 +268,8 @@ fun WaterTrackerScreen() {
         }
 
         Spacer(modifier = Modifier.height(30.dp))
+
+        // Save Button
         Row(
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth()
@@ -305,12 +280,14 @@ fun WaterTrackerScreen() {
                     sharedPreferences.edit()
                         .putInt("start_hour", startHour)
                         .putInt("start_minute", startMinute)
-                        .putInt("drink_times", drinkTimes)
+                        .putInt("end_hour", endHour)
+                        .putInt("end_minute", endMinute)
                         .putInt("interval_hours", interval)
                         .putInt("total_volume", totalVolume)
+                        .putInt("daily_goal", dailyGoal)
                         .apply()
 
-                    ReminderScheduler.scheduleWaterReminder(context)
+                    ReminderScheduler.scheduleWaterReminders(context)
 
                     Toast.makeText(context, "Saved Successfully", Toast.LENGTH_SHORT).show()
                 }
@@ -323,6 +300,8 @@ fun WaterTrackerScreen() {
             }
         }
     }
+
+    // Custom Amount Dialog
     if (showDialog) {
         AlertDialog(
             onDismissRequest = { showDialog = false },
@@ -330,11 +309,10 @@ fun WaterTrackerScreen() {
             text = {
                 OutlinedTextField(
                     value = customAmount,
-                    onValueChange = {
-                        customAmount = it.filter { char -> char.isDigit() }
-                    },
+                    onValueChange = { customAmount = it.filter { char -> char.isDigit() } },
                     label = { Text("Amount in ml", style = MaterialTheme.typography.labelMedium) },
-                    textStyle = MaterialTheme.typography.labelMedium.copy(color = MaterialTheme.colorScheme.onSurface)
+                    textStyle = MaterialTheme.typography.labelMedium.copy(color = MaterialTheme.colorScheme.onSurface),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
             },
             confirmButton = {
@@ -360,18 +338,33 @@ fun WaterTrackerScreen() {
             shape = RoundedCornerShape(16.dp)
         )
     }
-    if (showTimePicker) {
+
+    // Time Pickers
+    if (showStartTimePicker) {
         TimePickerDialog(
             context,
             { _, hour, minute ->
                 startHour = hour
                 startMinute = minute
-                showTimePicker = false
+                showStartTimePicker = false
             },
             startHour,
             startMinute,
             true
         ).show()
+    }
 
+    if (showEndTimePicker) {
+        TimePickerDialog(
+            context,
+            { _, hour, minute ->
+                endHour = hour
+                endMinute = minute
+                showEndTimePicker = false
+            },
+            endHour,
+            endMinute,
+            true
+        ).show()
     }
 }
