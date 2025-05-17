@@ -35,7 +35,7 @@ fun FitnessAppRoot(activity: ComponentActivity) {
     val isDarkTheme by themeViewModel.isDarkTheme.collectAsState()
 
     FitnessAppTheme(darkTheme = isDarkTheme) {
-        MyAppNavigation(activity)
+        MyAppNavigation()
 
         val sharedPreferences = activity.getSharedPreferences("WaterReminderPrefs", android.content.Context.MODE_PRIVATE)
         val isReminderEnabled = sharedPreferences.getBoolean("reminder_enabled", false)

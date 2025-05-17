@@ -181,7 +181,7 @@ fun RowElements(
     ) {
         Image(
             modifier = Modifier
-                .size(64.dp) // حجم نسبي مناسب
+                .size(64.dp)
                 .padding(end = 12.dp),
             painter = painterResource(id = levelList.levelImage),
             contentDescription = null,
@@ -202,13 +202,13 @@ fun RowElements(
 fun CardElement(levelList: String, modifier: Modifier = Modifier, border: BorderStroke) {
     Card(
         colors = CardDefaults.cardColors(colorScheme.surface),
-        modifier = modifier
-            .height(56.dp), // ارتفاع نسبي مناسب
+        modifier = Modifier
+            .height(56.dp),
         border = border,
         shape = CircleShape,
     ) {
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             Text(

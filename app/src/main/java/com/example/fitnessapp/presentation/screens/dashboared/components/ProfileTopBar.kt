@@ -25,7 +25,7 @@ import com.example.fitnessapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileTopBar() {
+fun ProfileTopBar(onEditProfile: () -> Unit) {
     TopAppBar(
         title = {
             Row(
@@ -43,7 +43,7 @@ fun ProfileTopBar() {
                         .width(35.dp)
                         .clip(CircleShape)
                         .clickable {
-
+                            onEditProfile()
                         }
                         .background(MaterialTheme.colorScheme.primary)
                 )

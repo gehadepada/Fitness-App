@@ -1,4 +1,4 @@
-package com.example.fitnessapp.presentation.screens.profile_screen_package
+package com.example.fitnessapp.presentation.screens.profile_screen_package.profile_screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -138,7 +138,7 @@ fun ProfileScreen(
                                 checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
                                 checkedTrackColor = MaterialTheme.colorScheme.primary,
                                 uncheckedThumbColor = MaterialTheme.colorScheme.outline,
-                                uncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant
+                                uncheckedTrackColor = MaterialTheme.colorScheme.surface
                             )
                         )
                     }

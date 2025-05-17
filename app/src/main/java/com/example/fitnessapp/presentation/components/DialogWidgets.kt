@@ -62,7 +62,7 @@ fun LogoutConfirmationDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
             }
         },
         title = { Text(text = "Logout Confirmation", color = MaterialTheme.colorScheme.primary ) },
-        text = { Text(text = "Do you really want to log out?", color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.labelMedium) },
+            text = { Text(text = "Do you really want to log out?", color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.labelMedium) },
         containerColor = MaterialTheme.colorScheme.surface,
         shape = RoundedCornerShape(16.dp)
     )

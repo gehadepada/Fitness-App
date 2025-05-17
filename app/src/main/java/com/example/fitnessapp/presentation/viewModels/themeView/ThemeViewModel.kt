@@ -2,7 +2,7 @@ package com.example.fitnessapp.presentation.viewModels.themeView
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import com.example.fitnessapp.presentation.screens.profile_screen_package.SharedPrefs
+import com.example.fitnessapp.presentation.screens.profile_screen_package.profile_screen.SharedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -1,4 +1,4 @@
-package com.example.fitnessapp.presentation.screens.profile_screen_package
+package com.example.fitnessapp.presentation.screens.profile_screen_package.profile_screen
 
 import android.content.Context
 import android.content.SharedPreferences

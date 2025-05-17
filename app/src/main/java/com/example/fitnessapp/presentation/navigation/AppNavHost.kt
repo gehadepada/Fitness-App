@@ -4,7 +4,6 @@ import com.example.fitnessapp.presentation.viewModels.themeView.ThemeViewModel
 import com.example.fitnessapp.presentation.screens.profile_screen_package.user_info.UserProfileInfoScreen
 import com.example.fitnessapp.presentation.screens.auth.user_data_package.gender_screen.GenderScreen
 import com.example.fitnessapp.presentation.screens.health_connect_screen.HealthConnectScreen
-import android.content.Context
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -32,7 +31,7 @@ import com.example.fitnessapp.presentation.screens.add_food_package.scan_meal_sc
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExerciseDetailScreen
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExercisesScreen
 import com.example.fitnessapp.presentation.screens.profile_screen_package.AppPermissionsScreen
-import com.example.fitnessapp.presentation.screens.profile_screen_package.ProfileScreen
+import com.example.fitnessapp.presentation.screens.profile_screen_package.profile_screen.ProfileScreen
 import com.example.fitnessapp.presentation.screens.auth.user_data_package.set_goals_screen.SetGoalsScreen
 import com.example.fitnessapp.presentation.screens.splash_screen.SplashScreen
 import com.example.fitnessapp.presentation.screens.auth.user_data_package.weight.WeightScreen
@@ -49,7 +48,7 @@ import com.example.fitnessapp.presentation.viewModels.auth_viewModel.AuthViewMod
 
 
 @Composable
-fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
+fun MyAppNavigation(modifier: Modifier = Modifier) {
 
     val navController = rememberNavController()
 
@@ -69,7 +68,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
                 }
 
                 "dashboard" -> {
-                    ProfileTopBar()
+                    ProfileTopBar(onEditProfile = { navController.navigate(Screens.ProfileScreen.route) })
                 }
 
                 "profile" -> {
@@ -293,7 +292,7 @@ fun MyAppNavigation(context: Context, modifier: Modifier = Modifier) {
 
             composable(Screens.WaterScreen.route) {
                 topBar.value = "water"
-                WaterTrackerScreen(context = context)
+                WaterTrackerScreen()
             }
 
             composable(Screens.ExerciseScreen.route) {
