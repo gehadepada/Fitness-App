@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitnessapp.domain.repo.FirebaseRepository
-import com.example.fitnessapp.presentation.screens.muscle_screen.viewModel.MuscleState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -55,7 +54,7 @@ class SignUpViewModel @Inject constructor(
                 _state.value = SignUpState.Loading
 
                 try {
-                    firebaseRepository.createUserEmailAndPassword(_email.value, _password.value,)
+                    firebaseRepository.createUserEmailAndPassword(_email.value, _password.value)
                     firebaseRepository.saveUserData(mapOf("email" to _email.value, "userName" to _userName.value))
 
                     _state.value = SignUpState.Authenticated

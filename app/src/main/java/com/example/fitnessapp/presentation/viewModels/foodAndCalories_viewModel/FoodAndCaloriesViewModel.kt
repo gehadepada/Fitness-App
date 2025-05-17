@@ -1,6 +1,5 @@
 package com.example.fitnessapp.presentation.viewModels.foodAndCalories_viewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitnessapp.data.datasources.local.FoodAndCaloriesLocalModel

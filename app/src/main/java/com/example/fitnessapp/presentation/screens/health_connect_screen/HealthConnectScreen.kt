@@ -214,11 +214,9 @@ fun HealthConnectScreen(onBack: () -> Unit = {}) {
 fun CompactDataItem(
     label: String,
     value: String,
-    modifier: Modifier = Modifier
-        .fillMaxWidth()
 ) {
     Card(
-        modifier = modifier,
+        modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,

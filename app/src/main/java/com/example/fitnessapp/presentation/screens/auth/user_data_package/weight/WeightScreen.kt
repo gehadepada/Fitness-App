@@ -20,13 +20,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.nativeCanvas
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.viewModels.save_userData_viewModel.SaveUserDataState
 import com.example.fitnessapp.presentation.viewModels.save_userData_viewModel.SaveUserDataViewModel
-import com.example.fitnessapp.theme.FitnessAppTheme
 import java.lang.Math.toRadians
 import kotlin.math.cos
 import kotlin.math.sin
@@ -202,13 +200,3 @@ fun DrawScope.drawCircularDial(minWeight: Int, maxWeight: Int) {
             strokeWidth = 10f
         )
     }
-
-
-
-@Preview
-@Composable
-private fun Prev() {
-    FitnessAppTheme {
-        WeightScreen()
-    }
-}

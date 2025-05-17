@@ -1,6 +1,6 @@
 package com.example.fitnessapp.presentation.viewModels.save_userData_viewModel
 
-sealed class SaveUserDataState() {
+sealed class SaveUserDataState {
     data object None: SaveUserDataState()
     data object Loading: SaveUserDataState()
     data object Success: SaveUserDataState()

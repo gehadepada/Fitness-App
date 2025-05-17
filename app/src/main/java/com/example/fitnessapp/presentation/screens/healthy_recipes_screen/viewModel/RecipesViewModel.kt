@@ -1,6 +1,5 @@
 package com.example.fitnessapp.presentation.screens.healthy_recipes_screen.viewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitnessapp.domain.repo.FirebaseRepository

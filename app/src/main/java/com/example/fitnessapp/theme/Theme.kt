@@ -8,13 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 private val DarkColorScheme = darkColorScheme(
-    // for buttons
     primary = Color(0xFF29E33C),
     onPrimary = Color(0xFFFFFFFF),
-    // for screens background
     background = Color.Black,
     onBackground = Color.White,
-    // for bar color
     surface = DarkGreySurface,
     onSurface = Color.White,
     secondary = Color.Gray,

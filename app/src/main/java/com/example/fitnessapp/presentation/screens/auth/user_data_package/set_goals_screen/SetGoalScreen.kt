@@ -33,7 +33,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -42,7 +41,6 @@ import com.example.fitnessapp.presentation.components.BottomButtonsSection
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.viewModels.save_userData_viewModel.SaveUserDataState
 import com.example.fitnessapp.presentation.viewModels.save_userData_viewModel.SaveUserDataViewModel
-import com.example.fitnessapp.theme.FitnessAppTheme
 
 @Composable
 fun SetGoalsScreen(
@@ -188,15 +186,5 @@ fun SetGoalsScreen(
 
 
         }
-    }
-}
-
-
-
-@Preview
-@Composable
-private fun Prev() {
-    FitnessAppTheme {
-        SetGoalsScreen()
     }
 }

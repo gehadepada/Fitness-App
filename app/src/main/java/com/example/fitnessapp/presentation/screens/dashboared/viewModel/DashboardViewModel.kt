@@ -24,7 +24,6 @@ class DashboardViewModel @Inject constructor(
     val userInfoState: StateFlow<UserInfoDataModel?> = _userInfoState
 
     private val _maintenanceCalories = MutableStateFlow(0)
-    val maintenanceCalories: StateFlow<Int> = _maintenanceCalories
 
     private val _goalCalories = MutableStateFlow(0)
     val goalCalories: StateFlow<Int> = _goalCalories

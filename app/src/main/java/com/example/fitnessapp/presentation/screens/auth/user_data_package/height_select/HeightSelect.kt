@@ -28,7 +28,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -37,7 +36,6 @@ import com.example.fitnessapp.presentation.components.BottomButtonsSection
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.viewModels.save_userData_viewModel.SaveUserDataState
 import com.example.fitnessapp.presentation.viewModels.save_userData_viewModel.SaveUserDataViewModel
-import com.example.fitnessapp.theme.FitnessAppTheme
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
@@ -255,13 +253,5 @@ fun NumberPickerDemo(
                 onBackClick = onBack,
             )
         }
-    }
-}
-
-@Preview
-@Composable
-private fun Prev() {
-    FitnessAppTheme {
-        NumberPickerDemo()
     }
 }

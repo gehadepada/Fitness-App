@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.DirectionsRun
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -31,7 +32,7 @@ fun AppPermissionsScreen() {
         )
 
         PermissionItem(
-            icon = Icons.Default.DirectionsRun,
+            icon = Icons.AutoMirrored.Filled.DirectionsRun,
             title = "Activity Recognition",
             description = "Detect physical activities like walking, running, and cycling.\nPermission: ACTIVITY_RECOGNITION"
         )

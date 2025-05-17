@@ -12,7 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -20,7 +19,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
 import com.example.fitnessapp.presentation.viewModels.get_userData_viewModel.GetUserDataState
 import com.example.fitnessapp.presentation.viewModels.get_userData_viewModel.GetUserDataViewModel
-import com.example.fitnessapp.theme.FitnessAppTheme
 
 @Composable
 fun UserProfileInfoScreen(
@@ -163,16 +161,5 @@ fun InfoItem(icon: ImageVector, value: String, label: String) {
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.secondary
         )
-    }
-}
-
-@Preview(showBackground = true, backgroundColor = 0xFF000000)
-@Composable
-fun UserProfileScreenPreview() {
-    FitnessAppTheme {
-        UserProfileInfoScreen(
-            onEditProfileClick = {},
-
-            )
     }
 }

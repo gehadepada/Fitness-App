@@ -81,67 +81,67 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     //coil
-    implementation("io.coil-kt:coil:2.5.0")
-    implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation(libs.coil)
+    implementation(libs.coil.compose)
 
     // lottie
-    implementation("com.airbnb.android:lottie:6.6.2")
-    implementation("com.airbnb.android:lottie-compose:6.6.2")
+    implementation(libs.lottie)
+    implementation(libs.lottie.compose)
 
     // viewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.7")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
+    implementation(libs.androidx.lifecycle.viewmodel.compose.android)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.runtime.compose)
 
     // coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
+    implementation(libs.kotlinx.coroutines.android)
 
     // retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.11.0")
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation("com.google.code.gson:gson:2.11.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation(libs.retrofit)
+    implementation(libs.okhttp)
+    implementation(libs.gson)
+    implementation(libs.converter.gson)
 
     // dataStore
-    implementation("androidx.datastore:datastore-preferences:1.1.2")
+    implementation(libs.androidx.datastore.preferences)
 
     // room
-    implementation("androidx.room:room-runtime:2.6.1")
-    ksp("androidx.room:room-compiler:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
+    implementation(libs.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
 
     // dependency injection
-    implementation("com.google.dagger:hilt-android:2.51.1")
-    ksp("com.google.dagger:hilt-android-compiler:2.51.1")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
 
 
     //firebase
-    implementation(platform("com.google.firebase:firebase-bom:32.0.0"))
-    implementation("com.google.firebase:firebase-auth-ktx")
-    implementation("com.google.firebase:firebase-firestore-ktx")
-    implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.google.firebase:firebase-database-ktx")
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.analytics.ktx)
+    implementation(libs.firebase.database.ktx)
 
 
     // work
-    implementation("androidx.work:work-runtime-ktx:2.10.0")
+    implementation(libs.androidx.work.runtime.ktx)
 
     // Health Connect dependency
-    implementation("androidx.health.connect:connect-client:1.1.0-alpha07")
-    implementation("com.google.code.gson:gson:2.8.8")
+    implementation(libs.androidx.connect.client)
+    implementation(libs.gson.v288)
 
 
     // Optional icons (for NavigationBar icons like Security, Sync, etc.)
-    implementation("androidx.compose.material:material:1.7.8")
-    implementation("androidx.compose.material:material-icons-extended:1.7.8")
+    implementation(libs.androidx.material)
+    implementation(libs.androidx.material.icons.extended)
 
 
     // Serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    implementation(libs.kotlinx.serialization.json)
 
 
     // Graphs
-    implementation("androidx.compose.foundation:foundation:1.5.0")
-    implementation("androidx.compose.ui:ui:1.5.0")
+    implementation(libs.androidx.foundation)
+    implementation(libs.ui)
 }

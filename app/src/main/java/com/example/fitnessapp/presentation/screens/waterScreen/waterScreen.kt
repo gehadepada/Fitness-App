@@ -52,7 +52,7 @@ fun WaterTrackerScreen() {
     var isFocused by remember { mutableStateOf(false) }
 
     val savedGoal = sharedPreferences.getInt("daily_goal", 2000)
-    var dailyGoal by remember { mutableStateOf(savedGoal) }
+    var dailyGoal by remember { mutableIntStateOf(savedGoal) }
 
     val waterOptions = listOf(
         Pair(200, R.drawable.small_bottle),

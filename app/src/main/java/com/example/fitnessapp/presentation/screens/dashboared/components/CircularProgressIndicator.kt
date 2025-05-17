@@ -24,8 +24,6 @@ fun CircularProgressIndicator(
 ) {
     Box(contentAlignment = Alignment.Center, modifier = modifier) {
         Canvas(modifier = Modifier.fillMaxSize()) {
-            val diameter = size.minDimension
-            val radius = diameter / 2
             val angle = 360 * progress
 
             drawArc(
