@@ -326,8 +326,6 @@ fun WaterTrackerScreen() {
                 sharedPreferences.edit()
                     .putInt("start_hour", startHour)
                     .putInt("start_minute", startMinute)
-                    .putInt("end_hour", endHour)
-                    .putInt("end_minute", endMinute)
                     .putInt("interval_hours", interval)
                     .putInt("total_volume", totalVolume)
                     .apply()
