@@ -1,4 +1,4 @@
-package com.example.fitnessapp.presentation.screens.add_food_package.add_food_way_screen
+package com.example.fitnessapp.presentation.screens.add_food_package.add_food_methods
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -37,7 +37,6 @@ fun AddFoodSelectOption(onAddFood: () -> Unit, onScanFood: () -> Unit) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Add Food Button
         Button(
             onClick = { onAddFood() },
             modifier = Modifier

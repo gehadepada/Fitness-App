@@ -2,6 +2,7 @@ package com.example.fitnessapp.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.fitnessapp.constants.Constants.Companion.FOOD_AND_CALORIES_DATABASE
 import com.example.fitnessapp.data.datasources.local.FoodAndCaloriesDao
 import com.example.fitnessapp.data.datasources.local.FoodAndCaloriesDatabase
 import dagger.Module
@@ -20,8 +21,8 @@ object DatabaseModule {
         return Room.databaseBuilder(
             context = context,
             klass = FoodAndCaloriesDatabase::class.java,
-            name = "food_and_calories"
-        ).fallbackToDestructiveMigration() // For development
+            name = FOOD_AND_CALORIES_DATABASE
+        ).fallbackToDestructiveMigration()
         .build()
     }
 

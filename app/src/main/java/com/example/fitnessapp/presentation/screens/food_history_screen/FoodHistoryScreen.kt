@@ -41,7 +41,7 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.fitnessapp.R
 import com.example.fitnessapp.presentation.components.FailedLoadingScreen
-import com.example.fitnessapp.presentation.mapper.toFoodAndCaloriesLocalModel
+import com.example.fitnessapp.data.mapper.toFoodAndCaloriesLocalModel
 import com.example.fitnessapp.presentation.model.FoodAndCaloriesUIModel
 import com.example.fitnessapp.presentation.viewModels.foodAndCalories_viewModel.FoodAndCaloriesState
 import com.example.fitnessapp.presentation.viewModels.foodAndCalories_viewModel.FoodAndCaloriesViewModel

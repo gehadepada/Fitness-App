@@ -8,7 +8,7 @@ import com.example.fitnessapp.domain.repo.FirebaseRepository
 import com.example.fitnessapp.presentation.screens.healthy_recipes_screen.model.RecipesModel
 import javax.inject.Inject
 
-class RemoteRepoImp @Inject constructor(private val remoteDataSource: RemoteDataSource): FirebaseRepository{
+class RemoteRepoImpl @Inject constructor(private val remoteDataSource: RemoteDataSource): FirebaseRepository{
     override suspend fun getAllMuscleExercises(): List<Muscles> {
         return remoteDataSource.getAllMuscles()
     }

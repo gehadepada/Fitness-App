@@ -18,7 +18,7 @@ suspend fun detectFoodFromServer(base64Image: String): FoodResponse? {
             val body = jsonBody.toRequestBody(mediaType)
 
             val request = Request.Builder()
-                .url("https://meal-calories-calculating.vercel.app/api/detect_food") // Replace with your deployed API endpoint
+                .url("https://meal-calories-calculating.vercel.app/api/detect_food")
                 .post(body)
                 .build()
 

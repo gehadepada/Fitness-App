@@ -1,4 +1,4 @@
-package com.example.fitnessapp.presentation.mapper
+package com.example.fitnessapp.data.mapper
 
 import com.example.fitnessapp.data.datasources.local.FoodAndCaloriesLocalModel
 import com.example.fitnessapp.presentation.model.FoodAndCaloriesUIModel

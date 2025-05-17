@@ -26,7 +26,7 @@ import com.example.fitnessapp.presentation.screens.auth.user_data_package.level_
 import com.example.fitnessapp.presentation.screens.auth.login_screen.LoginScreen
 import com.example.fitnessapp.presentation.screens.auth.signup_screen.SignUpScreen
 import com.example.fitnessapp.presentation.screens.dashboared.components.ProfileTopBar
-import com.example.fitnessapp.presentation.screens.add_food_package.add_food_way_screen.AddFoodSelectOption
+import com.example.fitnessapp.presentation.screens.add_food_package.add_food_methods.AddFoodSelectOption
 import com.example.fitnessapp.presentation.screens.add_food_package.scan_meal_screen.ScanFood
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExerciseDetailScreen
 import com.example.fitnessapp.presentation.screens.muscle_screen.ExercisesScreen
@@ -55,10 +55,10 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
     val topBar = remember { mutableStateOf("") }
     var selectedIndex by remember { mutableIntStateOf(-1) }
 
-
     val authViewModel = hiltViewModel<AuthViewModel>()
     val themeViewModel = hiltViewModel<ThemeViewModel>()
     val currentUser = authViewModel.currentUser
+
 
     Scaffold(
         topBar = {
@@ -283,31 +283,23 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
             }
 
 
-
-
-
-
-
-
-
+            // Water
             composable(Screens.WaterScreen.route) {
                 topBar.value = "water"
                 WaterTrackerScreen()
             }
 
-            composable(Screens.ExerciseScreen.route) {
-                topBar.value = "exercises"
-                selectedIndex = 1
-                ExercisesScreen(onExercise = { id ->
-                    navController.navigate(Screens.ExercisesDetails.passId(id))
-                })
-            }
+
+
             composable(Screens.ExercisesDetails.route) { backStackEntry ->
                 topBar.value = "muscle_exercises"
                 val id = backStackEntry.arguments?.getString("id")?.toIntOrNull() ?: 5
                 ExerciseDetailScreen(id = id)
             }
 
+
+
+            // Food
             composable(Screens.SearchBtnScreen.route) {
                 topBar.value = "addFood"
                 AddFoodSelectOption(onAddFood = {
@@ -317,21 +309,11 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
                 })
             }
 
-            composable(Screens.HealthScreen.route) {
-                topBar.value = "Health"
-                HealthConnectScreen(onBack = {
-                    navController.popBackStack()
-                })
-            }
-
-
             composable(Screens.ScanFoodScreen.route) {
                 topBar.value = "addFood"
                 ScanFood()
             }
 
-
-            // Search and search components
             composable(Screens.FoodSearchScreen.route) {
                 selectedIndex = 2
                 SearchFoodScreen(onSearchFood = { foodName, calories ->
@@ -343,6 +325,13 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
                     )
                 })
             }
+
+            composable(Screens.FoodHistoryScreen.route) {
+                topBar.value = "foodHistory"
+                selectedIndex = 3
+                FoodHistoryScreen()
+            }
+
             composable(Screens.FoodSelectItemScreen.route) { backStackEntry ->
 
                 val foodName = backStackEntry.arguments?.getString("foodName") ?: ""
@@ -350,8 +339,28 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
                 FoodSelectedItem(foodName = foodName, calories = calories)
             }
 
+
             // health connect
             composable(Screens.HealthConnectScreen.route) {
+                HealthConnectScreen(onBack = {
+                    navController.popBackStack()
+                })
+            }
+
+
+
+
+            // Muscles and Exercises
+            composable(Screens.ExerciseScreen.route) {
+                topBar.value = "exercises"
+                selectedIndex = 1
+                ExercisesScreen(onExercise = { id ->
+                    navController.navigate(Screens.ExercisesDetails.passId(id))
+                })
+            }
+
+            composable(Screens.HealthScreen.route) {
+                topBar.value = "Health"
                 HealthConnectScreen(onBack = {
                     navController.popBackStack()
                 })
@@ -405,14 +414,6 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
             composable(Screens.RecipesDetailsScreen.route) { backStackEntry ->
                 val id = backStackEntry.arguments?.getString("id")?.toIntOrNull() ?: 0
                 RecipeDetailScreen(id)
-            }
-
-
-
-            composable(Screens.FoodHistoryScreen.route) {
-                topBar.value = "foodHistory"
-                selectedIndex = 3
-                FoodHistoryScreen()
             }
 
             composable(Screens.ThirdPartyScreen.route) {
