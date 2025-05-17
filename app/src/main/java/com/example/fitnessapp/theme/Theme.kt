@@ -8,16 +8,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 private val DarkColorScheme = darkColorScheme(
+    // for buttons
     primary = Color(0xFF29E33C),
     onPrimary = Color(0xFFFFFFFF),
+    // for screens background
     background = Color.Black,
     onBackground = Color.White,
+    // for bar color
     surface = DarkGreySurface,
     onSurface = Color.White,
     secondary = Color.Gray,
     onSecondary = LightGreySurface,
     error = Color.Red,
-)
+
+    )
 private val LightColorScheme = lightColorScheme(
     primary = Color(0xFF2FC94C),
     onPrimary = Color.White,
@@ -37,13 +41,21 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun FitnessAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
+    // Dynamic color is available on Android 12+
+    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
+//        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+//            val context = LocalContext.current
+//            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+//        }
+
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
 
+//    val colorScheme = DarkColorScheme
 
     MaterialTheme(
         colorScheme = colorScheme,
