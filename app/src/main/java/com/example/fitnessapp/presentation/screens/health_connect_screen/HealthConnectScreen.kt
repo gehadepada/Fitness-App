@@ -189,7 +189,7 @@ fun HealthConnectScreen(onBack: () -> Unit = {}) {
                         Icon(
                             imageVector = Icons.Default.Error,
                             contentDescription = "Error Icon",
-                            tint = Color.Red,
+                            tint = MaterialTheme.colorScheme.error,
                             modifier = Modifier
                                 .size(55.dp)
                                 .padding(bottom = 10.dp)
@@ -221,6 +221,9 @@ fun CompactDataItem(
     Card(
         modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
         shape = RoundedCornerShape(12.dp)
     ) {
         Row(
