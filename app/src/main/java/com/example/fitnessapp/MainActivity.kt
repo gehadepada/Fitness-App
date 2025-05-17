@@ -13,6 +13,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.fitnessapp.presentation.navigation.MyAppNavigation
 import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import androidx.compose.runtime.Composable
 import com.example.fitnessapp.presentation.screens.waterScreen.ReminderScheduler
 import com.example.fitnessapp.theme.FitnessAppTheme
@@ -22,6 +24,19 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channelId = "water_reminder_channel"
+            val channelName = "Water Reminders"
+            val importance = NotificationManager.IMPORTANCE_HIGH
+
+            val channel = NotificationChannel(channelId, channelName, importance)
+            channel.description = "Channel for water reminder notifications"
+
+            val notificationManager = getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(channel)
+        }
+
         enableEdgeToEdge()
         setContent {
             FitnessAppRoot(this)
