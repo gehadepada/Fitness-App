@@ -70,7 +70,7 @@ fun RecipeDetailScreen(id: Int) {
         }
 
         is RecipesState.Success -> {
-            RecipeDetailScreenItem((healthyRecipesState as RecipesState.Success).recipes[id])
+            RecipeDetailScreenItem((healthyRecipesState as RecipesState.Success).recipes[id-1])
         }
     }
 }
