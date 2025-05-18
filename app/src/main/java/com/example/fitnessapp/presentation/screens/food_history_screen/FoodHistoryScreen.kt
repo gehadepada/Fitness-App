@@ -74,8 +74,7 @@ fun FoodHistoryScreen() {
 
     val deleteFood: (FoodAndCaloriesUIModel) -> Unit = { food ->
         coroutineScope.launch {
-            foodAndCaloriesViewModel.deleteFoodAndCalorie(food.toFoodAndCaloriesLocalModel())
-            foodAndCaloriesViewModel.getFoodAndCalories(startDate, endDate.value)
+            foodAndCaloriesViewModel.deleteFoodAndCalorie(food.toFoodAndCaloriesLocalModel(), startDate, endDate.value)
         }
     }
 

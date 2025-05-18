@@ -1,6 +1,5 @@
 package com.example.fitnessapp.presentation.navigation
 
-import android.content.Context
 import com.example.fitnessapp.presentation.viewModels.themeView.ThemeViewModel
 import com.example.fitnessapp.presentation.screens.profile_screen_package.user_info.UserProfileInfoScreen
 import com.example.fitnessapp.presentation.screens.auth.user_data_package.gender_screen.GenderScreen
@@ -127,7 +126,11 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
                     onItemSelected = {
                         selectedIndex = it
                         when (selectedIndex) {
-                            0 -> navController.navigate(Screens.DashBoardScreen.route)
+                            0 -> {
+                                navController.navigate(Screens.DashBoardScreen.route) {
+                                    popUpTo(0) { inclusive = true }
+                                }
+                            }
                             1 -> navController.navigate(Screens.ExerciseScreen.route)
                             2 -> navController.navigate(Screens.FoodSearchScreen.route)
                             3 -> navController.navigate(Screens.FoodHistoryScreen.route)
@@ -299,7 +302,6 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
             }
 
 
-
             // Food
             composable(Screens.SearchBtnScreen.route) {
                 topBar.value = "addFood"
@@ -347,8 +349,6 @@ fun MyAppNavigation(modifier: Modifier = Modifier) {
                     navController.popBackStack()
                 })
             }
-
-
 
 
             // Muscles and Exercises

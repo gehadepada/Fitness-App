@@ -53,13 +53,14 @@ class FoodAndCaloriesViewModel @Inject constructor(private val dao: FoodAndCalor
         }
     }
 
-    fun deleteFoodAndCalorie(foodAndCaloriesLocalModel: FoodAndCaloriesLocalModel) {
+    fun deleteFoodAndCalorie(foodAndCaloriesLocalModel: FoodAndCaloriesLocalModel, startDate: String, endDate:String) {
         _foodAndCaloriesState.value = FoodAndCaloriesState.Loading
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 dao.deleteFoodAndCalories(foodAndCaloriesLocalModel)
-                _foodAndCaloriesState.value = FoodAndCaloriesState.Success
+                val data = dao.getFoodAndCaloriesByDate(startDate, endDate).map { it.toFoodAndCaloriesUIModel() }
+                _foodAndCaloriesState.value = FoodAndCaloriesState.SuccessWithData(data)
             } catch (e: Exception) {
                 _foodAndCaloriesState.value =
                     FoodAndCaloriesState.Error(e.suppressedExceptions.toString())
